@@ -1,0 +1,174 @@
+<html>
+	<head>
+		<title>Travel Forecast</title>
+		<link href="flatpickr.min.css" rel="stylesheet" type="text/css">
+		<link href="travel-forecast.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<div id="trip-forecast"
+			ng-app="tripForecastApp"
+			ng-controller="appCtrl as appUtils">
+			<div id="map-container"
+				ng-controller="mapCtrl as mapUtils">
+				<input type="text"
+					ng-model="query"
+					ng-model-options="{debounce: 500}"
+					ng-change="mapUtils.locationSearch(query)">
+				<h5>
+					Selected Location
+				</h5>
+				<h2>
+					{{ appUtils.locationFty.locationDetails.name }}
+				</h2>
+				<div id="map"></div>
+			</div>
+			<div id="date-range-container"
+				ng-controller="dateRangeCtrl as dateRangeUtils">
+				<div class="input-container">
+					<label for="start-date">
+						Arrival Date
+					</label>
+					<input type="text" id="start-date">
+				</div>
+				<div class="input-container">
+					<label for="end-date">
+						Departure Date
+					</label>
+					<input type="text" id="end-date">
+				</div>
+				<button
+					ng-click="dateRangeUtils.attemptAddDestination(appUtils.locationFty.locationDetails, dateRangeUtils.startDate, dateRangeUtils.endDate)">
+					Add Destination
+				</button>
+				<button
+					ng-click="dateRangeUtils.clearDestinations(appUtils.destinationFty.destinationList)">
+					Clear All Destinations
+				</button>
+			</div>
+			<div id="calendar-container">
+				<table>
+					<tr>
+						<td>
+							&nbsp;
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+					<tr ng-repeat="destination in appUtils.destinationFty.destinationList">
+						<td>
+							{{ destination.name }}
+						</td>
+						<td>
+							<button ng-click="appUtils.destinationFty.removeDestination($index, true)">
+								remove
+							</button>
+						</td>
+					</tr>
+				</table>
+				<table ng-repeat="consecutiveDates in appUtils.dateFty.dateList">
+					<tr>
+						<td ng-repeat="travelDate in consecutiveDates">
+							{{ travelDate | date: 'MMM d' }}
+						</td>
+					</tr>
+					<tr ng-repeat="destination in appUtils.destinationFty.destinationList">
+						<td ng-repeat="travelDate in consecutiveDates">
+							<div ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates)">
+								{{ appUtils.forecastFty.forecastList[destination.name][appUtils.dateFty.createDateString(travelDate)].high }} <br>
+								{{ appUtils.forecastFty.forecastList[destination.name][appUtils.dateFty.createDateString(travelDate)].low }} <br>
+								{{ appUtils.forecastFty.forecastList[destination.name][appUtils.dateFty.createDateString(travelDate)].precip }} <br>
+								{{ appUtils.forecastFty.forecastList[destination.name][appUtils.dateFty.createDateString(travelDate)].icon }} <br>
+								{{ appUtils.forecastFty.forecastList[destination.name][appUtils.dateFty.createDateString(travelDate)].text }}
+							</div>
+							&nbsp;
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
+			
+			<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAC9iGAIsqKYZIePSlUhtNRvnCeWIB2AXo"></script>
+			
+			<script src="/js/flatpickr.min.js"></script>
+			
+			<script src="/js/appCtrl.js"></script>
+			<script src="/js/mapCtrl.js"></script>
+			<script src="/js/dateRangeCtrl.js"></script>
+			
+			<script src="/js/forecastFty.js"></script>
+			<script src="/js/locationFty.js"></script>
+			<script src="/js/destinationFty.js"></script>
+			<script src="/js/dateFty.js"></script>
+			<script src="/js/urlFty.js"></script>
+			
+			<script>
+				angular.module( 'tripForecastApp', ['ngAnimate'] )
+
+					.controller("appCtrl", appCtrl )
+					.controller("mapCtrl", mapCtrl )
+					.controller("dateRangeCtrl", dateRangeCtrl )
+					
+					.factory("forecastFty", forecastFty )
+					.factory("locationFty", locationFty )
+					.factory("destinationFty", destinationFty )
+					.factory("dateFty", dateFty )
+					.factory("urlFty", urlFty )
+				;
+			</script>
+		
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
