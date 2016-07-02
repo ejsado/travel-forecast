@@ -49,3 +49,7 @@ Temporary Items
 
 # NPM Modules
 node_modules/
+
+# PHP Scripts
+public/scripts/
+
