@@ -2,18 +2,39 @@ function urlFty($location, dateFty, locationFty) {
 	
 	var factory = {
 		
-		clearUrlParam: function() {
-			$location.search('s');
+		paramsUpdated: true,
+		
+		getUrlUnits: function() {
+			var urlParams = $location.search();
+			var param = urlParams.u;
+			if (param == 'c' || param == 'C') {
+				return 'metric';
+			} else {
+				return 'imperial';
+			}
 		},
 		
-		validUrlParam: function() {
+		buildUrlParamUnits: function(units) {
+			var newUnits = 'f';
+			if (units == 'metric') {
+				newUnits = 'c';
+			}
+			factory.paramsUpdated = true;
+			$location.search('u', newUnits);
+		},
+		
+		clearUrlParamTrip: function() {
+			factory.paramsUpdated = true;
+			$location.search('t');
+		},
+		
+		validUrlParamTrip: function() {
 			var urlParams = $location.search();
-			var param = urlParams.s;
-			console.log(param);
+			var param = urlParams.t;
 			if (param || param == undefined) {
 				return true;
 			}
-			var forecastArray = param.split('f');
+			var forecastArray = param.split('d');
 			if (forecastArray.length < 2) {
 				return false;
 			}
@@ -21,16 +42,16 @@ function urlFty($location, dateFty, locationFty) {
 				var propertiesArray = forecastArray[i].split('r');
 				var coordsArray = propertiesArray[0].split('l');
 				if (coordsArray.length != 2 ||
-					locationFty.validLat(Number(coordsArray[0])) ||
-					locationFty.validLng(Number(coordsArray[1]))
+					!locationFty.validLat(Number(coordsArray[0])) ||
+					!locationFty.validLng(Number(coordsArray[1]))
 				) {
 					return false;
 				}
 				for (var n = 1; n < propertiesArray.length; n++) {
-					var dateRangeArray = propertiesArray[n].split('d');
+					var dateRangeArray = propertiesArray[n].split('e');
 					if (dateRangeArray.length != 2 ||
-						dateFty.validDate(dateFty.createDateFromString(dateRangeArray[0])) ||
-						dateFty.validDate(dateFty.createDateFromString(dateRangeArray[1]))
+						!dateFty.validDate(dateFty.createDateFromString(dateRangeArray[0])) ||
+						!dateFty.validDate(dateFty.createDateFromString(dateRangeArray[1]))
 					) {
 						return false;
 					}
@@ -40,20 +61,20 @@ function urlFty($location, dateFty, locationFty) {
 		},
 		
 		createDestinationString: function(lat, lng, dateRangeList) {
-			var str = 'f';
+			var str = 'd';
 			str += String(lat);
 			str += 'l';
 			str += String(lng);
 			for (var i = 0; i < dateRangeList.length; i++) {
 				str += 'r';
 				str += dateFty.createDateString(dateRangeList[i].arrival);
-				str += 'd';
+				str += 'e';
 				str += dateFty.createDateString(dateRangeList[i].departure);
 			}
 			return str;
 		},
 		
-		buildUrlParam: function(destinationList) {
+		buildUrlParamTrip: function(destinationList) {
 			var url = '';
 			for (var i = 0; i < destinationList.length; i++) {
 				url += factory.createDestinationString(
@@ -62,17 +83,22 @@ function urlFty($location, dateFty, locationFty) {
 					destinationList[i].dateRanges
 				);
 			}
-			$location.search('s', url);
+			if (url == '') {
+				factory.clearUrlParamTrip();
+			} else {
+				factory.paramsUpdated = true;
+				$location.search('t', url);
+			}
 		},
 		
 		getUrlDestinations: function() {
 			var urlParams = $location.search();
-			var param = urlParams.s;
+			var param = urlParams.t;
 			var destList = [];
 			if (param === true || param == undefined) {
 				return destList;
 			}
-			var forecastArray = param.split('f');
+			var forecastArray = param.split('d');
 			for (var i = 1; i < forecastArray.length; i++) {
 				var propertiesArray = forecastArray[i].split('r');
 				var coordsArray = propertiesArray[0].split('l');
@@ -84,15 +110,46 @@ function urlFty($location, dateFty, locationFty) {
 					dateRanges: []
 				};
 				for (var n = 1; n < propertiesArray.length; n++) {
-					var dateRangeArray = propertiesArray[n].split('d');
+					var dateRangeArray = propertiesArray[n].split('e');
 					destList[i-1].dateRanges.push({
 						arrival: dateFty.createDateFromString(dateRangeArray[0]),
 						departure: dateFty.createDateFromString(dateRangeArray[1])
 					});
 				}
 			}
-			console.log(destList);
+			console.log("url destinations", destList);
 			return destList;
+		},
+		
+		createDirectionsUrl: function(destinationsArray) {
+			var url = "";
+			if (destinationsArray.length > 1) {
+				url = "https://www.google.com/maps/dir";
+				for (var i = 0; i < destinationsArray.length; i++) {
+					if (destinationsArray[i] != undefined &&
+						destinationsArray[i] != null
+					) {
+						url += "/" + destinationsArray[i].coords.lat + ",";
+						url += destinationsArray[i].coords.lng;
+					} else {
+						return "";
+					}
+				}
+				return url;
+			} else {
+				url = "https://www.google.com/maps/place/";
+				if (destinationsArray[0] != undefined &&
+						destinationsArray[0] != null
+				) {
+					var placeName = destinationsArray[0].name;
+					placeName = placeName.split(' ').join('+');
+					placeName = placeName.split(',').join('');
+					url += placeName;
+					return url;
+				} else {
+					return "";
+				}
+			}
 		}
 		
 	};

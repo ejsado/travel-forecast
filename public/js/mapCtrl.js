@@ -55,7 +55,7 @@ function mapCtrl($scope, $timeout, locationFty, forecastFty) {
 	}
 	
 	function coordsUnknown(result) {
-		console.log("coords unknown");
+		console.log("coords unknown", result);
 		locationFty.locationDetails = result;
 		$scope.$apply();
 	}

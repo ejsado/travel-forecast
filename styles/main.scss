@@ -1,0 +1,306 @@
+@import 'normalize.css';
+
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,700);
+
+@import 'pikaday.css';
+
+/* layout styles */
+
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+html {
+	font-size: 40px;
+}
+body {
+	height: 100%;
+	color: #444;
+	font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
+#flex-container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	flex-flow: column nowrap;
+}
+#flex-container,
+.modal-box {
+	min-width: 400px;
+}
+header,
+footer {
+	//box-shadow: 0 0 0.5rem rgba(0,0,0,0.4);
+	flex: 0 0 auto;
+	z-index: 10;
+}
+header {
+	background: #F2F2F2;
+}
+
+#header-wrapper {
+	//outline: 1px solid green;
+	position: relative;
+	padding: 0 1rem;
+}
+#logo-container {
+	margin: 1rem 0;
+	opacity: 0.75;
+	a {
+		text-decoration: none;
+		font-size: 1.2rem;
+		font-weight: bold;
+		color: #000;
+		span {
+			vertical-align: 40%;
+			padding-left: 0.1rem;
+		}
+	}
+	&, a img {
+		height: 2rem;
+	}
+}
+
+#about-container {
+	position: absolute;
+	right: 1rem;
+	top: 0;
+	height: 100%;
+	white-space: nowrap;
+}
+#about-link {
+	display: block;
+	text-decoration: none;
+	background: transparent;
+	border: none;
+	outline: none;
+	vertical-align: middle;
+	&:hover {
+		#question-mark-icon {
+			animation: wiggle 300ms;
+		}
+	}
+}
+#about-link-text {
+	color: #E5417B;
+	vertical-align: middle;
+	font-size: 1rem;
+	display: inline-block;
+	max-width: 0;
+	transition: max-width 500ms;
+	overflow: hidden;
+}
+#question-mark-icon {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+	border-radius: 50%;
+	vertical-align: middle;
+	text-align: center;
+	color: #FFF;
+	background: #E5417B;
+	font-size: 1.5rem;
+	margin-left: 0.5rem;
+}
+@keyframes wiggle {
+	25% {
+		transform: rotate(20deg);
+	}
+	75% {
+		transform: rotate(-20deg);
+	}
+}
+
+main {
+	position: relative;
+	flex: 1 1 auto;
+	overflow: auto;
+}
+.main-wrapper {
+	padding: 0 1rem;
+}
+footer {
+	overflow-x: hidden;
+}
+#footer-wrapper {
+	//outline: 1px solid red;
+	width: 730px;
+	margin: 0 auto;
+}
+
+#copyright {
+	display: block;
+	color: #CCC;
+	font-size: 0.75rem;
+	text-align: center;
+	margin: 1rem 0;
+}
+
+/* general styles */
+
+main, .modal-box {
+	line-height: 1.5;
+	a {
+		color: #189FE0;
+	}
+	a:visited {
+		color: #9669E0;
+	}
+	h1,h2,h3,h4,h5,h6 {
+		font-weight: bold;
+		color: #666;
+	}
+	h1 {
+		font-size: 2rem;
+		margin: 2rem 0 1rem;
+	}
+	h2 {
+		font-size: 1.8rem;
+		margin: 1.8rem 0 1rem;
+	}
+	h3 {
+		font-size: 1.6rem;
+		margin: 1.6rem 0 1rem;
+	}
+	h4 {
+		font-size: 1.4rem;
+		margin: 1.4rem 0 1rem;
+	}
+	h5 {
+		font-size: 1.2rem;
+		margin: 1.2rem 0 1rem;
+	}
+	h6 {
+		font-size: 1rem;
+		margin: 1rem 0 1rem;
+	}
+	.call-to-action {
+		position: relative;
+		text-decoration: none;
+		text-align: center;
+		display: block;
+		padding: 1.5rem;
+		background: #189FE0;
+		color: #FFF;
+		border-radius: 0.2rem;
+		font-size: 1rem;
+		font-weight: bold;
+		width: 20rem;
+		margin: 2rem auto;
+		border: none;
+		transition: all 500ms;
+		&::before {
+			content: "";
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			border-radius: 0.2rem;
+			background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 50%);
+			opacity: 0;
+			transition: all 150ms;
+		}
+		&:hover {
+			&::before {
+				opacity: 1;
+			}
+		}
+	}
+}
+
+/* grid styles */
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin-right: -2rem;
+	[class*='col-'] {
+		min-width: 16rem;
+		margin: 0 2rem 3rem 0;
+	}
+	.col-1   { flex: 1 1 10%; }
+	.col-1-2 { flex: 1 1 35%; }
+	.col-2-3 { flex: 1 1 43.35%; }
+	.col-3-4 { flex: 1 1 60%; }
+}
+
+/* modal styles */
+
+.modal-container {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	white-space: nowrap;
+	text-align: center;
+	overflow: hidden;
+	z-index: 1000;
+	&::after {
+		content: "";
+		height: 100%;
+		vertical-align: middle;
+		display: inline-block;
+		margin-right: -10px;
+	}
+	.modal-background {
+		display: block;
+		margin: 0;
+		padding: 0;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background: rgba(0,0,0,0.3);
+		cursor: default;
+		border: none;
+		outline: none;
+		width: 100%;
+	}
+	.modal-box {
+		position: relative;
+		vertical-align: middle;
+		display: inline-block;
+		white-space: normal;
+		background: #FFF;
+		text-align: left;
+		box-shadow: 0 0 1rem rgba(0,0,0,0.4);
+		overflow: auto;
+		padding: 0 2rem;
+		max-height: 95%;
+		width: 95%;
+		max-width: 800px;
+	}
+}
+
+@import 'travel-forecast';
+
+@import 'media-queries';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

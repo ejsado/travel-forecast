@@ -4,6 +4,18 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 		
 		forecastList: {},
 		
+		units: 'imperial',
+		
+		convertDegrees: function(degrees) {
+			if (degrees != null && degrees != undefined) {
+				if (factory.units == 'metric') {
+					return Math.round((degrees - 32) * (5 / 9));
+				} else {
+					return degrees;
+				}
+			}
+		},
+		
 		getHttpForecast: function(url, data, successFn, failureFn) {
 			console.log("http forecast", url);
 			$http.get(url).then(function (response) {
@@ -41,16 +53,19 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 				'../scripts/darkSkyWeather.php', 
 				data,
 				function(response, data) {
-					console.log(response);
+					console.log("dark sky response", response);
 					factory.forecastList[data.name] = factory.processDarkSkyForecast(response);
 					console.log("forecastList", factory.forecastList);
-					factory.getExtendedForecast(
-						data, 
-						dateFty.crossReferenceDates(
-							destinationFty.getDestinationByName(data.name).dates, 
-							factory.forecastList[data.name]
-						)
-					);
+					var dest = destinationFty.getDestinationByName(data.name);
+					if (dest != null) {
+						factory.getExtendedForecast(
+							data, 
+							dateFty.crossReferenceDates(
+								dest.dates, 
+								factory.forecastList[data.name]
+							)
+						);
+					}
 				},
 				function(response, data) {
 					console.log("Dark Sky forecast response failed");
@@ -96,17 +111,20 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 				); */
 			} else {
 				console.log("forecast exists");
-				factory.getExtendedForecast(
-					{
-						lat: lat,
-						lng: lng,
-						name: name
-					}, 
-					dateFty.crossReferenceDates(
-						destinationFty.getDestinationByName(name).dates, 
-						factory.forecastList[name]
-					)
-				);
+				var dest = destinationFty.getDestinationByName(name);
+				if (dest != null) {
+					factory.getExtendedForecast(
+						{
+							lat: lat,
+							lng: lng,
+							name: name
+						}, 
+						dateFty.crossReferenceDates(
+							dest.dates, 
+							factory.forecastList[name]
+						)
+					);
+				}
 			}
 		},
 		
@@ -177,9 +195,11 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 			var forecast = {};
 			forecast.high = Math.round(response.data.daily.data[0].temperatureMax);
 			if ("precipProbability" in response.data.daily.data[0]) {
-				Math.round(forecast.precip = response.data.daily.data[0].precipProbability * 100);
-				forecast.text = response.data.daily.data[0].summary;
+				forecast.precip = Math.round(response.data.daily.data[0].precipProbability * 100);
+			} else {
+				forecast.precip = 0;
 			}
+			forecast.text = response.data.daily.data[0].summary;
 			forecast.low = Math.round(response.data.daily.data[0].temperatureMin);
 			forecast.icon = response.data.daily.data[0].icon;
 			return forecast;

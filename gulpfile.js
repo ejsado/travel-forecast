@@ -1,6 +1,8 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var autoprefix = require('gulp-autoprefixer');
+var cleanCss = require('gulp-clean-css');
+var rename = require("gulp-rename");
 
 gulp.task('default', function() {
 	console.log(
@@ -13,14 +15,18 @@ gulp.task('default', function() {
 });
 
 gulp.task('buildSass', function() {
-	return gulp.src('./*.scss')
+	return gulp.src('./styles/main.scss')
 		.pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
 		.pipe(autoprefix())
-		.pipe(gulp.dest('./public'));
+		.pipe(cleanCss())
+		.pipe(rename({
+			basename: "all.min"
+		}))
+		.pipe(gulp.dest('./public/css'));
 });
 
 gulp.task('watchSass', function() {
-	gulp.watch('./*.scss', ['buildSass']);
+	gulp.watch('./styles/*.scss', ['buildSass']);
 });
 
 

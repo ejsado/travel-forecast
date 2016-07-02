@@ -13,7 +13,7 @@ function locationFty() {
 		markerList: [],
 		
 		locationDetails: {
-			name: "Search for a location or select one on the map.",
+			name: "Search for a location or select one on the map",
 			coords: null
 		},
 		
@@ -32,13 +32,18 @@ function locationFty() {
 		},
 		
 		createLocationDetails: function(address, latLng) {
-			return {
-				name: address,
-				coords: {
-					lat: latLng ? latLng.lat() : null,
-					lng: latLng ? latLng.lng() : null
-				}
+			var loc = {
+				name: address
 			};
+			if (latLng) {
+				loc.coords = {
+					lat: latLng.lat(),
+					lng: latLng.lng()
+				};
+			} else {
+				loc.coords = null;
+			}
+			return loc;
 		},
 		
 		buildMapMarkers: function(destList) {
@@ -51,6 +56,10 @@ function locationFty() {
 					position: destList[i].coords,
 					map: factory.map,
 					title: destList[i].name,
+					label: {
+						text: String(i + 1),
+						color: 'white'
+					},
 					icon: {
 						path: google.maps.SymbolPath.CIRCLE,
 						clickable: false,
@@ -58,7 +67,7 @@ function locationFty() {
 						fillOpacity: 100,
 						strokeColor: 'white',
 						strokeWeight: 2,
-						scale: 6
+						scale: 11
 					}
 				});
 				factory.markerList.push(marker);
@@ -85,8 +94,9 @@ function locationFty() {
 					console.log("location found", results);
 					var resultMatch;
 					for (var i = 0; i < results.length; i++) {
-						if (results[i].address_components.length <= 4 
-							&& !results[i].formatted_address.includes("Township")) {
+						if (results[i].address_components.length <= 5 &&
+							!results[i].formatted_address.includes("Township")
+						) {
 							resultMatch = results[i];
 							break;
 						}

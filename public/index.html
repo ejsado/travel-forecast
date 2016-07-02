@@ -1,124 +1,303 @@
 <html>
 	<head>
+		<meta charset="UTF-8">
 		<title>Travel Forecast</title>
-		<link href="flatpickr.min.css" rel="stylesheet" type="text/css">
-		<link href="travel-forecast.css" rel="stylesheet" type="text/css">
+		<link href="css/all.min.css" rel="stylesheet" type="text/css">
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
+		
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAC9iGAIsqKYZIePSlUhtNRvnCeWIB2AXo"></script>
+		
+		<script src="/js/moment.js"></script>
+		<script src="/js/pikaday.js"></script>
+		
+		<script src="/js/appCtrl.js"></script>
+		<script src="/js/mapCtrl.js"></script>
+		<script src="/js/formCtrl.js"></script>
+		<script src="/js/calendarCtrl.js"></script>
+		
+		<script src="/js/forecastFty.js"></script>
+		<script src="/js/locationFty.js"></script>
+		<script src="/js/destinationFty.js"></script>
+		<script src="/js/dateFty.js"></script>
+		<script src="/js/urlFty.js"></script>
+		<script src="/js/distanceFty.js"></script>
+		<script src="/js/alertFty.js"></script>
+		
+		<script>
+			angular.module( 'travelForecastApp', ['ngAnimate'] )
+
+				.controller("appCtrl", appCtrl )
+				.controller("mapCtrl", mapCtrl )
+				.controller("formCtrl", formCtrl )
+				.controller("calendarCtrl", calendarCtrl )
+				
+				.factory("forecastFty", forecastFty )
+				.factory("locationFty", locationFty )
+				.factory("destinationFty", destinationFty )
+				.factory("dateFty", dateFty )
+				.factory("urlFty", urlFty )
+				.factory("distanceFty", distanceFty )
+				.factory("alertFty", alertFty )
+			;
+		</script>
+		
 	</head>
-	<body>
-		<div id="trip-forecast"
-			ng-app="tripForecastApp"
-			ng-controller="appCtrl as appUtils">
-			<div id="map-container"
-				ng-controller="mapCtrl as mapUtils">
-				<input type="text"
-					ng-model="query"
-					ng-model-options="{debounce: 500}"
-					ng-change="mapUtils.locationSearch(query)">
-				<h5>
-					Selected Location
-				</h5>
-				<h2>
-					{{ appUtils.locationFty.locationDetails.name }}
-				</h2>
-				<div id="map"></div>
-			</div>
-			<div id="date-range-container"
-				ng-controller="dateRangeCtrl as dateRangeUtils">
-				<div class="input-container">
-					<label for="start-date">
-						Arrival Date
-					</label>
-					<input type="text" id="start-date">
+	<body
+		ng-app="travelForecastApp"
+		ng-controller="appCtrl as appUtils">
+		<div id="flex-container">
+			<header>
+				<div id="header-wrapper">
+					<div id="logo-container">
+						<a href="">
+							<img src="/img/logo-128.png" alt="">
+							<span>Travel Weathr</span>
+						</a>
+					</div>
+					<div id="url-container">
+						<label for="short-url">
+							Short URL
+						</label>
+						<input type="text" id="short-url" value="http://goo.gl/jaslbwh">
+					</div>
+					<div id="about-container">
+						<button id="about-link"
+							ng-click="appUtils.alertFty.displayModal(appUtils.alertFty.aboutModal)">
+							<span id="about-link-text">
+								What is this?
+							</span>
+							<span id="question-mark-icon">
+								?
+							</span>
+						</button>
+					</div>
 				</div>
-				<div class="input-container">
-					<label for="end-date">
-						Departure Date
+			</header>
+			<main>
+				<section id="map-container"
+					ng-controller="mapCtrl as mapUtils">
+					<input type="checkbox" id="hide-map">
+					<div id="map"></div>
+					<label id="hide-map-switch" class="btn-link" for="hide-map">
+						Map
 					</label>
-					<input type="text" id="end-date">
-				</div>
-				<button
-					ng-click="dateRangeUtils.attemptAddDestination(appUtils.locationFty.locationDetails, dateRangeUtils.startDate, dateRangeUtils.endDate)">
-					Add Destination
-				</button>
-				<button
-					ng-click="dateRangeUtils.clearDestinations(appUtils.destinationFty.destinationList)">
-					Clear All Destinations
-				</button>
-			</div>
-			<div id="calendar-container">
-				<table>
-					<tr>
-						<td>
-							&nbsp;
-						</td>
-						<td>
-							&nbsp;
-						</td>
-					</tr>
-					<tr ng-repeat="destination in appUtils.destinationFty.destinationList">
-						<td>
-							{{ destination.name }}
-						</td>
-						<td>
-							<button ng-click="appUtils.destinationFty.removeDestination($index, true)">
-								remove
-							</button>
-						</td>
-					</tr>
-				</table>
-				<table ng-repeat="consecutiveDates in appUtils.dateFty.dateList">
-					<tr>
-						<td ng-repeat="travelDate in consecutiveDates">
-							{{ travelDate | date: 'MMM d' }}
-						</td>
-					</tr>
-					<tr ng-repeat="destination in appUtils.destinationFty.destinationList">
-						<td ng-repeat="travelDate in consecutiveDates">
-							<div ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates)">
-								{{ appUtils.forecastFty.forecastList[destination.name][appUtils.dateFty.createDateString(travelDate)].high }} <br>
-								{{ appUtils.forecastFty.forecastList[destination.name][appUtils.dateFty.createDateString(travelDate)].low }} <br>
-								{{ appUtils.forecastFty.forecastList[destination.name][appUtils.dateFty.createDateString(travelDate)].precip }} <br>
-								{{ appUtils.forecastFty.forecastList[destination.name][appUtils.dateFty.createDateString(travelDate)].icon }} <br>
-								{{ appUtils.forecastFty.forecastList[destination.name][appUtils.dateFty.createDateString(travelDate)].text }}
-							</div>
-							&nbsp;
-						</td>
-					</tr>
-				</table>
-			</div>
+					<input id="location-search" type="text" placeholder="Search for a destination"
+						ng-model="query"
+						ng-model-options="{debounce: 500}"
+						ng-change="mapUtils.locationSearch(query)">
+				</section>
+				<section id="form-container"
+					ng-controller="formCtrl as formUtils">
+					<div class="float-right">
+						<input type="radio" id="imperial-units" name="units" value="imperial" class="hidden-radio"
+							ng-model="appUtils.forecastFty.units"
+							ng-change="formUtils.unitsChanged()">
+						<label class="btn btn-small btn-left btn-muted" for="imperial-units">
+							F &deg;
+						</label>
+						<input type="radio" id="metric-units" name="units" value="metric" class="hidden-radio"
+							ng-model="appUtils.forecastFty.units"
+							ng-change="formUtils.unitsChanged()">
+						<label class="btn btn-small btn-right btn-muted" for="metric-units">
+							C &deg;
+						</label>
+					</div>
+					<img id="marker" src="img/spotlight-poi.png" alt="">
+					<p class="label">
+						Selected Destination
+					</p>
+					<h1>
+						{{ appUtils.locationFty.locationDetails.name }}
+					</h1>
+					<div class="input-container">
+						<label class="label" for="start-date">
+							From
+						</label>
+						<input type="text" id="start-date">
+					</div>
+					<div class="input-container">
+						<label class="label" for="end-date">
+							To
+						</label>
+						<input type="text" id="end-date">
+					</div>
+					<button class="btn"
+						ng-click="formUtils.attemptAddDestination(appUtils.locationFty.locationDetails, formUtils.startDate, formUtils.endDate)"
+						ng-disabled="appUtils.loadingDestinations">
+						Add Destination
+					</button>
+					<div id="alert-message">
+						<p id="alert-message-content"
+							ng-show="appUtils.alertFty.showMessage">
+							{{ appUtils.alertFty.messageContent }}
+						</p>
+					</div>
+				</section>
+				<section id="calendar-container"
+					ng-controller="calendarCtrl as calendarUtils">
+					<div id="calendar-content">
+						<div id="calendar-destinations">
+							<table id="destinations-table">
+								<thead>
+									<tr>
+										<th>
+											
+										</th>
+										<th>
+											
+										</th>
+										<th>
+											
+										</th>
+									</tr>
+								</thead>
+								<tbody ng-repeat="destination in appUtils.destinationFty.destinationList">
+									<tr>
+										<td class="destination-cell">
+											<div class="destination-container">
+												<div class="marker">
+													{{ $index + 1 }}
+												</div>
+												<div class="destination-name">
+													{{ destination.name }}
+													&ndash;
+													<button class="btn-link btn-link-alt"
+														ng-click="calendarUtils.removeSingleDestination($index)"
+														ng-disabled="appUtils.loadingDestinations">
+														remove
+													</button>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="estimation-cell">
+											<div class="estimation-container"
+												ng-hide="$index == appUtils.destinationFty.destinationList.length - 1">
+												&varr;
+												{{
+													appUtils.distanceFty.distanceList[destination.name]
+													[appUtils.destinationFty.destinationList[$index + 1].name].duration.text
+												}}
+												&mdash;
+												<a href="{{ appUtils.urlFty.createDirectionsUrl([
+														destination,
+														appUtils.destinationFty.destinationList[$index + 1]
+													]) }}">
+													map it
+												</a>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div id="calendar-weather">
+							<table class="weather-table"
+								ng-repeat="consecutiveDates in appUtils.dateFty.dateList">
+								<thead>
+									<tr>
+										<th ng-repeat="travelDate in consecutiveDates">
+											{{ travelDate | date: 'MMM d' }}
+										</th>
+									</tr>
+								</thead>
+								<tbody ng-repeat="destination in appUtils.destinationFty.destinationList">
+									<tr>
+										<td class="weather-cell"
+											ng-repeat="travelDate in consecutiveDates">
+											<div class="weather-container"
+												ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates)"
+												ng-click="calendarUtils.setSelectedDate(travelDate)">
+												<div class="weather-icon" 
+													ng-class="appUtils.forecastFty.forecastList[destination.name]
+														[appUtils.dateFty.createDateString(travelDate)].icon">
+												</div>
+												<div class="high-temp">
+													&uarr;
+													{{
+														appUtils.forecastFty.convertDegrees(
+															appUtils.forecastFty.forecastList[destination.name]
+															[appUtils.dateFty.createDateString(travelDate)].high
+														)
+													}}&deg;
+												</div>
+												<div class="low-temp">
+													&darr;
+													{{
+														appUtils.forecastFty.convertDegrees(
+															appUtils.forecastFty.forecastList[destination.name]
+															[appUtils.dateFty.createDateString(travelDate)].low
+														)
+													}}&deg;
+												</div>
+												<div class="rain-chance">
+													&becaus;
+													{{
+														appUtils.forecastFty.forecastList[destination.name]
+														[appUtils.dateFty.createDateString(travelDate)].precip
+													}}%
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td class="weather-text-cell"
+											ng-repeat="travelDate in consecutiveDates">
+											<div class="weather-text-container"
+												ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates) &&
+													appUtils.dateFty.datesEqual(travelDate, calendarUtils.selectedDate)"
+												ng-style="{'width': (appUtils.forecastFty.forecastList[destination.name]
+													[appUtils.dateFty.createDateString(travelDate)].text.length / 2.7) + 'rem'}">
+												{{
+													appUtils.forecastFty.forecastList[destination.name]
+													[appUtils.dateFty.createDateString(travelDate)].text
+												}}
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div>
+						<button class="btn-link btn-link-alt"
+							ng-click="calendarUtils.clear()"
+							ng-disabled="appUtils.loadingDestinations">
+							Remove All Destinations
+						</button>
+						<a href="{{ appUtils.urlFty.createDirectionsUrl(appUtils.destinationFty.destinationList) }}">
+							Map All Destinations
+						</a>
+					</div>
+				</section>
+				<span id="copyright">
+					&copy; Eric Sadowski
+				</span>
+			</main>
 		</div>
 		
-			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
-			<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
-			
-			<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAC9iGAIsqKYZIePSlUhtNRvnCeWIB2AXo"></script>
-			
-			<script src="/js/flatpickr.min.js"></script>
-			
-			<script src="/js/appCtrl.js"></script>
-			<script src="/js/mapCtrl.js"></script>
-			<script src="/js/dateRangeCtrl.js"></script>
-			
-			<script src="/js/forecastFty.js"></script>
-			<script src="/js/locationFty.js"></script>
-			<script src="/js/destinationFty.js"></script>
-			<script src="/js/dateFty.js"></script>
-			<script src="/js/urlFty.js"></script>
-			
-			<script>
-				angular.module( 'tripForecastApp', ['ngAnimate'] )
-
-					.controller("appCtrl", appCtrl )
-					.controller("mapCtrl", mapCtrl )
-					.controller("dateRangeCtrl", dateRangeCtrl )
-					
-					.factory("forecastFty", forecastFty )
-					.factory("locationFty", locationFty )
-					.factory("destinationFty", destinationFty )
-					.factory("dateFty", dateFty )
-					.factory("urlFty", urlFty )
-				;
-			</script>
+		<aside class="modal-container"
+			ng-show="appUtils.alertFty.showModal">
+			<button class="modal-background"
+				ng-click="appUtils.alertFty.hideModal()"></button>
+			<div class="modal-box">
+				<div ng-repeat="section in appUtils.alertFty.modalContent.content">
+					<h3>
+						{{ section.title }}
+					</h3>
+					<p ng-repeat="paragraph in section.text"
+						ng-bind-html="paragraph">
+					</p>
+				</div>
+				<button class="call-to-action"
+					ng-click="appUtils.alertFty.hideModal()">
+					{{ appUtils.alertFty.modalContent.buttonText }}
+				</button>
+			</div>
+		</aside>
 		
 	</body>
 </html>

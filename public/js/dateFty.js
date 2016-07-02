@@ -15,19 +15,25 @@ function dateFty($filter) {
 		
 		setCommonTime: function(d) {
 			var dateObj = new Date(d);
-			dateObj.setHours(8);
+			dateObj.setHours(6);
 			dateObj.setMinutes(0);
 			dateObj.setSeconds(0);
 			dateObj.setMilliseconds(0);
 			return dateObj;
 		},
 		
-		today: new Date(new Date().setHours(8, 0, 0, 0)),
+		today: new Date(new Date().setHours(6, 0, 0, 0)),
 		
 		maxDate: new Date("December 31, 2099"),
 		
+		maxDateRange: 30,
+		
 		datesEqual: function(date1, date2) {
 			return Math.abs(date1.getTime() - date2.getTime()) < 1000*60*60*8; // within 8 hours
+		},
+		
+		datesWithinDays: function(date1, date2, days) {
+			return Math.abs(date1.getTime() - date2.getTime()) < (1000*60*60*24*days + 1000*60*60*8); // within number of days of each other +8 hours
 		},
 		
 		validDate: function(d) {
@@ -35,9 +41,6 @@ function dateFty($filter) {
 				return false;
 			}
 			if (d < factory.maxDate) {
-				if (d < factory.today) {
-					return false;
-				}
 				return true;
 			}
 			return false;
@@ -68,6 +71,7 @@ function dateFty($filter) {
 			newDateList = factory.removeDuplicateDates(newDateList);
 			newDateList.sort(factory.dateCompare);
 			factory.dateList = factory.groupDates(newDateList);
+			console.log("date list", factory.dateList);
 		},
 		
 		groupDates: function(dList) {
@@ -84,6 +88,26 @@ function dateFty($filter) {
 				}
 			}
 			return groupedDates;
+		},
+		
+		createDateRanges: function(dList) {
+			var dateRanges = [];
+			var arrive = dList[0];
+			var depart = dList[dList.length - 1];
+			for (var i = 1; i < dList.length; i++) {
+				if (!factory.consecutiveDates(dList[i-1], dList[i])) {
+					dateRanges.push({
+						arrival: arrive,
+						departure: dList[i-1]
+					});
+					arrive = dList[i];
+				}
+			}
+			dateRanges.push({
+				arrival: arrive,
+				departure: depart
+			});
+			return dateRanges;
 		},
 		
 		dateInArray: function(d, array) {
