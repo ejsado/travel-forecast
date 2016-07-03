@@ -20,6 +20,10 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	self.alertFty = alertFty;
 	
+	self.highlightInput = function(e) {
+		e.target.select();
+	}
+	
 	self.loadingDestinations = false;
 	
 	getDataFromUrl();
@@ -60,6 +64,12 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 							dateFty.validDate(dateRangeList[n].departure) &&
 							dateFty.datesWithinDays(dateRangeList[n].arrival, dateRangeList[n].departure, dateFty.maxDateRange)
 						) {
+							if (dateRangeList[n].arrival < dateFty.today) {
+								dateRangeList[n].arrival = new Date(dateFty.today);
+							}
+							if (dateRangeList[n].departure < dateFty.today) {
+								dateRangeList[n].departure = new Date(dateFty.today);
+							}
 							if (dateRangeList[n].arrival > dateRangeList[n].departure) {
 								destinationFty.addDestination(
 									result,
@@ -131,6 +141,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 			getDataFromUrl();
 		}
 		urlFty.paramsUpdated = false;
+		urlFty.buildShortUrl();
 	});
 	
 }

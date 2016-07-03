@@ -1,7 +1,9 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Travel Forecast</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+		
+		<title>Travel Weathr</title>
 		<link href="css/all.min.css" rel="stylesheet" type="text/css">
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
@@ -58,9 +60,11 @@
 					</div>
 					<div id="url-container">
 						<label for="short-url">
-							Short URL
+							Short Link
 						</label>
-						<input type="text" id="short-url" value="http://goo.gl/jaslbwh">
+						<input type="text" id="short-url"
+							ng-model="appUtils.urlFty.shortUrl"
+							ng-focus="appUtils.highlightInput($event)">
 					</div>
 					<div id="about-container">
 						<button id="about-link"
@@ -79,7 +83,20 @@
 				<section id="map-container"
 					ng-controller="mapCtrl as mapUtils">
 					<input type="checkbox" id="hide-map">
-					<div id="map"></div>
+					<div id="map-drawer">
+						<div id="map"></div>
+						<div id="map-ad">
+							<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+							<!-- map ad fixed -->
+							<ins class="adsbygoogle"
+								 style="display:inline-block;width:300px;height:600px"
+								 data-ad-client="ca-pub-7172783409470168"
+								 data-ad-slot="4427922737"></ins>
+							<script>
+							(adsbygoogle = window.adsbygoogle || []).push({});
+							</script>
+						</div>
+					</div>
 					<label id="hide-map-switch" class="btn-link" for="hide-map">
 						Map
 					</label>
@@ -115,18 +132,18 @@
 						<label class="label" for="start-date">
 							From
 						</label>
-						<input type="text" id="start-date">
+						<input type="text" id="start-date" readonly>
 					</div>
 					<div class="input-container">
 						<label class="label" for="end-date">
 							To
 						</label>
-						<input type="text" id="end-date">
+						<input type="text" id="end-date" readonly>
 					</div>
 					<button class="btn"
 						ng-click="formUtils.attemptAddDestination(appUtils.locationFty.locationDetails, formUtils.startDate, formUtils.endDate)"
 						ng-disabled="appUtils.loadingDestinations">
-						Add Destination
+						Get Forecast
 					</button>
 					<div id="alert-message">
 						<p id="alert-message-content"
@@ -134,6 +151,12 @@
 							{{ appUtils.alertFty.messageContent }}
 						</p>
 					</div>
+					<aside id="pikaday-container">
+						<div id="pikaday-background"
+							ng-show="formUtils.showDatePickerBg">
+						
+						</div>
+					</aside>
 				</section>
 				<section id="calendar-container"
 					ng-controller="calendarCtrl as calendarUtils">
@@ -262,20 +285,37 @@
 							</table>
 						</div>
 					</div>
-					<div>
+					<div ng-hide="appUtils.destinationFty.destinationList.length < 2">
 						<button class="btn-link btn-link-alt"
 							ng-click="calendarUtils.clear()"
 							ng-disabled="appUtils.loadingDestinations">
 							Remove All Destinations
 						</button>
+						&nbsp;
 						<a href="{{ appUtils.urlFty.createDirectionsUrl(appUtils.destinationFty.destinationList) }}">
 							Map All Destinations
 						</a>
 					</div>
 				</section>
-				<span id="copyright">
-					&copy; Eric Sadowski
-				</span>
+				<section id="footer-ad">
+					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!-- footer ad -->
+					<ins class="adsbygoogle"
+						 style="display:inline-block;width:728px;height:90px"
+						 data-ad-client="ca-pub-7172783409470168"
+						 data-ad-slot="2795781133"></ins>
+					<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
+				</section>
+				<section>
+					<a href="http://forecast.io/" class="credit-link">
+						Powered by Forecast
+					</a>
+					<span id="copyright">
+						&copy; Eric Sadowski
+					</span>
+				</section>
 			</main>
 		</div>
 		

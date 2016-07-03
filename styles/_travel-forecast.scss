@@ -1,358 +1,401 @@
 main {
 	background: #F2F2F2;
-	.float-right {
-		float: right;
-	}
-	.float-left {
-		float: left;
-	}
-	.btn {
-		cursor: pointer;
-		position: relative;
-		text-align: center;
-		display: inline-block;
-		padding: 0.6rem 1rem;
-		font-size: 1rem;
-		background: #189FE0;
-		color: #FFF;
+}
+.float-right {
+	float: right;
+}
+.float-left {
+	float: left;
+}
+.btn {
+	cursor: pointer;
+	position: relative;
+	text-align: center;
+	display: inline-block;
+	padding: 0.6rem 1rem;
+	font-size: 1rem;
+	background: #189FE0;
+	color: #FFF;
+	border-radius: 0.2rem;
+	border: none;
+	margin: 0 1rem 1rem 0;
+	vertical-align: bottom;
+	min-width: 10rem;
+	min-height: 3rem;
+	&::before {
+		content: "";
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
 		border-radius: 0.2rem;
-		border: none;
-		margin: 0 1rem 1rem 0;
-		vertical-align: bottom;
-		min-width: 10rem;
-		min-height: 3rem;
+		background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 50%);
+		opacity: 0;
+		transition: all 150ms;
+	}
+	&:hover {
 		&::before {
-			content: "";
-			display: block;
-			position: absolute;
+			opacity: 1;
+		}
+	}
+	&:disabled {
+		background: #CCC;
+		cursor: default;
+		&:hover {
+			&::before {
+				opacity: 0;
+			}
+		}
+	}
+}
+.btn-alt {
+	background: #E5417B;
+}
+.btn-muted {
+	background: #999;
+}
+.btn-link {
+	cursor: pointer;
+	background: transparent;
+	border: none;
+	padding: 0;
+	color: #189FE0;
+	text-decoration: underline;
+	font-size: 1rem;
+	&:hover {
+		
+	}
+	&:disabled {
+		color: #CCC;
+		cursor: default;
+		&:hover {
+			
+		}
+	}
+}
+.btn-link-alt {
+	color: #E5417B;
+}
+.btn-small {
+	min-width: 3rem;
+	padding: 0.2rem 0.5rem;
+	margin: 0;
+	min-height: 0;
+}
+.btn-right {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+.btn-left {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	margin-right: -3px;
+	border-right: 1px solid #FFF;
+}
+#map-container {
+	#map-drawer {
+		height: 30rem;
+		transition: height 500ms;
+		display: flex;
+	}
+	#map {
+		flex: 1 1 auto;
+	}
+	#map-ad {
+		flex: 0 0 auto;
+		max-width: 0;
+		overflow: hidden;
+		transition: max-width 500ms;
+		background: #EAEAEA;
+	}
+	#hide-map-switch {
+		position: absolute;
+		right: 0;
+		padding: 1rem;
+		&::before {
+			content: "Hide";
+		}
+	}
+	#hide-map {
+		display: none;
+		&:checked {
+			& + #map-drawer {
+				height: 0;
+			}
+			& ~ #hide-map-switch::before {
+				content: "Show";
+			}
+		}
+	}
+	#location-search {
+		width: 100%;
+		padding: 1rem;
+		font-size: 1rem;
+		border: none;
+		margin-bottom: 1rem;
+	}
+}
+#form-container {
+	margin: 0 auto;
+	padding: 0 1rem;
+	overflow: visible;
+	#marker {
+		float: left;
+		margin: 0.5rem 1rem 1.5rem 0;
+		height: 2.2rem;
+	}
+	.hidden-radio {
+		display: none;
+		&:checked + label.btn {
+			background: #189FE0;
+		}
+	}
+	.label {
+		display: block;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		color: #666;
+		margin-bottom: 0.4rem;
+	}
+	h1 {
+		font-size: 1.5rem;
+		margin: 0.5rem 0 1.5rem;
+		font-weight: normal;
+	}
+	.input-container {
+		display: inline-block;
+		width: 10rem;
+		margin: 0 1rem 1rem 0;
+		input {
+			color: #444;
+			padding: 0.6rem 1rem;
+			font-size: 1rem;
+			width: 100%;
+			border: none;
+			border-radius: 0.2rem;
+			height: 3rem;
+			&:read-only {
+				cursor: pointer;
+			}
+		}
+	}
+	#alert-message {
+		display: inline-block;
+		min-height: 3rem;
+		min-width: 20rem;
+		#alert-message-content {
+			margin: 0;
+			font-size: 1rem;
+			color: #E5417B;
+		}
+	}
+	#pikaday-container {
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		z-index: 100;
+		width: 100%;
+		#pikaday-background {
+			position: fixed;
 			top: 0;
 			right: 0;
 			bottom: 0;
 			left: 0;
-			border-radius: 0.2rem;
-			background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 50%);
-			opacity: 0;
-			transition: all 150ms;
+			background: rgba(0,0,0,0.3);
 		}
-		&:hover {
-			&::before {
-				opacity: 1;
-			}
-		}
-		&:disabled {
-			background: #CCC;
-			cursor: default;
-			&:hover {
-				&::before {
-					opacity: 0;
-				}
-			}
-		}
-	}
-	.btn-alt {
-		background: #E5417B;
-	}
-	.btn-muted {
-		background: #999;
-	}
-	.btn-link {
-		cursor: pointer;
-		background: transparent;
-		border: none;
-		padding: 0;
-		color: #189FE0;
-		text-decoration: underline;
-		font-size: 1rem;
-		&:hover {
-			
-		}
-		&:disabled {
-			color: #CCC;
-			cursor: default;
-			&:hover {
-				
-			}
-		}
-	}
-	.btn-link-alt {
-		color: #E5417B;
-	}
-	.btn-small {
-		min-width: 3rem;
-		padding: 0.2rem 0.5rem;
-		margin: 0;
-		min-height: 0;
-	}
-	.btn-right {
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
-	}
-	.btn-left {
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-		margin-right: -3px;
-		border-right: 1px solid #FFF;
-	}
-	#map-container {
-		#map {
-			height: 30rem;
-			transition: height 500ms;
-		}
-		#hide-map-switch {
-			position: absolute;
-			right: 0;
-			padding: 1rem;
-			&::before {
-				content: "Hide";
-			}
-		}
-		#hide-map {
-			display: none;
-			&:checked {
-				& + #map {
-					height: 0;
-				}
-				& ~ #hide-map-switch::before {
-					content: "Show";
-				}
-			}
-		}
-		#location-search {
-			width: 100%;
-			padding: 1rem;
-			font-size: 1rem;
+		.pika-single {
+			$pm: 15px;
+			width: 240px + ($pm * 2);
+			margin: 30vh auto 0;
+			transform-origin: center top;
+			transform: scale(1.25);
 			border: none;
-			margin-bottom: 1rem;
-		}
-	}
-	#form-container {
-		margin: 0 auto;
-		padding: 0 1rem;
-		overflow: visible;
-		#marker {
-			float: left;
-			margin: 1.2rem 1rem 0 0;
-		}
-		.hidden-radio {
-			display: none;
-			&:checked + label.btn {
-				background: #189FE0;
-			}
-		}
-		.label {
-			display: block;
-			font-size: 0.7rem;
-			text-transform: uppercase;
-			color: #666;
-			margin-bottom: 0.4rem;
-		}
-		h1 {
-			font-size: 1.5rem;
-			margin: 0.5rem 0 1.5rem;
-			font-weight: normal;
-		}
-		.input-container {
-			display: inline-block;
-			width: 10rem;
-			margin: 0 1rem 1rem 0;
-			input {
-				color: #444;
-				padding: 0.6rem 1rem;
-				font-size: 1rem;
-				width: 100%;
-				border: none;
-				border-radius: 0.2rem;
-				height: 3rem;
-				border-bottom: 3px solid #189FE0;
-				border-top: 3px solid transparent;
-				&:hover {
-					
-				}
-			}
-		}
-		#alert-message {
-			display: inline-block;
-			min-height: 3rem;
-			min-width: 20rem;
-			#alert-message-content {
-				margin: 0;
-				font-size: 1rem;
-				color: #E5417B;
-			}
-		}
-	}
-	#calendar-container {
-		padding: 1rem;
-		table {
-			table-layout: fixed;
-			border: 0;
-			border-collapse: collapse;
-			margin: 0;
-			padding: 0;
-			th {
-				height: 1.5rem;
-				font-size: 0.8rem;
-				color: #666;
-				padding: 0;
-				text-align: center;
-			}
-			td {
-				text-overflow: ellipsis;
-				padding: 0;
-				margin: 0;
-				&.destination-cell, &.weather-cell, .destination-container, .weather-container {
-					height: 7rem;
-				}
-				.destination-container, .weather-container {
-					margin-right: 0.5rem;
-					background: #FFF;
-					border-radius: 0.2rem;
-				}
-				&.estimation-cell, &.weather-text-cell {
-					height: 2rem;
-					position: relative;
-				}
-			}
-		}
-		#calendar-content {
-			display: flex;
-		}
-		#calendar-destinations {
-			flex: 0 0 auto;
-			.destination-container {
-				max-width: 15rem;
-				line-height: 1.5;
-				padding: 1.5rem 0.5rem;
-				.marker {
-					float: left;
-					width: 1.5rem;
-					height: 1.5rem;
-					border-radius: 50%;
-					border: 3px solid #EEE;
-					background: blue;
-					color: white;
-					text-align: center;
-					line-height: 1.2rem;
-					font-size: 0.8rem;
-					margin: 0.4rem 0.5rem 2rem 0;
-				}
-				.destination-name {
-					font-size: 1rem;
-				}
-			}
-			.estimation-container {
-				padding: 0.5rem 1rem 0.5rem 0.5rem;
-				font-size: 0.75rem;
-			}
-		}
-		#calendar-weather {
-			flex: 1 1 auto;
-			table {
-				float: left;
-			}
-			.weather-table {
-				margin-left: 0.5rem;
-				.weather-container {
-					font-size: 0.9rem;
-					line-height: 1.4rem;
-					cursor: pointer;
-					border-bottom: 3px solid #189FE0;
-					padding: 0.5rem;
-					width: 4rem;
-					&:hover {
-						text-shadow: 0 0 10px #AAA;
+			font-family: inherit;
+			box-shadow: 0 0 10px rgba(0,0,0,0.4);
+			.pika-lendar {
+				margin: $pm;
+				.pika-table {
+					abbr {
+						text-decoration: none;
 					}
-					.weather-icon {
-						width: 2rem;
-						height: 2rem;
-						margin: 0 auto;
-						background: url(../img/weather.png);
-						background-size: 700%;
-						background-position: 0% 3%;
-						&.clear-day {
-							background-position: 19.75% 3%;
-						}
-						&.clear-night {
-							background-position: 39.75% 3%;
-						}
-						&.rain {
-							background-position: 100% 29.5%;
-						}
-						&.snow {
-							background-position: 80% 43%;
-						}
-						&.sleet {
-							background-position: 100% 43%;
-						}
-						&.wind {
-							background-position: 100% 3%;
-						}
-						&.fog {
-							background-position: 0% 29.5%;
-						}
-						&.cloudy {
-							background-position: 0% 56.5%;
-						}
-						&.partly-cloudy-day {
-							background-position: 19.75% 16.75%;
-						}
-						&.partly-cloudy-night {
-							background-position: 39.75% 16.75%;
-						}
+					td, th {
+						padding: 1px;
 					}
-					.high-temp {
-						font-weight: bold;
-						font-size: 1rem;
-					}
-					.low-temp {
-						color: #999;
-					}
-					.rain-chance {
-						font-size: 0.8rem;
-					}
-				}
-				.weather-text-container {
-					position: absolute;
-					top: 0.25rem;
-					left: 0;
-					height: 1.5rem;
-					padding: 0.25rem;
-					font-size: 0.75rem;
-					background: #DDD;
-					border-radius: 0.2rem;
-					&::after {
-						content: "";
-						display: block;
-						position: absolute;
-						width: 0;
-						height: 0;
-						bottom: 100%;
-						left: 1.3rem;
-						border-left: 8px solid transparent;
-						border-right: 8px solid transparent;
-						border-bottom: 0.6rem solid #DDD;
+					.pika-button, .pika-button:hover {
+						border-radius: 0;
 					}
 				}
 			}
 		}
 	}
 }
-.flatpickr-calendar {
-	margin-top: 10px;
-	border: none;
+#calendar-container {
 	padding: 1rem;
-	box-sizing: content-box;
-	&:before {
-		border-width: 10px;
-		border-bottom-color: #FFF;
+	table {
+		table-layout: fixed;
+		border: 0;
+		border-collapse: collapse;
+		margin: 0;
+		padding: 0;
+		th {
+			height: 1.5rem;
+			font-size: 0.8rem;
+			color: #666;
+			padding: 0;
+			text-align: center;
+		}
+		td {
+			text-overflow: ellipsis;
+			padding: 0;
+			margin: 0;
+			&.destination-cell, &.weather-cell, .destination-container, .weather-container {
+				height: 7rem;
+			}
+			.destination-container, .weather-container {
+				margin-right: 0.5rem;
+				background: #FFF;
+				border-radius: 0.2rem;
+			}
+			&.estimation-cell, &.weather-text-cell {
+				height: 2rem;
+				position: relative;
+			}
+		}
 	}
-	.flatpickr-month {
-		padding-bottom: 10px;
+	#calendar-content {
+		display: flex;
 	}
-	.flatpickr-next-month, .flatpickr-prev-month {
-		user-select: none;
-		padding: 0 0.3rem;
+	#calendar-destinations {
+		flex: 0 0 auto;
+		.destination-container {
+			max-width: 15rem;
+			line-height: 1.5;
+			padding: 1.5rem 0.5rem;
+			.marker {
+				float: left;
+				width: 1.5rem;
+				height: 1.5rem;
+				border-radius: 50%;
+				border: 3px solid #EEE;
+				background: blue;
+				color: white;
+				text-align: center;
+				line-height: 1.2rem;
+				font-size: 0.8rem;
+				margin: 0.4rem 0.5rem 2rem 0;
+			}
+			.destination-name {
+				font-size: 1rem;
+			}
+		}
+		.estimation-container {
+			padding: 0.5rem 1rem 0.5rem 0.5rem;
+			font-size: 0.75rem;
+		}
 	}
+	#calendar-weather {
+		flex: 1 1 auto;
+		table {
+			float: left;
+		}
+		.weather-table {
+			margin-left: 0.5rem;
+			.weather-container {
+				font-size: 0.9rem;
+				line-height: 1.4rem;
+				cursor: pointer;
+				border-bottom: 3px solid #189FE0;
+				padding: 0.5rem;
+				width: 4rem;
+				&:hover {
+					text-shadow: 0 0 10px #AAA;
+				}
+				.weather-icon {
+					width: 2rem;
+					height: 2rem;
+					margin: 0 auto;
+					background: url(../img/weather.png);
+					background-size: 700%;
+					background-position: 0% 3%;
+					&.clear-day {
+						background-position: 19.75% 3%;
+					}
+					&.clear-night {
+						background-position: 39.75% 3%;
+					}
+					&.rain {
+						background-position: 100% 29.5%;
+					}
+					&.snow {
+						background-position: 80% 43%;
+					}
+					&.sleet {
+						background-position: 100% 43%;
+					}
+					&.wind {
+						background-position: 100% 3%;
+					}
+					&.fog {
+						background-position: 0% 29.5%;
+					}
+					&.cloudy {
+						background-position: 0% 56.5%;
+					}
+					&.partly-cloudy-day {
+						background-position: 19.75% 16.75%;
+					}
+					&.partly-cloudy-night {
+						background-position: 39.75% 16.75%;
+					}
+				}
+				.high-temp {
+					font-weight: bold;
+					font-size: 1rem;
+				}
+				.low-temp {
+					color: #999;
+				}
+				.rain-chance {
+					font-size: 0.8rem;
+				}
+			}
+			.weather-text-container {
+				position: absolute;
+				top: 0.25rem;
+				left: 0;
+				height: 1.5rem;
+				padding: 0.25rem;
+				font-size: 0.75rem;
+				background: #DDD;
+				border-radius: 0.2rem;
+				&::after {
+					content: "";
+					display: block;
+					position: absolute;
+					width: 0;
+					height: 0;
+					bottom: 100%;
+					left: 1.3rem;
+					border-left: 8px solid transparent;
+					border-right: 8px solid transparent;
+					border-bottom: 0.6rem solid #DDD;
+				}
+			}
+		}
+	}
+}
+#footer-ad {
+	overflow: hidden;
+}
+.credit-link {
+	font-size: 0.75rem;
+	text-align: center;
+	display: block;
+	width: 8rem;
+	margin: 1rem auto;
 }
 
 

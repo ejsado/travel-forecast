@@ -52,4 +52,5 @@ node_modules/
 
 # PHP Scripts
 public/scripts/
+protected/
 

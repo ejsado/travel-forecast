@@ -29,7 +29,7 @@ body {
 }
 #flex-container,
 .modal-box {
-	min-width: 400px;
+	min-width: 300px;
 }
 header,
 footer {
@@ -55,12 +55,44 @@ header {
 		font-weight: bold;
 		color: #000;
 		span {
-			vertical-align: 40%;
+			display: inline-block;
+			vertical-align: 20%;
 			padding-left: 0.1rem;
+			max-width: 0;
+			overflow: hidden;
+			transition: max-width 500ms;
+			white-space: nowrap;
 		}
 	}
 	&, a img {
 		height: 2rem;
+	}
+}
+
+#url-container {
+	width: 20rem;
+	position: absolute;
+	top: 0;
+	left: calc(50% - 10rem);
+	label {
+		display: inline-block;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		color: #666;
+		margin-bottom: 0.4rem;
+		text-align: right;
+		width: 5rem;
+		margin-right: 0.2rem;
+		vertical-align: 10%;
+	}
+	input {
+		display: inline-block;
+		color: #444;
+		padding: 0.4rem 0.5rem;
+		font-size: 1rem;
+		width: calc(100% - 6rem);
+		border: none;
+		border-radius: 0.2rem;
 	}
 }
 

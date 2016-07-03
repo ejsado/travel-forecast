@@ -6,6 +6,8 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 	
 	self.endDate = new Date(dateFty.today);
 	
+	self.showDatePickerBg = false;
+	
 	function updateStartDate() {
 		self.startDate = dateFty.setCommonTime(pickStartDate.getDate());
 		
@@ -26,14 +28,24 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 		self.endDate = dateFty.setCommonTime(pickEndDate.getDate());
 	}
 	
+	function showDatePickerBg() {
+		self.showDatePickerBg = (pickStartDate.isVisible() || pickEndDate.isVisible());
+		$scope.$apply();
+	}
+	
 	var pickStartDate = new Pikaday({
 		field: document.getElementById('start-date'),
+		container: document.getElementById('pikaday-container'),
 		format: 'MMM D, YYYY',
 		defaultDate: dateFty.today,
 		setDefaultDate: true,
 		minDate: dateFty.today,
 		maxDate: dateFty.maxDate,
-		onSelect: updateStartDate
+		onSelect: updateStartDate,
+		onOpen: showDatePickerBg,
+		onClose: showDatePickerBg,
+		position: 'bottom left',
+		reposition: false
 	});
 	
 	var maxEndDate = dateFty.setCommonTime(new Date());
@@ -41,12 +53,17 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 	
 	var pickEndDate = new Pikaday({
 		field: document.getElementById('end-date'),
+		container: document.getElementById('pikaday-container'),
 		format: 'MMM D, YYYY',
 		defaultDate: dateFty.today,
 		setDefaultDate: true,
 		minDate: dateFty.today,
 		maxDate: maxEndDate,
-		onSelect: updateEndDate
+		onSelect: updateEndDate,
+		onOpen: showDatePickerBg,
+		onClose: showDatePickerBg,
+		position: 'bottom left',
+		reposition: false
 	});
 		
 	self.unitsChanged = function() {
