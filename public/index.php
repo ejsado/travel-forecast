@@ -11,7 +11,7 @@
 		
 		<link rel="shortcut icon" type="image/ico" href="/favicon.png">
 		
-		<link href="css/all.min.css" rel="stylesheet" type="text/css">
+		<link href="/css/all.min.css" rel="stylesheet" type="text/css">
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
@@ -132,7 +132,7 @@
 							C &deg;
 						</label>
 					</div>
-					<img id="marker" src="img/spotlight-poi.png" alt="">
+					<img id="marker" src="/img/spotlight-poi.png" alt="">
 					<p class="label">
 						Selected Destination
 					</p>
