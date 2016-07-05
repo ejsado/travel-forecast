@@ -155,7 +155,7 @@ function urlFty($location, $http, dateFty, locationFty) {
 		},
 		
 		buildShortUrl: function() {
-			$http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyAC9iGAIsqKYZIePSlUhtNRvnCeWIB2AXo', {
+			$http.post('https://www.googleapis.com/urlshortener/v1/url?key=' + googleKey, {
 				"longUrl": $location.absUrl()
 			}).then (function(response) {
 				console.log("short url response", response);
@@ -165,6 +165,17 @@ function urlFty($location, $http, dateFty, locationFty) {
 			}, function(response) {
 				console.log("short url error", response);
 			});
+		},
+		
+		getPageTitle: function(destList) {
+			var title = "";
+			if (destList.length > 0) {
+				title += " - " + destList[0].name;
+			}
+			if (destList.length > 1) {
+				title += " to " + destList[destList.length - 1].name;
+			}
+			return title;
 		}
 		
 	};
@@ -172,3 +183,33 @@ function urlFty($location, $http, dateFty, locationFty) {
 	return factory;
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

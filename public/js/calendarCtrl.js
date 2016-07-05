@@ -2,7 +2,7 @@ function calendarCtrl(destinationFty, urlFty, locationFty, dateFty, forecastFty)
 	
 	var self = this;
 	
-	self.selectedDate = new Date();
+	self.selectedDate = new Date(dateFty.today);
 	
 	self.setSelectedDate = function(date) {
 		self.selectedDate = date;

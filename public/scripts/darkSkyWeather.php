@@ -4,8 +4,9 @@
 	
 	$url = parse_url($referer);
 	
-	if ($url['host'] == 'ericsadowski.com' ||
-		$url['host'] == 'www.ericsadowski.com' ||
+	if ($url['host'] == 'travelweathr.com' ||
+		$url['host'] == 'www.travelweathr.com' ||
+		$url['host'] == 'dev.travelweathr.com' ||
 		substr($url['host'], 0, 3) == '192') {
 	
 		include '../../protected/keys.php';

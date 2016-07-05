@@ -1,15 +1,26 @@
-<html>
+<?php include '../protected/keys.php'; ?>
+
+<html
+	ng-app="travelForecastApp"
+	ng-controller="appCtrl as appUtils">
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 		
-		<title>Travel Weathr</title>
+		<title>Travel Weathr {{ appUtils.urlFty.getPageTitle(appUtils.destinationFty.destinationList) }}</title>
+		
+		<link rel="shortcut icon" type="image/ico" href="/favicon.png">
+		
 		<link href="css/all.min.css" rel="stylesheet" type="text/css">
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
 		
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAC9iGAIsqKYZIePSlUhtNRvnCeWIB2AXo"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $googleKey; ?>"></script>
+		
+		<script>
+			var googleKey = "<?php echo $googleKey; ?>";
+		</script>
 		
 		<script src="/js/moment.js"></script>
 		<script src="/js/pikaday.js"></script>
@@ -46,9 +57,7 @@
 		</script>
 		
 	</head>
-	<body
-		ng-app="travelForecastApp"
-		ng-controller="appCtrl as appUtils">
+	<body>
 		<div id="flex-container">
 			<header>
 				<div id="header-wrapper">
@@ -86,15 +95,17 @@
 					<div id="map-drawer">
 						<div id="map"></div>
 						<div id="map-ad">
-							<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-							<!-- map ad fixed -->
-							<ins class="adsbygoogle"
-								 style="display:inline-block;width:300px;height:600px"
-								 data-ad-client="ca-pub-7172783409470168"
-								 data-ad-slot="4427922737"></ins>
-							<script>
-							(adsbygoogle = window.adsbygoogle || []).push({});
-							</script>
+							<div class="advert">
+								<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+								<!-- map ad fixed -->
+								<ins class="adsbygoogle"
+									 style="display:inline-block;width:300px;height:600px"
+									 data-ad-client="ca-pub-7172783409470168"
+									 data-ad-slot="4427922737"></ins>
+								<script>
+								(adsbygoogle = window.adsbygoogle || []).push({});
+								</script>
+							</div>
 						</div>
 					</div>
 					<label id="hide-map-switch" class="btn-link" for="hide-map">
@@ -298,15 +309,17 @@
 					</div>
 				</section>
 				<section id="footer-ad">
-					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-					<!-- footer ad -->
-					<ins class="adsbygoogle"
-						 style="display:inline-block;width:728px;height:90px"
-						 data-ad-client="ca-pub-7172783409470168"
-						 data-ad-slot="2795781133"></ins>
-					<script>
-					(adsbygoogle = window.adsbygoogle || []).push({});
-					</script>
+					<div class="advert">
+						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+						<!-- small footer ad -->
+						<ins class="adsbygoogle"
+							 style="display:inline-block;width:320px;height:100px"
+							 data-ad-client="ca-pub-7172783409470168"
+							 data-ad-slot="9787968738"></ins>
+						<script>
+							(adsbygoogle = window.adsbygoogle || []).push({});
+						</script>
+					</div>
 				</section>
 				<section>
 					<a href="http://forecast.io/" class="credit-link">
@@ -339,6 +352,17 @@
 			</div>
 		</aside>
 		
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-80286588-1', 'auto');
+			ga('send', 'pageview');
+			
+		</script>
+			
 	</body>
 </html>
 

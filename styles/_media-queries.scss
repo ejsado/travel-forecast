@@ -61,7 +61,6 @@
 	}
 	#form-container #pikaday-container .pika-single {
 		transform: scale(1);
-		//margin-top: 30vh;
 	}
 	@media (min-width: 400px) {
 		html {
@@ -78,7 +77,10 @@
 	}
 	@media (min-width: 800px) {
 		#map-container #map-ad {
-			max-width: 300px;
+			max-width: 230px;
+			.advert  {
+				transform: scale(0.77);
+			}
 		}
 	}
 	@media (min-width: 950px) {
@@ -87,6 +89,12 @@
 		}
 		#form-container #pikaday-container .pika-single {
 			transform: scale(1.6);
+		}
+		#map-container #map-ad {
+			max-width: 300px;
+			.advert  {
+				transform: scale(1);
+			}
 		}
 	}
 }
