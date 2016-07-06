@@ -91,7 +91,7 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'What is this?',
 					text: [
-						"It's a tool for tracking the weather at multiple locations on different dates."
+						"It's a tool for tracking the weather at multiple locations on different dates. Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with."
 					]
 				},
 				{
@@ -103,7 +103,7 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'I found a bug.',
 					text: [
-						'Ew, just squish it.'
+						'Ew, just squish it. Or report it on the <a href="https://github.com/ejsado/travel-forecast/issues">github page</a>.'
 					]
 				},
 				{
@@ -127,7 +127,7 @@ function alertFty($sce, $timeout) {
 		
 		hideModal: function() {
 			factory.showModal = false;
-			factory.modalContent = factory.defaultModal;
+			//factory.modalContent = factory.defaultModal;
 		},
 		
 		displayModal: function(mContent) {

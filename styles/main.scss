@@ -275,12 +275,16 @@ main, .modal-box {
 	text-align: center;
 	overflow: hidden;
 	z-index: 1000;
+	transition: all 200ms;
 	&::after {
 		content: "";
 		height: 100%;
 		vertical-align: middle;
 		display: inline-block;
 		margin-right: -10px;
+	}
+	&.ng-hide {
+		opacity: 0;
 	}
 	.modal-background {
 		display: block;

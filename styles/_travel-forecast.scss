@@ -306,6 +306,7 @@ main {
 	}
 	#calendar-weather {
 		flex: 1 1 auto;
+		overflow: auto;
 		table {
 			float: left;
 		}
@@ -380,6 +381,7 @@ main {
 				font-size: 0.75rem;
 				background: #DDD;
 				border-radius: 0.2rem;
+				transition: all 200ms;
 				&::after {
 					content: "";
 					display: block;
@@ -391,6 +393,9 @@ main {
 					border-left: 8px solid transparent;
 					border-right: 8px solid transparent;
 					border-bottom: 0.6rem solid #DDD;
+				}
+				&.ng-hide {
+					opacity: 0;
 				}
 			}
 		}

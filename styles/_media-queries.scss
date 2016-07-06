@@ -60,7 +60,7 @@
 		font-size: 12px;
 	}
 	#form-container #pikaday-container .pika-single {
-		transform: scale(1);
+		transform: scale(0.77);
 	}
 	@media (min-width: 400px) {
 		html {
@@ -79,7 +79,7 @@
 		#map-container #map-ad {
 			max-width: 230px;
 			.advert  {
-				transform: scale(0.77);
+				//transform: scale(0.77);
 			}
 		}
 	}

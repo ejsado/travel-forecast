@@ -1,4 +1,4 @@
-function calendarCtrl(destinationFty, urlFty, locationFty, dateFty, forecastFty) {
+function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty) {
 	
 	var self = this;
 	
@@ -13,6 +13,18 @@ function calendarCtrl(destinationFty, urlFty, locationFty, dateFty, forecastFty)
 		dateFty.buildDateList(destinationFty.destinationList);
 		urlFty.buildUrlParamTrip(destinationFty.destinationList);
 		locationFty.buildMapMarkers(destinationFty.destinationList);
+		if (destinationFty.destinationList.length > 1 && 
+			index > 0 &&
+			index < destinationFty.destinationList.length
+		) {
+			distanceFty.attemptGetDistance(
+				destinationFty.destinationList[index - 1],
+				destinationFty.destinationList[index],
+				function() {
+					$scope.$apply();
+				}
+			);
+		}
 	}
 	
 	self.clear = function() {
