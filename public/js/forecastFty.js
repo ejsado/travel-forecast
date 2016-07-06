@@ -2,6 +2,7 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 	
 	var factory = {
 		
+		// save forecast for each destination
 		forecastList: {},
 		
 		units: 'imperial',
@@ -16,6 +17,7 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 			}
 		},
 		
+		// not used
 		getHttpForecast: function(url, data, successFn, failureFn) {
 			console.log("http forecast", url);
 			$http.get(url).then(function (response) {
@@ -25,12 +27,14 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 			});
 		},
 		
+		// get forecast from php script
 		getPhpForecast: function(url, data, successFn, failureFn) {
 			console.log("php forecast");
 			$http({
 				method: 'POST',
 				url: url,
 				data: data,
+				// need to transform the data to a string for php to accept it
 				transformRequest: function(obj) {
 					var str = [];
 					for (var p in obj) {
@@ -48,9 +52,10 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 			});
 		},
 		
+		// make call to dark sky script
 		darkSkyForecast: function(data) {
 			factory.getPhpForecast(
-				'../scripts/darkSkyWeather.php', 
+				'/scripts/darkSkyWeather.php', 
 				data,
 				function(response, data) {
 					console.log("dark sky response", response);
@@ -112,7 +117,9 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 			} else {
 				console.log("forecast exists");
 				var dest = destinationFty.getDestinationByName(name);
+				// if destination forecast exists
 				if (dest != null) {
+					// get forecast for remaining days
 					factory.getExtendedForecast(
 						{
 							lat: lat,
@@ -128,12 +135,13 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 			}
 		},
 		
+		// make time machine call to dark sky forecast
 		getExtendedForecast: function(data, dateList) {
 			var timeDelay = 500;
 			function delayRequest(date, delay) {
 				$timeout(function() {
 					factory.getPhpForecast(
-						'../scripts/darkSkyWeather.php', 
+						'/scripts/darkSkyWeather.php', 
 						{
 							lat: data.lat,
 							lng: data.lng,

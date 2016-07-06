@@ -2,15 +2,19 @@ function alertFty($sce, $timeout) {
 	
 	var factory = {
 		
+		// message to display near "Get Forecast" button
+		
 		showMessage: false,
 		
 		messageContent: '',
 		
 		displayMessage: function(mContent) {
 			$timeout.cancel(factory.messageTimer);
+			// set message to "Nope" if no message is set
 			mContent = mContent || 'Nope.';
 			factory.messageContent = mContent;
 			factory.showMessage = true;
+			// hide message after 9 seconds
 			factory.messageTimer = $timeout(factory.hideMessage, 9000);
 		},
 		
@@ -21,9 +25,13 @@ function alertFty($sce, $timeout) {
 		
 		messageTimer: null,
 		
+		// modal display
+		
 		showModal: false,
 		
 		modalContent: {},
+		
+		// predefined modal messages
 		
 		defaultModal: {
 			buttonText: 'Cool',
@@ -116,6 +124,8 @@ function alertFty($sce, $timeout) {
 			]
 		},
 		
+		// convert text to trusted html
+		
 		trustDialogText: function(mContent) {
 			mContent = mContent || factory.defaultModal;
 			for (var i = 0; i < mContent.content.length; i++) {
@@ -138,6 +148,8 @@ function alertFty($sce, $timeout) {
 		}
 		
 	}
+	
+	// need to convert all predefined messages once
 	
 	factory.trustDialogText(factory.defaultModal);
 	factory.trustDialogText(factory.invalidUrlModal);

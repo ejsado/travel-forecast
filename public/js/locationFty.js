@@ -4,14 +4,17 @@ function locationFty() {
 		
 		geocoder: new google.maps.Geocoder(),
 		
+		// define map and center view on USA
 		map: new google.maps.Map(document.getElementById('map'), {
 			zoom: 4,
 			center: {lat: 38.509490, lng: -96.767578},
 			clickableIcons: false
 		}),
 		
+		// list of numbered map markers (blue)
 		markerList: [],
 		
+		// saved location details
 		locationDetails: {
 			name: "Search for a location or select one on the map",
 			coords: null
@@ -74,6 +77,7 @@ function locationFty() {
 			}
 		},
 		
+		// find text query
 		geocodeAddress: function(address, successCallback, errorCallback) {
 			factory.geocoder.geocode({'address': address}, angular.bind(this, function(results, status) {
 				if (status === google.maps.GeocoderStatus.OK) {
@@ -88,6 +92,7 @@ function locationFty() {
 			}));
 		},
 		
+		// find coordinates
 		geocodeLatLng: function(latLng, successCallback, errorCallback) {
 			factory.geocoder.geocode({'location': latLng}, function(results, status) {
 				if (status === google.maps.GeocoderStatus.OK) {

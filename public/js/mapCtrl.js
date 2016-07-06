@@ -1,9 +1,11 @@
-function mapCtrl($scope, $timeout, locationFty, forecastFty) {
+function mapCtrl($scope, $timeout, locationFty) {
 	
 	var self = this;
 	
+	// clicked marker (red)
 	var marker = null;
 	
+	// throttle flag to reduce map clicks
 	var throttle = false;
 	
 	function removeMarker() {
@@ -72,15 +74,12 @@ function mapCtrl($scope, $timeout, locationFty, forecastFty) {
 			throttle = true;
 			replaceMapMarker(locationFty.map, e.latLng);
 			locationFty.geocodeLatLng(e.latLng, coordsFound, coordsUnknown);
+			// limit map clicks to once a second
 			$timeout(function() {
 				throttle = false;
 			}, 1000);
 		}
 	});
-	
-	self.getForecast = function() {
-		forecastFty.getForecast();
-	}
 	
 }
 

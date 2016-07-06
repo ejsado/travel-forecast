@@ -2,6 +2,7 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 	
 	var self = this;
 	
+	// show the weather description of this date for each destination
 	self.selectedDate = new Date(dateFty.today);
 	
 	self.setSelectedDate = function(date) {
@@ -13,10 +14,12 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		dateFty.buildDateList(destinationFty.destinationList);
 		urlFty.buildUrlParamTrip(destinationFty.destinationList);
 		locationFty.buildMapMarkers(destinationFty.destinationList);
+		// if destination was removed from the middle of the list
 		if (destinationFty.destinationList.length > 1 && 
 			index > 0 &&
 			index < destinationFty.destinationList.length
 		) {
+			// get new travel time estimation
 			distanceFty.attemptGetDistance(
 				destinationFty.destinationList[index - 1],
 				destinationFty.destinationList[index],
@@ -27,6 +30,7 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		}
 	}
 	
+	// remove all destinations
 	self.clear = function() {
 		destinationFty.clearDestinations();
 		urlFty.clearUrlParamTrip();

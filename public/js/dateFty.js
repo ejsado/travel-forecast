@@ -13,6 +13,7 @@ function dateFty($filter) {
 			] */
 		],
 		
+		// set common time for date comparison
 		setCommonTime: function(d) {
 			var dateObj = new Date(d);
 			dateObj.setHours(6);
@@ -24,14 +25,16 @@ function dateFty($filter) {
 		
 		today: new Date(new Date().setHours(6, 0, 0, 0)),
 		
-		maxDate: new Date("December 31, 2099"),
+		maxDate: new Date("December 31, 2050"),
 		
+		// max consecutive days per destination
 		maxDateRange: 30,
 		
 		datesEqual: function(date1, date2) {
 			return Math.abs(date1.getTime() - date2.getTime()) < 1000*60*60*8; // within 8 hours
 		},
 		
+		// check if both dates have a maximum number of days between them
 		datesWithinDays: function(date1, date2, days) {
 			return Math.abs(date1.getTime() - date2.getTime()) < (1000*60*60*24*days + 1000*60*60*8); // within number of days of each other +8 hours
 		},
@@ -46,10 +49,12 @@ function dateFty($filter) {
 			return false;
 		},
 		
+		// create a compressed date string
 		createDateString: function(dateObj) {
 			return $filter('date')(dateObj, 'MMddyy');
 		},
 		
+		// expand a compresssed date string
 		createDateFromString: function(dateStr) {
 			if (dateStr.length == 6) {
 				var d = new Date();
@@ -74,6 +79,7 @@ function dateFty($filter) {
 			console.log("date list", factory.dateList);
 		},
 		
+		// combine consecutive dates into an array of arrays
 		groupDates: function(dList) {
 			var groupedDates = [[]];
 			groupedDates[0].push(dList[0]);
@@ -90,6 +96,7 @@ function dateFty($filter) {
 			return groupedDates;
 		},
 		
+		// find date ranges with a list of dates
 		createDateRanges: function(dList) {
 			var dateRanges = [];
 			var arrive = dList[0];
@@ -119,6 +126,7 @@ function dateFty($filter) {
 			return false;
 		},
 		
+		// expand a date range to an array of all consecutive dates
 		enumerateDateRange: function(start, end) {
 			var enumDates = [];
 			for (var d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
@@ -126,10 +134,10 @@ function dateFty($filter) {
 			}
 			enumDates.push(new Date(end));
 			
-			//console.log("enumerate", enumDates);
 			return enumDates;
 		},
 		
+		// comparitor function for array filter
 		dateDuplicate: function(item, index, array) {
 			for (var i = index + 1; i < array.length; i++) {
 				if (factory.datesEqual(item, array[i])) {
@@ -144,10 +152,12 @@ function dateFty($filter) {
 			return dateArray.filter(factory.dateDuplicate);
 		},
 		
+		// comparitor for sorting
 		dateCompare: function(a, b) {
 			return a.getTime() - b.getTime();
 		},
 		
+		// date 2 is immediately after date 1
 		consecutiveDates: function(date1, date2) {
 			var d = new Date(date1);
 			d.setDate(d.getDate() + 1);
@@ -157,6 +167,7 @@ function dateFty($filter) {
 			return false;
 		},
 		
+		// compare two date lists, return exclusive dates
 		crossReferenceDates: function(destinationDates, destinationForecast) {
 			var forecastDates = [];
 			for (var item in destinationForecast) {

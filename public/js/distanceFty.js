@@ -2,6 +2,7 @@ function distanceFty() {
 	
 	var factory = {
 		
+		// save travel estimations for each destination pair
 		distanceList: {},
 		
 		distanceMatrix: new google.maps.DistanceMatrixService(),

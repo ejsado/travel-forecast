@@ -2,8 +2,10 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 	
 	var factory = {
 		
+		// flag for parameters updated by app
 		paramsUpdated: true,
 		
+		// short url string (displayed at top of ui)
 		shortUrl: 'for bookmarking',
 		
 		getUrlUnits: function() {
@@ -31,6 +33,7 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 			$location.search('t');
 		},
 		
+		// check if t param is valid
 		validUrlParamTrip: function() {
 			var urlParams = $location.search();
 			var param = urlParams.t;
@@ -124,9 +127,12 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 			return destList;
 		},
 		
+		// create a url to link to google maps directions
 		createDirectionsUrl: function(destinationsArray) {
 			var url = "";
+			// if more than one destination
 			if (destinationsArray.length > 1) {
+				// create link for directions to each one
 				url = "https://www.google.com/maps/dir";
 				for (var i = 0; i < destinationsArray.length; i++) {
 					if (destinationsArray[i] != undefined &&
@@ -140,6 +146,8 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 				}
 				return url;
 			} else {
+				// only one destination
+				// just link to that destination on the map
 				url = "https://www.google.com/maps/place/";
 				if (destinationsArray[0] != undefined &&
 						destinationsArray[0] != null
@@ -170,12 +178,14 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 				}, function(response) {
 					console.log("short url error", response);
 				});
+				// limit url calls
 				$timeout(function() {
 					factory.shortUrlThrottle = false;
 				}, 100);
 			}
 		},
 		
+		// build dynamic page title
 		getPageTitle: function(destList) {
 			var title = "Travel Weathr";
 			if (destList.length > 0) {
