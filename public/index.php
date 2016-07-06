@@ -8,8 +8,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 		
 		<title ng-bind="appUtils.urlFty.getPageTitle(appUtils.destinationFty.destinationList)">
-			Travel Weathr
+			Travel Weathr - Show the weather for every destination in your trip
 		</title>
+		
+		<meta name="description" content="Build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with. Every time you visit the link, your freshly updated forecast will be shown.">
 		
 		<link rel="shortcut icon" type="image/ico" href="/favicon.png">
 		
@@ -105,7 +107,7 @@
 									 data-ad-client="ca-pub-7172783409470168"
 									 data-ad-slot="4427922737"></ins>
 								<script>
-								(adsbygoogle = window.adsbygoogle || []).push({});
+									(adsbygoogle = window.adsbygoogle || []).push({});
 								</script>
 							</div>
 						</div>
