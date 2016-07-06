@@ -105,14 +105,29 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 				forecastFty.attemptGetForecast(place.coords.lat, place.coords.lng, place.name);
 				// if more than one destination
 				if (destinationFty.destinationList.length > 1) {
-					// get travel estimation
-					distanceFty.attemptGetDistance(
-						destinationFty.destinationList[destinationFty.destinationList.length - 2],
-						destinationFty.destinationList[destinationFty.destinationList.length - 1],
-						function() {
-							$scope.$apply();
-						}
-					);
+					var destIndex = destinationFty.getDestinationIndexByName(place.name);
+					// if destination wasn't added at the end
+					if (destIndex < (destinationFty.destinationList.length - 1)) {
+						// get travel estimation from new destination to next one
+						distanceFty.attemptGetDistance(
+							destinationFty.destinationList[destIndex],
+							destinationFty.destinationList[destIndex + 1],
+							function() {
+								$scope.$apply();
+							}
+						);
+					}
+					// if destination wasn't added at the beginning
+					if (destIndex > 0) {
+						// get travel estimation from previous destination to new destination
+						distanceFty.attemptGetDistance(
+							destinationFty.destinationList[destIndex - 1],
+							destinationFty.destinationList[destIndex],
+							function() {
+								$scope.$apply();
+							}
+						);
+					}
 				}
 				// add destination to url by rebuilding it
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);

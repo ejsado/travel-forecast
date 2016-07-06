@@ -99,6 +99,15 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			return null;
 		},
 		
+		getDestinationIndexByName: function(name) {
+			for (var i = 0; i < factory.destinationList.length; i++) {
+				if (name == factory.destinationList[i].name) {
+					return i;
+				}
+			}
+			return null;
+		},
+		
 		// compare destinations for sorting
 		destinationCompare: function(a, b) {
 			// compare by departure date

@@ -28,6 +28,13 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		e.target.select();
 	}
 	
+	// remove all destinations
+	self.clear = function() {
+		destinationFty.clearDestinations();
+		urlFty.clearUrlParamTrip();
+		urlFty.buildUrlParamUnits(forecastFty.units);
+	}
+	
 	// flag to disable buttons while destinations are loading
 	self.loadingDestinations = false;
 	

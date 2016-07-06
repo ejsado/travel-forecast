@@ -29,11 +29,4 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 			);
 		}
 	}
-	
-	// remove all destinations
-	self.clear = function() {
-		destinationFty.clearDestinations();
-		urlFty.clearUrlParamTrip();
-		urlFty.buildUrlParamUnits(forecastFty.units);
-	}
 }

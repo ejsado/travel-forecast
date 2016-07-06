@@ -17,10 +17,9 @@
 		
 		<link href="/css/all.min.css" rel="stylesheet" type="text/css">
 		
-		<!-- build:angular -->
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
-		<!-- endbuild -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.min.js"></script>
+
 		
 		<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $googleKey; ?>"></script>
 		
@@ -28,25 +27,11 @@
 			var googleKey = "<?php echo $googleKey; ?>";
 		</script>
 		
-		<!-- build:vendor -->
-		<script src="/js/vendor/moment.js"></script>
-		<script src="/js/vendor/pikaday.js"></script>
-		<!-- endbuild -->
+		<script src="/js/vendor.min.js"></script>
+
 		
-		<!-- build:app -->
-		<script src="/js/appCtrl.js"></script>
-		<script src="/js/mapCtrl.js"></script>
-		<script src="/js/formCtrl.js"></script>
-		<script src="/js/calendarCtrl.js"></script>
-		
-		<script src="/js/forecastFty.js"></script>
-		<script src="/js/locationFty.js"></script>
-		<script src="/js/destinationFty.js"></script>
-		<script src="/js/dateFty.js"></script>
-		<script src="/js/urlFty.js"></script>
-		<script src="/js/distanceFty.js"></script>
-		<script src="/js/alertFty.js"></script>
-		<!-- endbuild -->
+		<script src="/js/app.min.js"></script>
+
 		
 		<script>
 			angular.module( 'travelForecastApp', ['ngAnimate'] )
@@ -70,7 +55,7 @@
 	<body>
 		<div id="flex-container">
 			<header>
-				<div id="header-wrapper" class="width-container">
+				<div id="header-wrapper">
 					<div id="logo-container">
 						<button
 							ng-click="appUtils.clear()"
@@ -123,54 +108,14 @@
 					<label id="hide-map-switch" class="btn-link" for="hide-map">
 						Map
 					</label>
-					<div class="width-container">
-						<div class="center-inputs">
-							<input id="location-search" type="text" placeholder="Search for a destination"
-								ng-model="query"
-								ng-model-options="{debounce: 500}"
-								ng-change="mapUtils.locationSearch(query)">
-						</div>
-					</div>
+					<input id="location-search" type="text" placeholder="Search for a destination"
+						ng-model="query"
+						ng-model-options="{debounce: 500}"
+						ng-change="mapUtils.locationSearch(query)">
 				</section>
 				<section id="form-container"
 					ng-controller="formCtrl as formUtils">
-					<div class="center-inputs">
-						<div>
-							<img id="marker" src="/img/spotlight-poi.png" alt="">
-							<p class="label">
-								Selected Destination
-							</p>
-							<h1>
-								{{ appUtils.locationFty.locationDetails.name }}
-							</h1>
-						</div>
-						<div id="destination-options">
-							<div class="input-container">
-								<label class="label" for="start-date">
-									From
-								</label>
-								<input type="text" id="start-date" readonly>
-							</div>
-							<div class="input-container">
-								<label class="label" for="end-date">
-									To
-								</label>
-								<input type="text" id="end-date" readonly>
-							</div>
-							<button id="add-button" class="btn"
-								ng-click="formUtils.attemptAddDestination(appUtils.locationFty.locationDetails, formUtils.startDate, formUtils.endDate)"
-								ng-disabled="appUtils.loadingDestinations">
-								Get Forecast
-							</button>
-						</div>
-						<div id="alert-message">
-							<p id="alert-message-content"
-								ng-show="appUtils.alertFty.showMessage">
-								{{ appUtils.alertFty.messageContent }}
-							</p>
-						</div>
-					</div>
-					<div id="change-units">
+					<div class="float-right">
 						<input type="radio" id="imperial-units" name="units" value="imperial" class="hidden-radio"
 							ng-model="appUtils.forecastFty.units"
 							ng-change="formUtils.unitsChanged()">
@@ -184,9 +129,41 @@
 							C &deg;
 						</label>
 					</div>
+					<img id="marker" src="/img/spotlight-poi.png" alt="">
+					<p class="label">
+						Selected Destination
+					</p>
+					<h1>
+						{{ appUtils.locationFty.locationDetails.name }}
+					</h1>
+					<div class="input-container">
+						<label class="label" for="start-date">
+							From
+						</label>
+						<input type="text" id="start-date" readonly>
+					</div>
+					<div class="input-container">
+						<label class="label" for="end-date">
+							To
+						</label>
+						<input type="text" id="end-date" readonly>
+					</div>
+					<button class="btn"
+						ng-click="formUtils.attemptAddDestination(appUtils.locationFty.locationDetails, formUtils.startDate, formUtils.endDate)"
+						ng-disabled="appUtils.loadingDestinations">
+						Get Forecast
+					</button>
+					<div id="alert-message">
+						<p id="alert-message-content"
+							ng-show="appUtils.alertFty.showMessage">
+							{{ appUtils.alertFty.messageContent }}
+						</p>
+					</div>
 					<aside id="pikaday-container">
 						<div id="pikaday-background"
-							ng-show="formUtils.showDatePickerBg"></div>
+							ng-show="formUtils.showDatePickerBg">
+						
+						</div>
 					</aside>
 				</section>
 				<section id="calendar-container"
