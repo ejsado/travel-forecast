@@ -7,7 +7,9 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 		
-		<title>Travel Weathr {{ appUtils.urlFty.getPageTitle(appUtils.destinationFty.destinationList) }}</title>
+		<title ng-bind="appUtils.urlFty.getPageTitle(appUtils.destinationFty.destinationList)">
+			Travel Weathr
+		</title>
 		
 		<link rel="shortcut icon" type="image/ico" href="/favicon.png">
 		

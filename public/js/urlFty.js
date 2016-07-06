@@ -177,7 +177,7 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 		},
 		
 		getPageTitle: function(destList) {
-			var title = "";
+			var title = "Travel Weathr";
 			if (destList.length > 0) {
 				title += " - " + destList[0].name;
 			}
