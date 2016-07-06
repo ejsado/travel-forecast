@@ -197,6 +197,10 @@ main {
 			margin: 0;
 			font-size: 1rem;
 			color: #E5417B;
+			transition: all 200ms;
+			&.ng-hide {
+				opacity: 0;
+			}
 		}
 	}
 	#pikaday-container {
@@ -381,6 +385,7 @@ main {
 				font-size: 0.75rem;
 				background: #DDD;
 				border-radius: 0.2rem;
+				min-width: 4rem;
 				transition: all 200ms;
 				&::after {
 					content: "";

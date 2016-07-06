@@ -16,7 +16,7 @@ function alertFty($sce, $timeout) {
 		
 		hideMessage: function() {
 			factory.showMessage = false;
-			factory.messageContent = 'Nope.';
+			//factory.messageContent = 'Nope.';
 		},
 		
 		messageTimer: null,

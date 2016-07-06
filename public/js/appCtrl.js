@@ -140,8 +140,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 			console.log("external url change");
 			getDataFromUrl();
 		}
-		urlFty.paramsUpdated = false;
 		urlFty.buildShortUrl();
+		urlFty.paramsUpdated = false;
 	});
 	
 }

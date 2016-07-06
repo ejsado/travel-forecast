@@ -1,10 +1,10 @@
-function urlFty($location, $http, dateFty, locationFty) {
+function urlFty($timeout, $location, $http, dateFty, locationFty) {
 	
 	var factory = {
 		
 		paramsUpdated: true,
 		
-		shortUrl: 'short link for bookmarking',
+		shortUrl: 'for bookmarking',
 		
 		getUrlUnits: function() {
 			var urlParams = $location.search();
@@ -21,6 +21,7 @@ function urlFty($location, $http, dateFty, locationFty) {
 			if (units == 'metric') {
 				newUnits = 'c';
 			}
+			console.log("add url units");
 			factory.paramsUpdated = true;
 			$location.search('u', newUnits);
 		},
@@ -154,17 +155,25 @@ function urlFty($location, $http, dateFty, locationFty) {
 			}
 		},
 		
+		shortUrlThrottle: false,
+		
 		buildShortUrl: function() {
-			$http.post('https://www.googleapis.com/urlshortener/v1/url?key=' + googleKey, {
-				"longUrl": $location.absUrl()
-			}).then (function(response) {
-				console.log("short url response", response);
-				if ("id" in response.data) {
-					factory.shortUrl = response.data.id;
-				}
-			}, function(response) {
-				console.log("short url error", response);
-			});
+			if (!factory.shortUrlThrottle) {
+				factory.shortUrlThrottle = true;
+				$http.post('https://www.googleapis.com/urlshortener/v1/url?key=' + googleKey, {
+					"longUrl": $location.absUrl()
+				}).then (function(response) {
+					console.log("short url response", response);
+					if ("id" in response.data) {
+						factory.shortUrl = response.data.id;
+					}
+				}, function(response) {
+					console.log("short url error", response);
+				});
+				$timeout(function() {
+					factory.shortUrlThrottle = false;
+				}, 100);
+			}
 		},
 		
 		getPageTitle: function(destList) {

@@ -62,7 +62,7 @@
 			<header>
 				<div id="header-wrapper">
 					<div id="logo-container">
-						<a href="">
+						<a href="/">
 							<img src="/img/logo-128.png" alt="">
 							<span>Travel Weathr</span>
 						</a>
