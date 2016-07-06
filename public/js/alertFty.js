@@ -91,7 +91,8 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'What is this?',
 					text: [
-						"Travel Weathr allows you to build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with. Every time you visit the link, your freshly updated forecast will be shown."
+						"Travel Weathr allows you to build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures.",
+						"Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with. Every time you visit the link, your freshly updated forecast will be shown."
 					]
 				},
 				{
