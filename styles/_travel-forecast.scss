@@ -227,26 +227,37 @@ header, main {
 		float: right;
 	}
 	#pikaday-container {
-		position: fixed;
-		left: 0;
-		right: 0;
-		top: 0;
-		z-index: 100;
-		width: 100%;
+		$pm: 15px;
+		$pw: 240px + ($pm * 2);
 		#pikaday-background {
 			position: fixed;
 			top: 0;
 			right: 0;
 			bottom: 0;
 			left: 0;
+			z-index: 100;
 			background: rgba(0,0,0,0.3);
+			transition: all 200ms;
+			&.ng-hide {
+				opacity: 0;
+			}
+		}
+		.center-pikaday {
+			width: $pw;
+			height: 250px;
+			transform-origin: center bottom;
+			transform: scale(1.25);
+			position: fixed;
+			z-index: 101;
+			bottom: 10%;
+			left: 50%;
+			margin-left: -($pw / 2);
+			transition: all 200ms;
+			&.ng-hide {
+				bottom: -500px;
+			}
 		}
 		.pika-single {
-			$pm: 15px;
-			width: 240px + ($pm * 2);
-			margin: 30vh auto 0;
-			transform-origin: center top;
-			transform: scale(1.25);
 			border: none;
 			font-family: inherit;
 			box-shadow: 0 0 10px rgba(0,0,0,0.4);

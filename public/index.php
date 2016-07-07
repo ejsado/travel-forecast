@@ -145,13 +145,15 @@
 							</h1>
 						</div>
 						<div id="destination-options">
-							<div class="input-container">
+							<div class="input-container"
+								ng-click="formUtils.showStartDatePicker = true">
 								<label class="label" for="start-date">
 									From
 								</label>
 								<input type="text" id="start-date" readonly>
 							</div>
-							<div class="input-container">
+							<div class="input-container"
+								ng-click="formUtils.showEndDatePicker = true">
 								<label class="label" for="end-date">
 									To
 								</label>
@@ -186,7 +188,12 @@
 					</div>
 					<aside id="pikaday-container">
 						<div id="pikaday-background"
-							ng-show="formUtils.showDatePickerBg"></div>
+							ng-show="formUtils.showStartDatePicker || formUtils.showEndDatePicker"
+							ng-click="formUtils.showStartDatePicker = false; formUtils.showEndDatePicker = false"></div>
+						<div id="pikaday-start" class="center-pikaday"
+							ng-show="formUtils.showStartDatePicker"></div>
+						<div id="pikaday-end" class="center-pikaday"
+							ng-show="formUtils.showEndDatePicker"></div>
 					</aside>
 				</section>
 				<section id="calendar-container"
