@@ -55,7 +55,7 @@
 	<body>
 		<div id="flex-container">
 			<header>
-				<div id="header-wrapper">
+				<div id="header-wrapper" class="width-container">
 					<div id="logo-container">
 						<button
 							ng-click="appUtils.clear()"
@@ -108,14 +108,56 @@
 					<label id="hide-map-switch" class="btn-link" for="hide-map">
 						Map
 					</label>
-					<input id="location-search" type="text" placeholder="Search for a destination"
-						ng-model="query"
-						ng-model-options="{debounce: 500}"
-						ng-change="mapUtils.locationSearch(query)">
+					<div class="width-container">
+						<div class="center-inputs">
+							<input id="location-search" type="text" placeholder="Search for a destination"
+								ng-model="query"
+								ng-model-options="{debounce: 500}"
+								ng-change="mapUtils.locationSearch(query)">
+						</div>
+					</div>
 				</section>
 				<section id="form-container"
 					ng-controller="formCtrl as formUtils">
-					<div class="float-right">
+					<div class="center-inputs">
+						<div>
+							<img id="marker" src="/img/spotlight-poi.png" alt="">
+							<p class="label">
+								Selected Destination
+							</p>
+							<h1>
+								{{ appUtils.locationFty.locationDetails.name }}
+							</h1>
+						</div>
+						<div id="destination-options">
+							<div class="input-container"
+								ng-click="formUtils.showStartDatePicker = true">
+								<label class="label" for="start-date">
+									From
+								</label>
+								<input type="text" id="start-date" readonly>
+							</div>
+							<div class="input-container"
+								ng-click="formUtils.showEndDatePicker = true">
+								<label class="label" for="end-date">
+									To
+								</label>
+								<input type="text" id="end-date" readonly>
+							</div>
+							<button id="add-button" class="btn"
+								ng-click="formUtils.attemptAddDestination(appUtils.locationFty.locationDetails, formUtils.startDate, formUtils.endDate)"
+								ng-disabled="appUtils.loadingDestinations">
+								Get Forecast
+							</button>
+						</div>
+						<div id="alert-message">
+							<p id="alert-message-content"
+								ng-show="appUtils.alertFty.showMessage">
+								{{ appUtils.alertFty.messageContent }}
+							</p>
+						</div>
+					</div>
+					<div id="change-units">
 						<input type="radio" id="imperial-units" name="units" value="imperial" class="hidden-radio"
 							ng-model="appUtils.forecastFty.units"
 							ng-change="formUtils.unitsChanged()">
@@ -129,41 +171,14 @@
 							C &deg;
 						</label>
 					</div>
-					<img id="marker" src="/img/spotlight-poi.png" alt="">
-					<p class="label">
-						Selected Destination
-					</p>
-					<h1>
-						{{ appUtils.locationFty.locationDetails.name }}
-					</h1>
-					<div class="input-container">
-						<label class="label" for="start-date">
-							From
-						</label>
-						<input type="text" id="start-date" readonly>
-					</div>
-					<div class="input-container">
-						<label class="label" for="end-date">
-							To
-						</label>
-						<input type="text" id="end-date" readonly>
-					</div>
-					<button class="btn"
-						ng-click="formUtils.attemptAddDestination(appUtils.locationFty.locationDetails, formUtils.startDate, formUtils.endDate)"
-						ng-disabled="appUtils.loadingDestinations">
-						Get Forecast
-					</button>
-					<div id="alert-message">
-						<p id="alert-message-content"
-							ng-show="appUtils.alertFty.showMessage">
-							{{ appUtils.alertFty.messageContent }}
-						</p>
-					</div>
 					<aside id="pikaday-container">
 						<div id="pikaday-background"
-							ng-show="formUtils.showDatePickerBg">
-						
-						</div>
+							ng-show="formUtils.showStartDatePicker || formUtils.showEndDatePicker"
+							ng-click="formUtils.showStartDatePicker = false; formUtils.showEndDatePicker = false"></div>
+						<div id="pikaday-start" class="center-pikaday"
+							ng-show="formUtils.showStartDatePicker"></div>
+						<div id="pikaday-end" class="center-pikaday"
+							ng-show="formUtils.showEndDatePicker"></div>
 					</aside>
 				</section>
 				<section id="calendar-container"
@@ -188,17 +203,18 @@
 									<tr>
 										<td class="destination-cell">
 											<div class="destination-container">
-												<div class="marker">
-													{{ $index + 1 }}
+												<div class="float-left">
+													<div class="marker">
+														{{ $index + 1 }}
+													</div>
+													<button class="remove-button" title="remove"
+														ng-click="calendarUtils.removeSingleDestination($index)"
+														ng-disabled="appUtils.loadingDestinations">
+														&times;
+													</button>
 												</div>
 												<div class="destination-name">
 													{{ destination.name }}
-													&ndash;
-													<button class="btn-link btn-link-alt"
-														ng-click="calendarUtils.removeSingleDestination($index)"
-														ng-disabled="appUtils.loadingDestinations">
-														remove
-													</button>
 												</div>
 											</div>
 										</td>
@@ -217,7 +233,7 @@
 														destination,
 														appUtils.destinationFty.destinationList[$index + 1]
 													]) }}">
-													map it
+													directions
 												</a>
 											</div>
 										</td>
@@ -301,7 +317,7 @@
 						</button>
 						&nbsp;
 						<a href="{{ appUtils.urlFty.createDirectionsUrl(appUtils.destinationFty.destinationList) }}">
-							Map All Destinations
+							Directions to All Destinations
 						</a>
 					</div>
 				</section>

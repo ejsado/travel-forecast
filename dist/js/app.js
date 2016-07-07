@@ -719,6 +719,15 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			return null;
 		},
 		
+		getDestinationIndexByName: function(name) {
+			for (var i = 0; i < factory.destinationList.length; i++) {
+				if (name == factory.destinationList[i].name) {
+					return i;
+				}
+			}
+			return null;
+		},
+		
 		// compare destinations for sorting
 		destinationCompare: function(a, b) {
 			// compare by departure date
@@ -1081,8 +1090,11 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 	
 	self.endDate = new Date(dateFty.today);
 	
-	// show or hide the date picker background
-	self.showDatePickerBg = false;
+	// show or hide the date pickers
+	
+	self.showStartDatePicker = false;
+	
+	self.showEndDatePicker = false;
 	
 	// user chooses an arrival date in the date picker
 	function updateStartDate() {
@@ -1098,39 +1110,39 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 		pickEndDate.setMaxDate(d);
 		
 		// set end (departure) date if outside of restrictions
-		if (pickEndDate.getDate() < pickStartDate.getDate()) {
-			pickEndDate.setDate(pickStartDate.getDate());
+		if (pickEndDate.getDate() < self.startDate) {
+			pickEndDate.setDate(self.startDate);
+			self.endDate = new Date(self.startDate);
 		} else if (pickEndDate.getDate() > d) {
 			pickEndDate.setDate(d);
+			self.endDate = new Date(d);
 		}
+		self.showStartDatePicker = false;
+		$scope.$apply();
 	}
 	
 	// user chooses a departure date in the date picker
 	function updateEndDate() {
 		self.endDate = dateFty.setCommonTime(pickEndDate.getDate());
-	}
-	
-	// show the background if the user opens either date picker
-	function showDatePickerBg() {
-		self.showDatePickerBg = (pickStartDate.isVisible() || pickEndDate.isVisible());
-		// must $apply because date pickers do not (non angular pickers)
+		self.showEndDatePicker = false;
 		$scope.$apply();
 	}
 	
 	// set arrival date picker
 	var pickStartDate = new Pikaday({
 		field: document.getElementById('start-date'),
-		container: document.getElementById('pikaday-container'),
+		bound: false,
+		container: document.getElementById('pikaday-start'),
 		format: 'MMM D, YYYY',
 		defaultDate: dateFty.today,
 		setDefaultDate: true,
 		minDate: dateFty.today,
 		maxDate: dateFty.maxDate,
 		onSelect: updateStartDate,
-		onOpen: showDatePickerBg,
-		onClose: showDatePickerBg,
-		position: 'bottom left',
-		reposition: false
+		//onOpen: showDatePickerBg,
+		//onClose: showDatePickerBg,
+		//position: 'bottom left',
+		//reposition: false
 	});
 	
 	// find max date for departure
@@ -1140,17 +1152,18 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 	// set departure date picker
 	var pickEndDate = new Pikaday({
 		field: document.getElementById('end-date'),
-		container: document.getElementById('pikaday-container'),
+		bound: false,
+		container: document.getElementById('pikaday-end'),
 		format: 'MMM D, YYYY',
 		defaultDate: dateFty.today,
 		setDefaultDate: true,
 		minDate: dateFty.today,
 		maxDate: maxEndDate,
 		onSelect: updateEndDate,
-		onOpen: showDatePickerBg,
-		onClose: showDatePickerBg,
-		position: 'bottom left',
-		reposition: false
+		//onOpen: showDatePickerBg,
+		//onClose: showDatePickerBg,
+		//position: 'bottom left',
+		//reposition: false
 	});
 	
 	// user chose new units (F or C)
@@ -1178,14 +1191,29 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 				forecastFty.attemptGetForecast(place.coords.lat, place.coords.lng, place.name);
 				// if more than one destination
 				if (destinationFty.destinationList.length > 1) {
-					// get travel estimation
-					distanceFty.attemptGetDistance(
-						destinationFty.destinationList[destinationFty.destinationList.length - 2],
-						destinationFty.destinationList[destinationFty.destinationList.length - 1],
-						function() {
-							$scope.$apply();
-						}
-					);
+					var destIndex = destinationFty.getDestinationIndexByName(place.name);
+					// if destination wasn't added at the end
+					if (destIndex < (destinationFty.destinationList.length - 1)) {
+						// get travel estimation from new destination to next one
+						distanceFty.attemptGetDistance(
+							destinationFty.destinationList[destIndex],
+							destinationFty.destinationList[destIndex + 1],
+							function() {
+								$scope.$apply();
+							}
+						);
+					}
+					// if destination wasn't added at the beginning
+					if (destIndex > 0) {
+						// get travel estimation from previous destination to new destination
+						distanceFty.attemptGetDistance(
+							destinationFty.destinationList[destIndex - 1],
+							destinationFty.destinationList[destIndex],
+							function() {
+								$scope.$apply();
+							}
+						);
+					}
 				}
 				// add destination to url by rebuilding it
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
