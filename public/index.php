@@ -211,17 +211,18 @@
 									<tr>
 										<td class="destination-cell">
 											<div class="destination-container">
-												<div class="marker">
-													{{ $index + 1 }}
+												<div class="float-left">
+													<div class="marker">
+														{{ $index + 1 }}
+													</div>
+													<button class="remove-button" title="remove"
+														ng-click="calendarUtils.removeSingleDestination($index)"
+														ng-disabled="appUtils.loadingDestinations">
+														&times;
+													</button>
 												</div>
 												<div class="destination-name">
 													{{ destination.name }}
-													&ndash;
-													<button class="btn-link btn-link-alt"
-														ng-click="calendarUtils.removeSingleDestination($index)"
-														ng-disabled="appUtils.loadingDestinations">
-														remove
-													</button>
 												</div>
 											</div>
 										</td>
@@ -240,7 +241,7 @@
 														destination,
 														appUtils.destinationFty.destinationList[$index + 1]
 													]) }}">
-													map it
+													directions
 												</a>
 											</div>
 										</td>
@@ -324,7 +325,7 @@
 						</button>
 						&nbsp;
 						<a href="{{ appUtils.urlFty.createDirectionsUrl(appUtils.destinationFty.destinationList) }}">
-							Map All Destinations
+							Directions to All Destinations
 						</a>
 					</div>
 				</section>

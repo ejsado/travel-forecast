@@ -287,7 +287,7 @@ header, main {
 			padding: 0;
 			margin: 0;
 			&.destination-cell, &.weather-cell, .destination-container, .weather-container {
-				height: 7rem;
+				height: 7.5rem;
 			}
 			.destination-container, .weather-container {
 				margin-right: 0.5rem;
@@ -306,21 +306,40 @@ header, main {
 	#calendar-destinations {
 		flex: 0 0 auto;
 		.destination-container {
+			position: relative;
 			max-width: 14rem;
 			line-height: 1.5;
 			padding: 1.2rem 0.5rem;
 			.marker {
-				float: left;
-				width: 1.5rem;
-				height: 1.5rem;
+				width: 1.2rem;
+				height: 1.2rem;
 				border-radius: 50%;
-				border: 3px solid #EEE;
 				background: blue;
 				color: white;
 				text-align: center;
 				line-height: 1.2rem;
 				font-size: 0.8rem;
-				margin: 0.4rem 0.5rem 2rem 0;
+				margin: 0.1rem 0.5rem 0.5rem 0;
+			}
+			.remove-button {
+				display: block;
+				width: 1.2rem;
+				height: 1.2rem;
+				line-height: 1.3rem;
+				margin: 0 0.5rem 1rem 0;
+				padding: 0;
+				top: 0.5rem;
+				right: 0.5rem;
+				color: #FFF;
+				background: #fd78a7;
+				border-radius: 50%;
+				border: none;
+				font-size: 1rem;
+				font-weight: bold;
+				text-align: center;
+				&:hover {
+					background: #E5417B;
+				}
 			}
 			.destination-name {
 				font-size: 1rem;
@@ -353,7 +372,7 @@ header, main {
 				.weather-icon {
 					width: 2rem;
 					height: 2rem;
-					margin: 0 auto;
+					margin: 0 auto 0.25rem;
 					background: url(/img/weather.png);
 					background-size: 700%;
 					background-position: 0% 3%;
