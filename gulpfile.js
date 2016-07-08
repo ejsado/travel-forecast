@@ -50,11 +50,11 @@ gulp.task('compressJs', function() {
 		.pipe(gulp.dest(jsDest));
 });
 
-gulp.task('compressVendorJs', function() {
-	return gulp.src('./public/js/vendor/*.js')
-		.pipe(concat('vendor.js'))
+gulp.task('compressLibJs', function() {
+	return gulp.src('./public/js/lib/*.js')
+		.pipe(concat('lib.js'))
         .pipe(gulp.dest(jsDest))
-		.pipe(rename('vendor.min.js'))
+		.pipe(rename('lib.min.js'))
 		.pipe(uglify())
 		.pipe(gulp.dest(jsDest));
 });
@@ -66,7 +66,7 @@ gulp.task('srcReplace', function() {
 			'https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js',
 			'https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.min.js'
 		],
-        'vendor': '/js/vendor.min.js',
+        'lib': '/js/lib.min.js',
 		'app': '/js/app.min.js'
     }))
     .pipe(gulp.dest('./dist/'));
@@ -75,7 +75,7 @@ gulp.task('srcReplace', function() {
 gulp.task('buildDist', [
 	'buildSass',
 	'compressJs',
-	'compressVendorJs',
+	'compressLibJs',
 	'srcReplace'
 ]);
 

@@ -424,9 +424,9 @@ function dateFty($filter) {
 			return dateObj;
 		},
 		
-		today: new Date(new Date().setHours(6, 0, 0, 0)),
-		
-		maxDate: new Date("December 31, 2050"),
+		// common times are set below
+		today: new Date(),
+		maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
 		
 		// max consecutive days per destination
 		maxDateRange: 30,
@@ -584,6 +584,10 @@ function dateFty($filter) {
 		}
 	
 	};
+	
+	factory.today = factory.setCommonTime(factory.today);
+	
+	factory.maxDate = factory.setCommonTime(factory.maxDate);
 	
 	return factory;
 }
@@ -1112,10 +1116,10 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 		// set end (departure) date if outside of restrictions
 		if (pickEndDate.getDate() < self.startDate) {
 			pickEndDate.setDate(self.startDate);
-			self.endDate = new Date(self.startDate);
+			self.endDate = dateFty.setCommonTime(new Date(self.startDate));
 		} else if (pickEndDate.getDate() > d) {
 			pickEndDate.setDate(d);
-			self.endDate = new Date(d);
+			self.endDate = dateFty.setCommonTime(new Date(d));
 		}
 		self.showStartDatePicker = false;
 		$scope.$apply();

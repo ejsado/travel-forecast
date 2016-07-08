@@ -27,7 +27,7 @@
 			var googleKey = "<?php echo $googleKey; ?>";
 		</script>
 		
-		<script src="/js/vendor.min.js"></script>
+		<script src="/js/lib.min.js"></script>
 
 		
 		<script src="/js/app.min.js"></script>
@@ -157,7 +157,8 @@
 							</p>
 						</div>
 					</div>
-					<div id="change-units">
+					<div id="change-units"
+						ng-hide="appUtils.destinationFty.destinationList.length == 0">
 						<input type="radio" id="imperial-units" name="units" value="imperial" class="hidden-radio"
 							ng-model="appUtils.forecastFty.units"
 							ng-change="formUtils.unitsChanged()">
@@ -203,17 +204,17 @@
 									<tr>
 										<td class="destination-cell">
 											<div class="destination-container">
+												<button class="remove-button" title="remove"
+													ng-click="calendarUtils.removeSingleDestination($index)"
+													ng-disabled="appUtils.loadingDestinations">
+													&times;
+												</button>
 												<div class="float-left">
 													<div class="marker">
 														{{ $index + 1 }}
 													</div>
-													<button class="remove-button" title="remove"
-														ng-click="calendarUtils.removeSingleDestination($index)"
-														ng-disabled="appUtils.loadingDestinations">
-														&times;
-													</button>
 												</div>
-												<div class="destination-name">
+												<div class="destination-name" title="{{ destination.name }}">
 													{{ destination.name }}
 												</div>
 											</div>
@@ -298,10 +299,12 @@
 													appUtils.dateFty.datesEqual(travelDate, calendarUtils.selectedDate)"
 												ng-style="{'width': (appUtils.forecastFty.forecastList[destination.name]
 													[appUtils.dateFty.createDateString(travelDate)].text.length / 2.7) + 'rem'}">
-												{{
-													appUtils.forecastFty.forecastList[destination.name]
-													[appUtils.dateFty.createDateString(travelDate)].text
-												}}
+												<p class="weather-text">
+													{{
+														appUtils.forecastFty.forecastList[destination.name]
+														[appUtils.dateFty.createDateString(travelDate)].text
+													}}
+												</p>
 											</div>
 										</td>
 									</tr>
@@ -309,7 +312,10 @@
 							</table>
 						</div>
 					</div>
-					<div ng-hide="appUtils.destinationFty.destinationList.length < 2">
+				</section>
+				<section id="main-footer">
+					<div id="batch-controls"
+						ng-hide="appUtils.destinationFty.destinationList.length < 2">
 						<button class="btn-link btn-link-alt"
 							ng-click="appUtils.clear()"
 							ng-disabled="appUtils.loadingDestinations">
@@ -320,8 +326,6 @@
 							Directions to All Destinations
 						</a>
 					</div>
-				</section>
-				<section id="footer-ad">
 					<div class="advert">
 						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 						<!-- small footer ad -->

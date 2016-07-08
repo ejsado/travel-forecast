@@ -102,15 +102,15 @@ header, main {
 .btn-left {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
-	margin-right: -3px;
+	margin-right: -0.3rem;
 	border-right: 1px solid #FFF;
 }
 .advert {
-	//background: #CCC;
+	
 }
 #map-container {
 	#map-drawer {
-		height: 33rem;
+		height: 33.4rem;
 		transition: height 500ms;
 		display: flex;
 	}
@@ -220,14 +220,15 @@ header, main {
 			text-align: center;
 			font-size: 1rem;
 			color: #E5417B;
-			transition: all 200ms;
+			transition: opacity 200ms;
 			&.ng-hide {
 				opacity: 0;
 			}
 		}
 	}
 	#change-units {
-		float: right;
+		width: 6rem;
+		margin: 0 auto;
 	}
 	#pikaday-container {
 		$pm: 15px;
@@ -240,7 +241,7 @@ header, main {
 			left: 0;
 			z-index: 100;
 			background: rgba(0,0,0,0.3);
-			transition: all 200ms;
+			transition: opacity 200ms;
 			&.ng-hide {
 				opacity: 0;
 			}
@@ -255,7 +256,7 @@ header, main {
 			bottom: 10%;
 			left: 50%;
 			margin-left: -($pw / 2);
-			transition: all 200ms;
+			transition: bottom 200ms;
 			&.ng-hide {
 				bottom: -500px;
 			}
@@ -283,6 +284,8 @@ header, main {
 }
 #calendar-container {
 	padding: 1rem;
+	display: flex;
+	justify-content: center;
 	table {
 		table-layout: fixed;
 		border: 0;
@@ -316,6 +319,8 @@ header, main {
 	}
 	#calendar-content {
 		display: flex;
+		flex: 0 1 auto;
+		max-width: 100%;
 	}
 	#calendar-destinations {
 		flex: 0 0 auto;
@@ -323,7 +328,7 @@ header, main {
 			position: relative;
 			max-width: 14rem;
 			line-height: 1.5;
-			padding: 1.2rem 0.5rem;
+			padding: 1.2rem 1rem 0 0.5rem;
 			.marker {
 				width: 1.2rem;
 				height: 1.2rem;
@@ -336,27 +341,29 @@ header, main {
 				margin: 0.1rem 0.5rem 0.5rem 0;
 			}
 			.remove-button {
+				position: absolute;
 				display: block;
-				width: 1.2rem;
-				height: 1.2rem;
-				line-height: 1.3rem;
-				margin: 0 0.5rem 1rem 0;
-				padding: 0;
-				top: 0.5rem;
-				right: 0.5rem;
-				color: #FFF;
-				background: #fd78a7;
-				border-radius: 50%;
+				line-height: 0.5;
+				margin: 0;
+				padding: 0.4rem;
+				top: 0;
+				right: 0;
+				color: #fd78a7;
+				background: transparent;
 				border: none;
-				font-size: 1rem;
-				font-weight: bold;
+				font-size: 1.5rem;
+				font-weight: normal;
 				text-align: center;
+				outline: 0;
 				&:hover {
-					background: #E5417B;
+					color: #E5417B;
 				}
 			}
 			.destination-name {
 				font-size: 1rem;
+				height: 4.5rem;
+				overflow: hidden;
+				text-overflow: ellipsis;
 			}
 		}
 		.estimation-container {
@@ -365,8 +372,9 @@ header, main {
 		}
 	}
 	#calendar-weather {
-		flex: 1 1 auto;
+		flex: 0 1 auto;
 		overflow: auto;
+		padding-right: calc(10vw + 8rem);
 		table {
 			float: left;
 		}
@@ -442,7 +450,8 @@ header, main {
 				background: #DDD;
 				border-radius: 0.2rem;
 				min-width: 4rem;
-				transition: all 200ms;
+				max-width: calc(10vw + 12rem);
+				transition: opacity 200ms;
 				&::after {
 					content: "";
 					display: block;
@@ -451,19 +460,30 @@ header, main {
 					height: 0;
 					bottom: 100%;
 					left: 1.3rem;
-					border-left: 8px solid transparent;
-					border-right: 8px solid transparent;
-					border-bottom: 0.6rem solid #DDD;
+					border-left: 0.7rem solid transparent;
+					border-right: 0.7rem solid transparent;
+					border-bottom: 0.9rem solid #DDD;
 				}
 				&.ng-hide {
 					opacity: 0;
+				}
+				.weather-text {
+					margin: 0;
+					padding: 0;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
 				}
 			}
 		}
 	}
 }
-#footer-ad {
+#main-footer {
 	overflow: hidden;
+	#batch-controls {
+		text-align: center;
+		margin-bottom: 1rem;
+	}
 	.advert {
 		width: 320px;
 		margin: 0 auto;

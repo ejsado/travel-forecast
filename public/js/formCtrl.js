@@ -30,10 +30,10 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 		// set end (departure) date if outside of restrictions
 		if (pickEndDate.getDate() < self.startDate) {
 			pickEndDate.setDate(self.startDate);
-			self.endDate = new Date(self.startDate);
+			self.endDate = dateFty.setCommonTime(new Date(self.startDate));
 		} else if (pickEndDate.getDate() > d) {
 			pickEndDate.setDate(d);
-			self.endDate = new Date(d);
+			self.endDate = dateFty.setCommonTime(new Date(d));
 		}
 		self.showStartDatePicker = false;
 		$scope.$apply();

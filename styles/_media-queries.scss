@@ -13,24 +13,26 @@
 		html {
 			font-size: 14px;
 		}
+		#map-container {
+			#map-drawer {
+				height: 0;
+			}
+			#hide-map-switch {
+				display: none;
+			}
+		}
 		/* tablets */
 		@media (max-device-height: 600px) {
 			footer {
 				flex-basis: 0;
 				overflow: hidden;
 			}
-			#map-container #map-drawer {
-				height: 15rem;
-			}
 		}
 		/* phones */
 		@media (max-device-height: 400px) {
 			header {
-				flex-basis: 0;
-				overflow: hidden;
-			}
-			#map-container #map-drawer {
-				height: 10rem;
+				//flex-basis: 0;
+				//overflow: hidden;
 			}
 		}
 	}
@@ -39,6 +41,9 @@
 	@media (orientation: portrait) {
 		html {
 			font-size: 12px;
+		}
+		#map-container #map-drawer {
+			height: 20rem;
 		}
 		/* tablets */
 		@media	(min-device-width: 550px) {
@@ -63,7 +68,7 @@
 		transform: scale(1);
 	}
 	#map-container #map-ad .advert  {
-		transform: scale(0.77);
+		transform: scale(0.78);
 	}
 	@media (min-width: 400px) {
 		html {
@@ -80,9 +85,9 @@
 	}
 	@media (min-width: 800px) {
 		#map-container #map-ad {
-			max-width: 230px;
+			max-width: 234px;
 			.advert  {
-				transform: scale(0.77);
+				//transform: scale(0.78);
 			}
 		}
 	}

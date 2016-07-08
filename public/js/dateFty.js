@@ -23,9 +23,9 @@ function dateFty($filter) {
 			return dateObj;
 		},
 		
-		today: new Date(new Date().setHours(6, 0, 0, 0)),
-		
-		maxDate: new Date("December 31, 2050"),
+		// common times are set below
+		today: new Date(),
+		maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
 		
 		// max consecutive days per destination
 		maxDateRange: 30,
@@ -183,6 +183,10 @@ function dateFty($filter) {
 		}
 	
 	};
+	
+	factory.today = factory.setCommonTime(factory.today);
+	
+	factory.maxDate = factory.setCommonTime(factory.maxDate);
 	
 	return factory;
 }
