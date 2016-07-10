@@ -7,51 +7,47 @@ function distanceFty() {
 		
 		distanceMatrix: new google.maps.DistanceMatrixService(),
 		
-		attemptGetDistance: function(destination1, destination2, callback) {
-			if (factory.distanceList[destination1.name] != null && 
-				factory.distanceList[destination1.name][destination2.name] != null
-			) {
-				console.log("distance exists");
-			} else {
-				factory.getDistance(destination1, destination2, callback);
+		getDistances: function(destinationList, callback) {
+			var destinations = [];
+			for (var i = 0; i < destinationList.length; i++) {
+				destinations.push(new google.maps.LatLng(destinationList[i].coords.lat, destinationList[i].coords.lng));
 			}
-		},
-		
-		getDistance: function(destination1, destination2, callback) {
-			var origin = new google.maps.LatLng(destination1.coords.lat, destination1.coords.lng);
-			var destination = new google.maps.LatLng(destination2.coords.lat, destination2.coords.lng);
 			factory.distanceMatrix.getDistanceMatrix({
-				origins: [origin],
-				destinations: [destination],
+				origins: destinations,
+				destinations: destinations,
 				travelMode: google.maps.TravelMode.DRIVING,
 				unitSystem: google.maps.UnitSystem.IMPERIAL
 			}, function(response, status) {
-				factory.processDistanceMatrix(response, status, destination1.name, destination2.name);
+				factory.processDistanceMatrix(response, status, destinationList);
 				callback();
 			});
 		},
 		
-		processDistanceMatrix: function(response, status, fromName, toName) {
+		processDistanceMatrix: function(response, status, destinationList) {
 			if (status == google.maps.DistanceMatrixStatus.OK) {
-				if (factory.distanceList[fromName] == null) {
-					factory.distanceList[fromName] = {};
-				}
-				if (response.rows[0].elements[0].status == google.maps.DistanceMatrixStatus.OK) {
-					factory.distanceList[fromName][toName] = {
-						distance: response.rows[0].elements[0].distance,
-						duration: response.rows[0].elements[0].duration
-					};
-				} else {
-					factory.distanceList[fromName][toName] = {
-						distance: {
-							text: "Unknown distance",
-							value: 0
-						},
-						duration: {
-							text: "Unknown travel time",
-							value: 0
+				var origins = response.originAddresses;
+				for (var i = 0; i < origins.length; i++) {
+					factory.distanceList[destinationList[i].name] = {};
+					var results = response.rows[i].elements;
+					for (var n = 0; n < results.length; n++) {
+						if (results[n].status == google.maps.DistanceMatrixStatus.OK) {
+							factory.distanceList[destinationList[i].name][destinationList[n].name] = {
+								distance: results[n].distance,
+								duration: results[n].duration
+							};
+						} else {
+							factory.distanceList[destinationList[i].name][destinationList[n].name] = {
+								distance: {
+									text: "Unknown distance",
+									value: 0
+								},
+								duration: {
+									text: "Unknown travel time",
+									value: 0
+								}
+							};
 						}
-					};
+					}
 				}
 				console.log("distance matrix results", response);
 			} else {

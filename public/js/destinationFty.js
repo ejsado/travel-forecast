@@ -23,6 +23,8 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			} */
 		],
 		
+		sortBy: "departure",
+		
 		addDestination: function(place, arrival, departure) {
 			var destAdded = false;
 			// iterate through destination list
@@ -46,7 +48,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 					// rebuild date ranges
 					factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
 					destAdded = true;
-					alertFty.displayMessage("This destination exists, so I merged the dates.");
+					alertFty.displayMessage("I merged the dates for this destination.");
 				}
 			}
 			// if too many destinations
@@ -70,7 +72,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 				console.log("new destination added");
 				destAdded = true;
 			}
-			// sort destinations by departure date
+			// sort destinations
 			factory.destinationList.sort(factory.destinationCompare);
 			// update map markers
 			locationFty.buildMapMarkers(factory.destinationList);
@@ -110,8 +112,23 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 		
 		// compare destinations for sorting
 		destinationCompare: function(a, b) {
-			// compare by departure date
-			return a.dates[a.dates.length - 1].getTime() - b.dates[b.dates.length - 1].getTime();
+			if (factory.sortBy == "arrival") {
+				return a.dates[0].getTime() - b.dates[0].getTime();
+			} else if (factory.sortBy == "name") {
+				var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+				var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+				if (nameA < nameB) {
+					return -1;
+				}
+				if (nameA > nameB) {
+					return 1;
+				}
+				// names must be equal
+				return 0;
+			} else {
+				// sort by destination
+				return a.dates[a.dates.length - 1].getTime() - b.dates[b.dates.length - 1].getTime();
+			}
 		},
 		
 		// remove all destinations

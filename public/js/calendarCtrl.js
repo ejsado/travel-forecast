@@ -14,19 +14,5 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		dateFty.buildDateList(destinationFty.destinationList);
 		urlFty.buildUrlParamTrip(destinationFty.destinationList);
 		locationFty.buildMapMarkers(destinationFty.destinationList);
-		// if destination was removed from the middle of the list
-		if (destinationFty.destinationList.length > 1 && 
-			index > 0 &&
-			index < destinationFty.destinationList.length
-		) {
-			// get new travel time estimation
-			distanceFty.attemptGetDistance(
-				destinationFty.destinationList[index - 1],
-				destinationFty.destinationList[index],
-				function() {
-					$scope.$apply();
-				}
-			);
-		}
 	}
 }

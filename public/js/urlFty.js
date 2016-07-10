@@ -28,6 +28,30 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 			$location.search('u', newUnits);
 		},
 		
+		getUrlSort: function() {
+			var urlParams = $location.search();
+			var param = urlParams.s;
+			if (param == 'a' || param == 'A') {
+				return 'arrival';
+			} else if (param == 'n' || param == 'N') {
+				return 'name';
+			} else {
+				return 'departure';
+			}
+		},
+		
+		buildUrlParamSort: function(sortBy) {
+			var newSort = 'd';
+			if (sortBy == 'arrival') {
+				newSort = 'a';
+			} else if (sortBy == 'name') {
+				newSort = 'n';
+			}
+			console.log("add url sort");
+			factory.paramsUpdated = true;
+			$location.search('s', newSort);
+		},
+		
 		clearUrlParamTrip: function() {
 			factory.paramsUpdated = true;
 			$location.search('t');

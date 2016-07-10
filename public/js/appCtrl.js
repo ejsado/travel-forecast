@@ -32,7 +32,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	self.clear = function() {
 		destinationFty.clearDestinations();
 		urlFty.clearUrlParamTrip();
-		urlFty.buildUrlParamUnits(forecastFty.units);
+		//urlFty.buildUrlParamUnits(forecastFty.units);
 	}
 	
 	// flag to disable buttons while destinations are loading
@@ -44,6 +44,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	function getDataFromUrl() {
 		
 		forecastFty.units = urlFty.getUrlUnits();
+		
+		destinationFty.sortBy = urlFty.getUrlSort();
 		
 		var urlDestinations = [];
 	
@@ -57,7 +59,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		if (urlDestinations.length > 0) {
 			self.loadingDestinations = true;
 		} else {
-			urlFty.buildUrlParamUnits(forecastFty.units);
+			//urlFty.buildUrlParamUnits(forecastFty.units);
 		}
 		
 		// 1 sec delay between loading destinations
@@ -111,15 +113,6 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 							dateRangeInvalid = true;
 						}
 					}
-					// if more than 1 destination
-					if (destinationFty.destinationList.length > 1) {
-						// get estimated travel time between destinations
-						distanceFty.attemptGetDistance(
-							destinationFty.destinationList[destinationFty.destinationList.length - 2],
-							destinationFty.destinationList[destinationFty.destinationList.length - 1],
-							function() {}
-						);
-					}
 					// if done adding destinations
 					if (count == urlDestinations.length) {
 						// enable buttons
@@ -137,8 +130,17 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 						}
 						// rebuild url
 						urlFty.buildUrlParamTrip(destinationFty.destinationList);
-						// apply changes because $apply does not run after ajax calls
-						$scope.$apply();
+						// if more than 1 destination
+						if (destinationFty.destinationList.length > 1) {
+							// get estimated travel time between destinations
+							distanceFty.getDistances(
+								destinationFty.destinationList,
+								function() {
+									// apply changes because $apply does not run after ajax calls
+									$scope.$apply();
+								}
+							);
+						}
 					}
 				}, function(result) {
 					console.log("coords unknown, skipping location");
