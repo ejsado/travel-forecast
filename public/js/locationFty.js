@@ -14,6 +14,15 @@ function locationFty() {
 		// list of numbered map markers (blue)
 		markerList: [],
 		
+		// line between destination markers
+		routeLine: new google.maps.Polyline({
+			path: [],
+			geodesic: true,
+			strokeColor: 'blue',
+			strokeOpacity: 0.5,
+			strokeWeight: 2
+		}),
+		
 		// saved location details
 		locationDetails: {
 			name: "Search for a location or select one on the map",
@@ -49,6 +58,11 @@ function locationFty() {
 			return loc;
 		},
 		
+		drawOnMap: function(destList) {
+			factory.buildMapMarkers(destList);
+			factory.buildRouteLine(destList);
+		},
+		
 		buildMapMarkers: function(destList) {
 			for (var i = 0; i < factory.markerList.length; i++) {
 				factory.markerList[i].setMap(null);
@@ -77,19 +91,30 @@ function locationFty() {
 			}
 		},
 		
+		buildRouteLine: function(destList) {
+			var coordsList = [];
+			for (var i = 0; i < destList.length; i++) {
+				coordsList.push(destList[i].coords);
+			}
+			factory.routeLine.setPath(coordsList);
+		},
+		
 		// find text query
 		geocodeAddress: function(address, successCallback, errorCallback) {
-			factory.geocoder.geocode({'address': address}, angular.bind(this, function(results, status) {
+			factory.geocoder.geocode({'address': address}, function(results, status) {
 				if (status === google.maps.GeocoderStatus.OK) {
-					console.log("address found", results[0]);
-					var locDetails = factory.createLocationDetails(results[0].formatted_address, results[0].geometry.location);
-					successCallback(locDetails);
+					console.log("addresses found", results);
+					var locList = [];
+					for (var i = 0; i < results.length; i++) {
+						locList.push(factory.createLocationDetails(results[i].formatted_address, results[i].geometry.location));
+					}
+					successCallback(locList);
 				} else {
 					console.log('Geocode address failed: ' + status);
 					var locDetails = factory.createLocationDetails("Location not found. Try selecting it on the map.", null);
 					errorCallback(locDetails);
 				}
-			}));
+			});
 		},
 		
 		// find coordinates
@@ -99,7 +124,11 @@ function locationFty() {
 					console.log("location found", results);
 					var resultMatch;
 					for (var i = 0; i < results.length; i++) {
-						if (results[i].address_components.length <= 5 &&
+						if (!results[i].types.includes("premise") &&
+							!results[i].types.includes("street_address") &&
+							!results[i].types.includes("route") &&
+							!results[i].types.includes("intersection") &&
+							!results[i].types.includes("subpremise") &&
 							!results[i].formatted_address.includes("Township")
 						) {
 							resultMatch = results[i];
@@ -116,6 +145,8 @@ function locationFty() {
 			});
 		}
 	};
+	
+	factory.routeLine.setMap(factory.map);
 	
 	return factory;
 	

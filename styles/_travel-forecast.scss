@@ -148,16 +148,37 @@ header, main {
 		}
 	}
 	.width-container {
-		padding: 0 1rem;
+		padding: 0 1rem 1rem;
+	}
+	.center-inputs {
+		position: relative;
 	}
 	#location-search {
 		width: 100%;
 		display: block;
-		margin: 3rem 0 1rem;
+		margin: 3rem 0 0 0;
 		padding: 1rem;
 		font-size: 1rem;
 		border: none;
 		border-radius: 0.2rem;
+	}
+	#location-type-ahead {
+		position: absolute;
+		width: 100%;
+		z-index: 50;
+		box-shadow: 0 0 0.5rem rgba(0,0,0,0.3);
+		.type-ahead-result {
+			display: block;
+			font-size: 1rem;
+			background: #FFF;
+			border: none;
+			width: 100%;
+			text-align: left;
+			padding: 0.5rem 1rem;
+			&:hover {
+				background: #EAEAEA;
+			}
+		}
 	}
 }
 #form-container {

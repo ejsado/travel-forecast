@@ -128,7 +128,17 @@
 							<input id="location-search" type="text" placeholder="Search for a destination"
 								ng-model="query"
 								ng-model-options="{debounce: 500}"
-								ng-change="mapUtils.locationSearch(query)">
+								ng-change="mapUtils.locationSearch(query)"
+								ng-focus="mapUtils.showTypeAhead = true"
+								ng-blur="mapUtils.delayHideTypeAhead()">
+							<div id="location-type-ahead"
+								ng-show="mapUtils.showTypeAhead">
+								<button class="type-ahead-result"
+									ng-repeat="result in mapUtils.typeAheadResults"
+									ng-click="mapUtils.setLocation(result)">
+									{{ result.name }}
+								</button>
+							</div>
 						</div>
 					</div>
 				</section>

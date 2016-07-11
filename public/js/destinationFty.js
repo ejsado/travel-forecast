@@ -75,7 +75,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			// sort destinations
 			factory.destinationList.sort(factory.destinationCompare);
 			// update map markers
-			locationFty.buildMapMarkers(factory.destinationList);
+			locationFty.drawOnMap(factory.destinationList);
 			// rebuild date list
 			dateFty.buildDateList(factory.destinationList);
 			// return if the destination was successfully added
@@ -87,7 +87,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			if (rebuild) {
 				// resort
 				factory.destinationList.sort(factory.destinationCompare);
-				locationFty.buildMapMarkers(factory.destinationList);
+				locationFty.drawOnMap(factory.destinationList);
 				dateFty.buildDateList(factory.destinationList);
 			}
 		},

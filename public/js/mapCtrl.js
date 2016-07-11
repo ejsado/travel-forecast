@@ -2,6 +2,10 @@ function mapCtrl($scope, $timeout, locationFty) {
 	
 	var self = this;
 	
+	self.typeAheadResults = [];
+	
+	self.showTypeAhead = false;
+	
 	// clicked marker (red)
 	var marker = null;
 	
@@ -34,32 +38,44 @@ function mapCtrl($scope, $timeout, locationFty) {
 		map.setZoom(zoomLevel);
 	}
 	
-	function addressFound(result) {
-		console.log("address found");
-		locationFty.locationDetails = result;
-		centerMap(locationFty.map, result.coords);
-		zoomMap(locationFty.map, 10);
-		replaceMapMarker(locationFty.map, result.coords);
+	function addressFound(resultsList) {
+		//console.log("addresses found");
+		self.typeAheadResults = resultsList;
+		//self.showTypeAhead = true;
 		$scope.$apply();
 	}
 	
 	function addressNotFound(result) {
-		console.log("address not found");
+		//console.log("address not found");
 		locationFty.locationDetails = result;
 		removeMarker();
 		$scope.$apply();
 	}
 	
 	function coordsFound(result) {
-		console.log("coords found");
+		//console.log("coords found");
 		locationFty.locationDetails = result;
 		$scope.$apply();
 	}
 	
 	function coordsUnknown(result) {
-		console.log("coords unknown", result);
+		//console.log("coords unknown", result);
 		locationFty.locationDetails = result;
 		$scope.$apply();
+	}
+	
+	self.setLocation = function(loc) {
+		locationFty.locationDetails = loc;
+		centerMap(locationFty.map, loc.coords);
+		zoomMap(locationFty.map, 10);
+		replaceMapMarker(locationFty.map, loc.coords);
+		self.showTypeAhead = false;
+	}
+	
+	self.delayHideTypeAhead = function() {
+		$timeout(function() {
+			self.showTypeAhead = false;
+		}, 100);
 	}
 	
 	self.locationSearch = function(query) {
