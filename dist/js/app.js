@@ -1389,7 +1389,7 @@ function locationFty() {
 							break;
 						}
 					}
-					var locDetails = factory.createLocationDetails(resultMatch.formatted_address, resultMatch.geometry.location);
+					var locDetails = factory.createLocationDetails(resultMatch.formatted_address, latLng);
 					successCallback(locDetails);
 				} else {
 					console.log('Geocode latLng failed: ' + status);
