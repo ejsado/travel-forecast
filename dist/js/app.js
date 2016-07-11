@@ -106,7 +106,8 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'Who provides the data?',
 					text: [
-						'<a href="https://developer.forecast.io/">Dark Sky</a> provides the weather data, and <a href="https://developers.google.com/maps/">Google</a> provides the map and location data.'
+						'<a href="https://developer.forecast.io/">Dark Sky</a> provides the weather data',
+						'<a href="https://developers.google.com/maps/">Google</a> provides the map and location data'
 					]
 				},
 				{
@@ -1429,6 +1430,56 @@ function locationFty() {
 function mapCtrl($scope, $timeout, locationFty) {
 	
 	var self = this;
+	
+	var radarImages = [
+		{
+			image: "usa.png",
+			bounds: {
+				south: 15,
+				west: -130,
+				north: 50,
+				east: -50
+			}
+		},
+		{
+			image: "can.png",
+			bounds: {
+				south: 50,
+				west: -170,
+				north: 75,
+				east: -50
+			}
+		},
+		{
+			image: "eur.png",
+			bounds: {
+				south: 35,
+				west: -13,
+				north: 72,
+				east: 40
+			}
+		},
+		{
+			image: "aus.png",
+			bounds: {
+				south: -50,
+				west: 110,
+				north: -5,
+				east: 180
+			}
+		}
+	];
+	
+	for (var i = 0; i < radarImages.length; i++) {
+		radarImages[i].overlay = new google.maps.GroundOverlay(
+			"/img/radar/" + radarImages[i].image,
+			radarImages[i].bounds,
+			{
+				map: locationFty.map,
+				opacity: 0.4
+			}
+		);
+	}
 	
 	self.typeAheadResults = [];
 	

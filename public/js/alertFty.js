@@ -106,7 +106,8 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'Who provides the data?',
 					text: [
-						'<a href="https://developer.forecast.io/">Dark Sky</a> provides the weather data, and <a href="https://developers.google.com/maps/">Google</a> provides the map and location data.'
+						'<a href="https://developer.forecast.io/">Dark Sky</a> provides the weather data',
+						'<a href="https://developers.google.com/maps/">Google</a> provides the map and location data'
 					]
 				},
 				{
