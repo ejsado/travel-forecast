@@ -60,23 +60,29 @@ gulp.task('compressLibJs', function() {
 });
 
 gulp.task('srcReplace', function() {
-  gulp.src('./public/index.php')
-    .pipe(htmlReplace({
-        'angular': [
-			'https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js',
-			'https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.min.js'
-		],
-        'lib': '/js/lib.min.js',
-		'app': '/js/app.min.js'
-    }))
-    .pipe(gulp.dest('./dist/'));
+	gulp.src('./public/index.php')
+		.pipe(htmlReplace({
+			'angular': [
+				'https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js',
+				'https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.min.js'
+			],
+			'lib': '/js/lib.min.js',
+			'app': '/js/app.min.js'
+		}))
+		.pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('copyFiles', function() {
+	gulp.src('./public/scripts/*')
+		.pipe(gulp.dest('./dist/scripts/'));
 });
 
 gulp.task('buildDist', [
 	'buildSass',
 	'compressJs',
 	'compressLibJs',
-	'srcReplace'
+	'srcReplace',
+	'copyFiles'
 ]);
 
 

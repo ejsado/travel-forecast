@@ -1,0 +1,11 @@
+USA
+http://api.wunderground.com/api/6be50baeecbb66f7/radar/image.png?minlat=15&minlon=-130&maxlat=50&maxlon=-50&width=500&height=300&newmaps=1
+
+Canada
+http://api.wunderground.com/api/6be50baeecbb66f7/radar/image.png?minlat=50&minlon=-170&maxlat=75&maxlon=-10&width=500&height=200&newmaps=1
+
+Europe
+http://api.wunderground.com/api/6be50baeecbb66f7/radar/image.png?minlat=35&minlon=-13&maxlat=72&maxlon=40&width=500&height=500&newmaps=1
+
+Australia
+http://api.wunderground.com/api/6be50baeecbb66f7/radar/image.png?minlat=-50&minlon=110&maxlat=-5&maxlon=180&width=500&height=400&newmaps=1
