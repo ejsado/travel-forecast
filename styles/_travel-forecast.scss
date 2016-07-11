@@ -232,7 +232,7 @@ header, main {
 			width: 100%;
 			text-align: left;
 			padding: 0.5rem 1rem;
-			&:hover {
+			&:hover, &.highlight {
 				background: #EAEAEA;
 			}
 		}
@@ -556,7 +556,7 @@ header, main {
 				background: #DDD;
 				border-radius: 0.2rem;
 				min-width: 4rem;
-				max-width: calc(10vw + 12rem);
+				//max-width: calc(10vw + 12rem);
 				transition: opacity 200ms;
 				&::after {
 					content: "";

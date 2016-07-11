@@ -49,7 +49,7 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 	// set arrival date picker
 	var pickStartDate = new Pikaday({
 		field: document.getElementById('start-date'),
-		bound: false,
+		bound: true,
 		container: document.getElementById('pikaday-start'),
 		format: 'MMM D, YYYY',
 		defaultDate: dateFty.today,
@@ -70,7 +70,7 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 	// set departure date picker
 	var pickEndDate = new Pikaday({
 		field: document.getElementById('end-date'),
-		bound: false,
+		bound: true,
 		container: document.getElementById('pikaday-end'),
 		format: 'MMM D, YYYY',
 		defaultDate: dateFty.today,

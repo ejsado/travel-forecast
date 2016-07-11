@@ -136,13 +136,16 @@
 								ng-model="query"
 								ng-model-options="{debounce: 500}"
 								ng-change="mapUtils.locationSearch(query)"
-								ng-focus="mapUtils.showTypeAhead = true"
-								ng-blur="mapUtils.delayHideTypeAhead()">
+								ng-click="mapUtils.showTypeAhead = true; mapUtils.highlightIndex = 0"
+								ng-blur="mapUtils.delayHideTypeAhead()"
+								ng-keydown="mapUtils.highlightResult($event)">
 							<div id="location-type-ahead"
-								ng-show="mapUtils.showTypeAhead">
+								ng-show="mapUtils.showTypeAhead"
+								ng-mouseover="mapUtils.highlightIndex = -1">
 								<button class="type-ahead-result"
 									ng-repeat="result in mapUtils.typeAheadResults"
-									ng-click="mapUtils.setLocation(result)">
+									ng-click="mapUtils.setLocation(result)"
+									ng-class="{'highlight': mapUtils.highlightIndex == $index}">
 									{{ result.name }}
 								</button>
 							</div>
@@ -345,7 +348,7 @@
 												ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates) &&
 													appUtils.dateFty.datesEqual(travelDate, calendarUtils.selectedDate)"
 												ng-style="{'width': (appUtils.forecastFty.forecastList[destination.name]
-													[appUtils.dateFty.createDateString(travelDate)].text.length / 2.7) + 'rem'}">
+													[appUtils.dateFty.createDateString(travelDate)].text.length / 2.8) + 'rem'}">
 												<p class="weather-text">
 													{{
 														appUtils.forecastFty.forecastList[destination.name]

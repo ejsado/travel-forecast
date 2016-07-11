@@ -107,7 +107,8 @@ function alertFty($sce, $timeout) {
 					title: 'Who provides the data?',
 					text: [
 						'<a href="https://developer.forecast.io/">Dark Sky</a> provides the weather data',
-						'<a href="https://developers.google.com/maps/">Google</a> provides the map and location data'
+						'<a href="https://developers.google.com/maps/">Google</a> provides the map and location data',
+						'<a href="https://www.wunderground.com/?apiref=98798f3caba1662f">Weather Underground</a> provides the precipitation radar which is overlayed on the map'
 					]
 				},
 				{
@@ -1142,7 +1143,7 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 	// set arrival date picker
 	var pickStartDate = new Pikaday({
 		field: document.getElementById('start-date'),
-		bound: false,
+		bound: true,
 		container: document.getElementById('pikaday-start'),
 		format: 'MMM D, YYYY',
 		defaultDate: dateFty.today,
@@ -1163,7 +1164,7 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 	// set departure date picker
 	var pickEndDate = new Pikaday({
 		field: document.getElementById('end-date'),
-		bound: false,
+		bound: true,
 		container: document.getElementById('pikaday-end'),
 		format: 'MMM D, YYYY',
 		defaultDate: dateFty.today,
@@ -1436,7 +1437,7 @@ function mapCtrl($scope, $timeout, locationFty) {
 			image: "usa.png",
 			bounds: {
 				south: 15,
-				west: -130,
+				west: -170,
 				north: 50,
 				east: -50
 			}
@@ -1476,7 +1477,8 @@ function mapCtrl($scope, $timeout, locationFty) {
 			radarImages[i].bounds,
 			{
 				map: locationFty.map,
-				opacity: 0.4
+				opacity: 0.4,
+				clickable: false
 			}
 		);
 	}
@@ -1484,6 +1486,8 @@ function mapCtrl($scope, $timeout, locationFty) {
 	self.typeAheadResults = [];
 	
 	self.showTypeAhead = false;
+	
+	self.highlightIndex = 0;
 	
 	// clicked marker (red)
 	var marker = null;
@@ -1541,6 +1545,31 @@ function mapCtrl($scope, $timeout, locationFty) {
 		//console.log("coords unknown", result);
 		locationFty.locationDetails = result;
 		$scope.$apply();
+	}
+	
+	self.highlightResult = function(e) {
+		//console.log("key pressed", e.which);
+		if (e.which == 40) {
+			// down key pressed
+			e.preventDefault();
+			if (self.highlightIndex < (self.typeAheadResults.length - 1)) {
+				self.highlightIndex++;
+			}
+		} else if (e.which == 38) {
+			// up key pressed
+			e.preventDefault();
+			if (self.highlightIndex > 0) {
+				self.highlightIndex--;
+			}
+		} else if (e.which == 13) {
+			// enter key pressed
+			if (self.highlightIndex < 0) {
+				self.highlightIndex = 0;
+			}
+			self.setLocation(self.typeAheadResults[self.highlightIndex]);
+		} else {
+			self.highlightIndex = 0;
+		}
 	}
 	
 	self.setLocation = function(loc) {
