@@ -33,7 +33,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	self.clear = function() {
 		destinationFty.clearDestinations();
 		urlFty.clearUrlParamTrip();
-		//urlFty.buildUrlParamUnits(forecastFty.units);
+		urlFty.buildUrlParamUnits(forecastFty.units);
+		urlFty.buildUrlParamSort(destinationFty.sortBy);
 	}
 	
 	// flag to disable buttons while destinations are loading
@@ -60,7 +61,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		if (urlDestinations.length > 0) {
 			self.loadingDestinations = true;
 		} else {
-			//urlFty.buildUrlParamUnits(forecastFty.units);
+			urlFty.buildUrlParamUnits(forecastFty.units);
+			urlFty.buildUrlParamSort(destinationFty.sortBy);
 		}
 		
 		// 1 sec delay between loading destinations

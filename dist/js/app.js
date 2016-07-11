@@ -168,7 +168,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	angular.element(document).ready(function () {
 		// run this function once, only when loaded
-		//document.getElementById('loadingMask').style.display = "none";
+		document.getElementById('loading-mask').style.display = "none";
+		console.log("doc ready");
 	});
 	
 	var self = this;
@@ -199,6 +200,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		destinationFty.clearDestinations();
 		urlFty.clearUrlParamTrip();
 		urlFty.buildUrlParamUnits(forecastFty.units);
+		urlFty.buildUrlParamSort(destinationFty.sortBy);
 	}
 	
 	// flag to disable buttons while destinations are loading
@@ -210,6 +212,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	function getDataFromUrl() {
 		
 		forecastFty.units = urlFty.getUrlUnits();
+		
+		destinationFty.sortBy = urlFty.getUrlSort();
 		
 		var urlDestinations = [];
 	
@@ -224,6 +228,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 			self.loadingDestinations = true;
 		} else {
 			urlFty.buildUrlParamUnits(forecastFty.units);
+			urlFty.buildUrlParamSort(destinationFty.sortBy);
 		}
 		
 		// 1 sec delay between loading destinations
@@ -277,15 +282,6 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 							dateRangeInvalid = true;
 						}
 					}
-					// if more than 1 destination
-					if (destinationFty.destinationList.length > 1) {
-						// get estimated travel time between destinations
-						distanceFty.attemptGetDistance(
-							destinationFty.destinationList[destinationFty.destinationList.length - 2],
-							destinationFty.destinationList[destinationFty.destinationList.length - 1],
-							function() {}
-						);
-					}
 					// if done adding destinations
 					if (count == urlDestinations.length) {
 						// enable buttons
@@ -303,8 +299,17 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 						}
 						// rebuild url
 						urlFty.buildUrlParamTrip(destinationFty.destinationList);
-						// apply changes because $apply does not run after ajax calls
-						$scope.$apply();
+						// if more than 1 destination
+						if (destinationFty.destinationList.length > 1) {
+							// get estimated travel time between destinations
+							distanceFty.getDistances(
+								destinationFty.destinationList,
+								function() {
+									// apply changes because $apply does not run after ajax calls
+									$scope.$apply();
+								}
+							);
+						}
 					}
 				}, function(result) {
 					console.log("coords unknown, skipping location");
@@ -382,21 +387,9 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		destinationFty.removeDestination(index);
 		dateFty.buildDateList(destinationFty.destinationList);
 		urlFty.buildUrlParamTrip(destinationFty.destinationList);
-		locationFty.buildMapMarkers(destinationFty.destinationList);
-		// if destination was removed from the middle of the list
-		if (destinationFty.destinationList.length > 1 && 
-			index > 0 &&
-			index < destinationFty.destinationList.length
-		) {
-			// get new travel time estimation
-			distanceFty.attemptGetDistance(
-				destinationFty.destinationList[index - 1],
-				destinationFty.destinationList[index],
-				function() {
-					$scope.$apply();
-				}
-			);
-		}
+		urlFty.buildUrlParamUnits(forecastFty.units);
+		urlFty.buildUrlParamSort(destinationFty.sortBy);
+		locationFty.drawOnMap(destinationFty.destinationList);
 	}
 }
 function dateFty($filter) {
@@ -647,6 +640,8 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			} */
 		],
 		
+		sortBy: "departure",
+		
 		addDestination: function(place, arrival, departure) {
 			var destAdded = false;
 			// iterate through destination list
@@ -670,7 +665,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 					// rebuild date ranges
 					factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
 					destAdded = true;
-					alertFty.displayMessage("This destination exists, so I merged the dates.");
+					alertFty.displayMessage("I merged the dates for this destination.");
 				}
 			}
 			// if too many destinations
@@ -694,10 +689,10 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 				console.log("new destination added");
 				destAdded = true;
 			}
-			// sort destinations by departure date
+			// sort destinations
 			factory.destinationList.sort(factory.destinationCompare);
 			// update map markers
-			locationFty.buildMapMarkers(factory.destinationList);
+			locationFty.drawOnMap(factory.destinationList);
 			// rebuild date list
 			dateFty.buildDateList(factory.destinationList);
 			// return if the destination was successfully added
@@ -709,7 +704,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			if (rebuild) {
 				// resort
 				factory.destinationList.sort(factory.destinationCompare);
-				locationFty.buildMapMarkers(factory.destinationList);
+				locationFty.drawOnMap(factory.destinationList);
 				dateFty.buildDateList(factory.destinationList);
 			}
 		},
@@ -734,8 +729,23 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 		
 		// compare destinations for sorting
 		destinationCompare: function(a, b) {
-			// compare by departure date
-			return a.dates[a.dates.length - 1].getTime() - b.dates[b.dates.length - 1].getTime();
+			if (factory.sortBy == "arrival") {
+				return a.dates[0].getTime() - b.dates[0].getTime();
+			} else if (factory.sortBy == "name") {
+				var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+				var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+				if (nameA < nameB) {
+					return -1;
+				}
+				if (nameA > nameB) {
+					return 1;
+				}
+				// names must be equal
+				return 0;
+			} else {
+				// sort by destination
+				return a.dates[a.dates.length - 1].getTime() - b.dates[b.dates.length - 1].getTime();
+			}
 		},
 		
 		// remove all destinations
@@ -786,51 +796,47 @@ function distanceFty() {
 		
 		distanceMatrix: new google.maps.DistanceMatrixService(),
 		
-		attemptGetDistance: function(destination1, destination2, callback) {
-			if (factory.distanceList[destination1.name] != null && 
-				factory.distanceList[destination1.name][destination2.name] != null
-			) {
-				console.log("distance exists");
-			} else {
-				factory.getDistance(destination1, destination2, callback);
+		getDistances: function(destinationList, callback) {
+			var destinations = [];
+			for (var i = 0; i < destinationList.length; i++) {
+				destinations.push(new google.maps.LatLng(destinationList[i].coords.lat, destinationList[i].coords.lng));
 			}
-		},
-		
-		getDistance: function(destination1, destination2, callback) {
-			var origin = new google.maps.LatLng(destination1.coords.lat, destination1.coords.lng);
-			var destination = new google.maps.LatLng(destination2.coords.lat, destination2.coords.lng);
 			factory.distanceMatrix.getDistanceMatrix({
-				origins: [origin],
-				destinations: [destination],
+				origins: destinations,
+				destinations: destinations,
 				travelMode: google.maps.TravelMode.DRIVING,
 				unitSystem: google.maps.UnitSystem.IMPERIAL
 			}, function(response, status) {
-				factory.processDistanceMatrix(response, status, destination1.name, destination2.name);
+				factory.processDistanceMatrix(response, status, destinationList);
 				callback();
 			});
 		},
 		
-		processDistanceMatrix: function(response, status, fromName, toName) {
+		processDistanceMatrix: function(response, status, destinationList) {
 			if (status == google.maps.DistanceMatrixStatus.OK) {
-				if (factory.distanceList[fromName] == null) {
-					factory.distanceList[fromName] = {};
-				}
-				if (response.rows[0].elements[0].status == google.maps.DistanceMatrixStatus.OK) {
-					factory.distanceList[fromName][toName] = {
-						distance: response.rows[0].elements[0].distance,
-						duration: response.rows[0].elements[0].duration
-					};
-				} else {
-					factory.distanceList[fromName][toName] = {
-						distance: {
-							text: "Unknown distance",
-							value: 0
-						},
-						duration: {
-							text: "Unknown travel time",
-							value: 0
+				var origins = response.originAddresses;
+				for (var i = 0; i < origins.length; i++) {
+					factory.distanceList[destinationList[i].name] = {};
+					var results = response.rows[i].elements;
+					for (var n = 0; n < results.length; n++) {
+						if (results[n].status == google.maps.DistanceMatrixStatus.OK) {
+							factory.distanceList[destinationList[i].name][destinationList[n].name] = {
+								distance: results[n].distance,
+								duration: results[n].duration
+							};
+						} else {
+							factory.distanceList[destinationList[i].name][destinationList[n].name] = {
+								distance: {
+									text: "Unknown distance",
+									value: 0
+								},
+								duration: {
+									text: "Unknown travel time",
+									value: 0
+								}
+							};
 						}
-					};
+					}
 				}
 				console.log("distance matrix results", response);
 			} else {
@@ -1175,6 +1181,13 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 		urlFty.buildUrlParamUnits(forecastFty.units);
 	};
 	
+	self.sortOptions = ["departure", "arrival", "name"];
+	
+	self.sortChanged = function() {
+		urlFty.buildUrlParamSort(destinationFty.sortBy);
+		destinationFty.destinationList.sort(destinationFty.destinationCompare);
+	}
+	
 	self.attemptAddDestination = function(place, arrival, departure) {
 		// if place exists
 		if (place.coords != null) {
@@ -1195,29 +1208,14 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 				forecastFty.attemptGetForecast(place.coords.lat, place.coords.lng, place.name);
 				// if more than one destination
 				if (destinationFty.destinationList.length > 1) {
-					var destIndex = destinationFty.getDestinationIndexByName(place.name);
-					// if destination wasn't added at the end
-					if (destIndex < (destinationFty.destinationList.length - 1)) {
-						// get travel estimation from new destination to next one
-						distanceFty.attemptGetDistance(
-							destinationFty.destinationList[destIndex],
-							destinationFty.destinationList[destIndex + 1],
-							function() {
-								$scope.$apply();
-							}
-						);
-					}
-					// if destination wasn't added at the beginning
-					if (destIndex > 0) {
-						// get travel estimation from previous destination to new destination
-						distanceFty.attemptGetDistance(
-							destinationFty.destinationList[destIndex - 1],
-							destinationFty.destinationList[destIndex],
-							function() {
-								$scope.$apply();
-							}
-						);
-					}
+					// get estimated travel time between destinations
+					distanceFty.getDistances(
+						destinationFty.destinationList,
+						function() {
+							// apply changes because $apply does not run after ajax calls
+							$scope.$apply();
+						}
+					);
 				}
 				// add destination to url by rebuilding it
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
@@ -1270,6 +1268,15 @@ function locationFty() {
 		// list of numbered map markers (blue)
 		markerList: [],
 		
+		// line between destination markers
+		routeLine: new google.maps.Polyline({
+			path: [],
+			geodesic: true,
+			strokeColor: 'blue',
+			strokeOpacity: 0.5,
+			strokeWeight: 2
+		}),
+		
 		// saved location details
 		locationDetails: {
 			name: "Search for a location or select one on the map",
@@ -1305,6 +1312,11 @@ function locationFty() {
 			return loc;
 		},
 		
+		drawOnMap: function(destList) {
+			factory.buildMapMarkers(destList);
+			factory.buildRouteLine(destList);
+		},
+		
 		buildMapMarkers: function(destList) {
 			for (var i = 0; i < factory.markerList.length; i++) {
 				factory.markerList[i].setMap(null);
@@ -1333,19 +1345,30 @@ function locationFty() {
 			}
 		},
 		
+		buildRouteLine: function(destList) {
+			var coordsList = [];
+			for (var i = 0; i < destList.length; i++) {
+				coordsList.push(destList[i].coords);
+			}
+			factory.routeLine.setPath(coordsList);
+		},
+		
 		// find text query
 		geocodeAddress: function(address, successCallback, errorCallback) {
-			factory.geocoder.geocode({'address': address}, angular.bind(this, function(results, status) {
+			factory.geocoder.geocode({'address': address}, function(results, status) {
 				if (status === google.maps.GeocoderStatus.OK) {
-					console.log("address found", results[0]);
-					var locDetails = factory.createLocationDetails(results[0].formatted_address, results[0].geometry.location);
-					successCallback(locDetails);
+					console.log("addresses found", results);
+					var locList = [];
+					for (var i = 0; i < results.length; i++) {
+						locList.push(factory.createLocationDetails(results[i].formatted_address, results[i].geometry.location));
+					}
+					successCallback(locList);
 				} else {
 					console.log('Geocode address failed: ' + status);
 					var locDetails = factory.createLocationDetails("Location not found. Try selecting it on the map.", null);
 					errorCallback(locDetails);
 				}
-			}));
+			});
 		},
 		
 		// find coordinates
@@ -1355,7 +1378,11 @@ function locationFty() {
 					console.log("location found", results);
 					var resultMatch;
 					for (var i = 0; i < results.length; i++) {
-						if (results[i].address_components.length <= 5 &&
+						if (!results[i].types.includes("premise") &&
+							!results[i].types.includes("street_address") &&
+							!results[i].types.includes("route") &&
+							!results[i].types.includes("intersection") &&
+							!results[i].types.includes("subpremise") &&
 							!results[i].formatted_address.includes("Township")
 						) {
 							resultMatch = results[i];
@@ -1372,6 +1399,8 @@ function locationFty() {
 			});
 		}
 	};
+	
+	factory.routeLine.setMap(factory.map);
 	
 	return factory;
 	
@@ -1400,6 +1429,10 @@ function locationFty() {
 function mapCtrl($scope, $timeout, locationFty) {
 	
 	var self = this;
+	
+	self.typeAheadResults = [];
+	
+	self.showTypeAhead = false;
 	
 	// clicked marker (red)
 	var marker = null;
@@ -1433,32 +1466,44 @@ function mapCtrl($scope, $timeout, locationFty) {
 		map.setZoom(zoomLevel);
 	}
 	
-	function addressFound(result) {
-		console.log("address found");
-		locationFty.locationDetails = result;
-		centerMap(locationFty.map, result.coords);
-		zoomMap(locationFty.map, 10);
-		replaceMapMarker(locationFty.map, result.coords);
+	function addressFound(resultsList) {
+		//console.log("addresses found");
+		self.typeAheadResults = resultsList;
+		//self.showTypeAhead = true;
 		$scope.$apply();
 	}
 	
 	function addressNotFound(result) {
-		console.log("address not found");
+		//console.log("address not found");
 		locationFty.locationDetails = result;
 		removeMarker();
 		$scope.$apply();
 	}
 	
 	function coordsFound(result) {
-		console.log("coords found");
+		//console.log("coords found");
 		locationFty.locationDetails = result;
 		$scope.$apply();
 	}
 	
 	function coordsUnknown(result) {
-		console.log("coords unknown", result);
+		//console.log("coords unknown", result);
 		locationFty.locationDetails = result;
 		$scope.$apply();
+	}
+	
+	self.setLocation = function(loc) {
+		locationFty.locationDetails = loc;
+		centerMap(locationFty.map, loc.coords);
+		zoomMap(locationFty.map, 10);
+		replaceMapMarker(locationFty.map, loc.coords);
+		self.showTypeAhead = false;
+	}
+	
+	self.delayHideTypeAhead = function() {
+		$timeout(function() {
+			self.showTypeAhead = false;
+		}, 100);
 	}
 	
 	self.locationSearch = function(query) {
@@ -1530,6 +1575,30 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 			console.log("add url units");
 			factory.paramsUpdated = true;
 			$location.search('u', newUnits);
+		},
+		
+		getUrlSort: function() {
+			var urlParams = $location.search();
+			var param = urlParams.s;
+			if (param == 'a' || param == 'A') {
+				return 'arrival';
+			} else if (param == 'n' || param == 'N') {
+				return 'name';
+			} else {
+				return 'departure';
+			}
+		},
+		
+		buildUrlParamSort: function(sortBy) {
+			var newSort = 'd';
+			if (sortBy == 'arrival') {
+				newSort = 'a';
+			} else if (sortBy == 'name') {
+				newSort = 'n';
+			}
+			console.log("add url sort");
+			factory.paramsUpdated = true;
+			$location.search('s', newSort);
 		},
 		
 		clearUrlParamTrip: function() {

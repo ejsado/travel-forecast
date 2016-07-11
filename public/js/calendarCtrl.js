@@ -13,6 +13,8 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		destinationFty.removeDestination(index);
 		dateFty.buildDateList(destinationFty.destinationList);
 		urlFty.buildUrlParamTrip(destinationFty.destinationList);
+		urlFty.buildUrlParamUnits(forecastFty.units);
+		urlFty.buildUrlParamSort(destinationFty.sortBy);
 		locationFty.drawOnMap(destinationFty.destinationList);
 	}
 }

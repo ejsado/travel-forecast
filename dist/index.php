@@ -53,6 +53,13 @@
 		
 	</head>
 	<body>
+		<aside id="loading-mask"
+			ng-hide="appUtils.doneLoading">
+			<div id="cog-container">
+				<div class="cog"></div>
+				<div class="cog small"></div>
+			</div>
+		</aside>
 		<div id="flex-container">
 			<header>
 				<div id="header-wrapper" class="width-container">
@@ -113,7 +120,17 @@
 							<input id="location-search" type="text" placeholder="Search for a destination"
 								ng-model="query"
 								ng-model-options="{debounce: 500}"
-								ng-change="mapUtils.locationSearch(query)">
+								ng-change="mapUtils.locationSearch(query)"
+								ng-focus="mapUtils.showTypeAhead = true"
+								ng-blur="mapUtils.delayHideTypeAhead()">
+							<div id="location-type-ahead"
+								ng-show="mapUtils.showTypeAhead">
+								<button class="type-ahead-result"
+									ng-repeat="result in mapUtils.typeAheadResults"
+									ng-click="mapUtils.setLocation(result)">
+									{{ result.name }}
+								</button>
+							</div>
 						</div>
 					</div>
 				</section>
@@ -133,21 +150,21 @@
 							<div class="input-container"
 								ng-click="formUtils.showStartDatePicker = true">
 								<label class="label" for="start-date">
-									From
+									Arrival
 								</label>
 								<input type="text" id="start-date" readonly>
 							</div>
 							<div class="input-container"
 								ng-click="formUtils.showEndDatePicker = true">
 								<label class="label" for="end-date">
-									To
+									Departure
 								</label>
 								<input type="text" id="end-date" readonly>
 							</div>
 							<button id="add-button" class="btn"
 								ng-click="formUtils.attemptAddDestination(appUtils.locationFty.locationDetails, formUtils.startDate, formUtils.endDate)"
 								ng-disabled="appUtils.loadingDestinations">
-								Get Forecast
+								Add Forecast
 							</button>
 						</div>
 						<div id="alert-message">
@@ -157,7 +174,7 @@
 							</p>
 						</div>
 					</div>
-					<div id="change-units"
+					<div id="view-options"
 						ng-hide="appUtils.destinationFty.destinationList.length == 0">
 						<input type="radio" id="imperial-units" name="units" value="imperial" class="hidden-radio"
 							ng-model="appUtils.forecastFty.units"
@@ -171,6 +188,16 @@
 						<label class="btn btn-small btn-right btn-muted" for="metric-units">
 							C &deg;
 						</label>
+						<div class="input-container">
+							<label for="sort-by" class="label">
+								Sort By
+							</label>
+							<select id="sort-by"
+								ng-model="appUtils.destinationFty.sortBy"
+								ng-options="value for value in formUtils.sortOptions"
+								ng-change="formUtils.sortChanged()">
+							</select>
+						</div>
 					</div>
 					<aside id="pikaday-container">
 						<div id="pikaday-background"
@@ -259,6 +286,11 @@
 											<div class="weather-container"
 												ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates)"
 												ng-click="calendarUtils.setSelectedDate(travelDate)">
+												<div class="loading-forecast"
+													ng-hide="appUtils.forecastFty.forecastList[destination.name]
+															[appUtils.dateFty.createDateString(travelDate)]">
+													<div class="spinner"></div>
+												</div>
 												<div class="weather-icon" 
 													ng-class="appUtils.forecastFty.forecastList[destination.name]
 														[appUtils.dateFty.createDateString(travelDate)].icon">
@@ -368,6 +400,8 @@
 				</button>
 			</div>
 		</aside>
+		
+		
 		
 		<script>
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
