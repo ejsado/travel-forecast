@@ -68,6 +68,13 @@
 		
 	</head>
 	<body>
+		<aside id="loading-mask"
+			ng-hide="appUtils.doneLoading">
+			<div id="cog-container">
+				<div class="cog"></div>
+				<div class="cog small"></div>
+			</div>
+		</aside>
 		<div id="flex-container">
 			<header>
 				<div id="header-wrapper" class="width-container">
@@ -408,6 +415,8 @@
 				</button>
 			</div>
 		</aside>
+		
+		
 		
 		<script>
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

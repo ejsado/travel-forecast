@@ -1,3 +1,60 @@
+#loading-mask {
+	position: fixed;
+	z-index: 2000;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #FFF;
+	white-space: nowrap;
+	text-align: center;
+	&::after {
+		content: "";
+		height: 100%;
+		vertical-align: middle;
+		display: inline-block;
+		margin-right: -0.3rem;
+	}
+	#cog-container {
+		width: 9rem;
+		margin: 0 auto;
+		vertical-align: middle;
+		display: inline-block;
+		white-space: normal;
+	}
+	.cog {
+		position: relative;
+		float: left;
+		width: 5rem;
+		height: 5rem;
+		border-radius: 50%;
+		border: 0.8rem dotted #CCC;
+		animation: rotate 3s linear 0s infinite;
+		&::after {
+			content: "";
+			display: block;
+			position: absolute;
+			width: 120%;
+			height: 120%;
+			margin: -10%;
+			border-radius: 50%;
+			border: 1rem solid #CCC;
+		}
+		&.small {
+			width: 4rem;
+			height: 4rem;
+			margin: 1rem 0 0 -0.2rem;
+			animation-direction: reverse;
+			animation-duration: 2.4s;
+			&::after {
+				width: 130%;
+				height: 130%;
+				margin: -15%;
+			}
+		}
+	}
+}
+
 header {
 	border-bottom: 1px solid #DDD;
 }
@@ -545,6 +602,8 @@ header, main {
 	width: 8rem;
 	margin: 1.5rem auto 0;
 }
+
+
 
 @keyframes rotate {
 	from {

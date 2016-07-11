@@ -2,7 +2,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	angular.element(document).ready(function () {
 		// run this function once, only when loaded
-		//document.getElementById('loadingMask').style.display = "none";
+		document.getElementById('loading-mask').style.display = "none";
+		console.log("doc ready");
 	});
 	
 	var self = this;
