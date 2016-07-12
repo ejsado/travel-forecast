@@ -176,7 +176,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	var self = this;
 	
-	// add factories to scope to they can be accessed in the html
+	// add factories to scope so they can be accessed in the html
 	
 	self.locationFty = locationFty;
 	
@@ -312,6 +312,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 								}
 							);
 						}
+						// make affiliate links
+						urlFty.monetizeLinks();
 					}
 				}, function(result) {
 					console.log("coords unknown, skipping location");
@@ -1228,6 +1230,8 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
 				console.log("destination list", destinationFty.destinationList);
 				console.log("date list", dateFty.dateList);
+				alertFty.displayMessage("Destination added!");
+				urlFty.monetizeLinks();
 			} else {
 				alertFty.displayMessage("Nah, those dates don't work for me. Try again.");
 			}
@@ -1868,6 +1872,28 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 				title += " to " + destList[destList.length - 1].name;
 			}
 			return title;
+		},
+		
+		monetizeLinks: function() {
+			var head = document.getElementsByTagName('head')[0];
+			var currentScripts = head.getElementsByTagName('script');
+			var oldScript = null;
+			var scriptUrl = "";
+			for (var i = 0; i < currentScripts.length; i++) { 
+				var desc = currentScripts[i].dataset.desc; 
+				if ( desc == "monetize" ) { 
+					oldScript = currentScripts[i];
+				}
+			}
+			if (oldScript != null) {
+				//console.log("old script", oldScript);
+				scriptUrl = oldScript.src;
+				head.removeChild(oldScript);
+			}
+			var script = document.createElement('script');
+			script.src = scriptUrl;
+			script.dataset.desc = "monetize";
+			head.appendChild(script);
 		}
 		
 	};

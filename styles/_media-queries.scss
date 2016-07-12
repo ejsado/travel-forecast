@@ -67,7 +67,7 @@
 	#form-container #pikaday-container .center-pikaday {
 		transform: scale(1);
 	}
-	#map-container #map-ad .advert  {
+	#map-container #map-ad .money-box  {
 		transform: scale(0.78);
 	}
 	@media (min-width: 400px) {
@@ -86,7 +86,7 @@
 	@media (min-width: 800px) {
 		#map-container #map-ad {
 			max-width: 234px;
-			.advert  {
+			.money-box  {
 				//transform: scale(0.78);
 			}
 		}
@@ -100,7 +100,7 @@
 		}
 		#map-container #map-ad {
 			max-width: 300px;
-			.advert  {
+			.money-box  {
 				transform: scale(1);
 			}
 		}

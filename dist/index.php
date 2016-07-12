@@ -17,6 +17,8 @@
 		
 		<link href="/css/all.min.css" rel="stylesheet" type="text/css">
 		
+		<script src="/js/lib/cj.js" data-desc="monetize"></script>
+		
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.min.js"></script>
 
@@ -99,7 +101,7 @@
 					<div id="map-drawer">
 						<div id="map"></div>
 						<div id="map-ad">
-							<div class="advert">
+							<div class="money-box">
 								<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 								<!-- map ad fixed -->
 								<ins class="adsbygoogle"
@@ -171,10 +173,20 @@
 							</button>
 						</div>
 						<div id="alert-message">
-							<p id="alert-message-content"
+							<span id="alert-message-content"
 								ng-show="appUtils.alertFty.showMessage">
 								{{ appUtils.alertFty.messageContent }}
-							</p>
+							</span>
+						</div>
+						<div class="money-box">
+							<a href="http://www.backcountry.com/sc/activities" target="_top">
+								<div class="money-text">
+									Going on an adventure? <strong>Get the gear you need</strong>
+								</div>
+								<div class="money-image">
+									<img src="/img/backcountry.jpg" width="120" height="60" alt="Backcountry.com Logo Banner" border="0"/>
+								</div>
+							</a>
 						</div>
 					</div>
 					<div id="view-options"
@@ -379,7 +391,7 @@
 							Directions to All Destinations
 						</a>
 					</div>
-					<div class="advert">
+					<div class="money-box">
 						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 						<!-- small footer ad -->
 						<ins class="adsbygoogle"
@@ -421,8 +433,6 @@
 				</button>
 			</div>
 		</aside>
-		
-		<script src="//www.anrdoezrs.net/am/8108989/include/allCj/impressions/page/am.js"></script>
 		
 		<script>
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

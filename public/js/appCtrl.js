@@ -8,7 +8,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	var self = this;
 	
-	// add factories to scope to they can be accessed in the html
+	// add factories to scope so they can be accessed in the html
 	
 	self.locationFty = locationFty;
 	
@@ -144,6 +144,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 								}
 							);
 						}
+						// make affiliate links
+						urlFty.monetizeLinks();
 					}
 				}, function(result) {
 					console.log("coords unknown, skipping location");

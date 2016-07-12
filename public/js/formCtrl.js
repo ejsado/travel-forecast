@@ -129,6 +129,8 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
 				console.log("destination list", destinationFty.destinationList);
 				console.log("date list", dateFty.dateList);
+				alertFty.displayMessage("Destination added!");
+				urlFty.monetizeLinks();
 			} else {
 				alertFty.displayMessage("Nah, those dates don't work for me. Try again.");
 			}

@@ -234,6 +234,28 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 				title += " to " + destList[destList.length - 1].name;
 			}
 			return title;
+		},
+		
+		monetizeLinks: function() {
+			var head = document.getElementsByTagName('head')[0];
+			var currentScripts = head.getElementsByTagName('script');
+			var oldScript = null;
+			var scriptUrl = "";
+			for (var i = 0; i < currentScripts.length; i++) { 
+				var desc = currentScripts[i].dataset.desc; 
+				if ( desc == "monetize" ) { 
+					oldScript = currentScripts[i];
+				}
+			}
+			if (oldScript != null) {
+				//console.log("old script", oldScript);
+				scriptUrl = oldScript.src;
+				head.removeChild(oldScript);
+			}
+			var script = document.createElement('script');
+			script.src = scriptUrl;
+			script.dataset.desc = "monetize";
+			head.appendChild(script);
 		}
 		
 	};
