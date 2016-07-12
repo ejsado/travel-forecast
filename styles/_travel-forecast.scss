@@ -16,7 +16,7 @@
 		margin-right: -0.3rem;
 	}
 	#cog-container {
-		width: 9rem;
+		width: 140px;
 		margin: 0 auto;
 		vertical-align: middle;
 		display: inline-block;
@@ -25,31 +25,33 @@
 	.cog {
 		position: relative;
 		float: left;
-		width: 5rem;
-		height: 5rem;
+		width: 80px;
+		height: 80px;
 		border-radius: 50%;
-		border: 0.8rem dotted #CCC;
+		border: 10px dotted #CCC;
 		animation: rotate 3s linear 0s infinite;
 		&::after {
 			content: "";
 			display: block;
 			position: absolute;
-			width: 120%;
-			height: 120%;
-			margin: -10%;
+			width: 110%;
+			height: 110%;
+			margin: -5%;
 			border-radius: 50%;
-			border: 1rem solid #CCC;
+			border: 15px solid #CCC;
 		}
 		&.small {
-			width: 4rem;
-			height: 4rem;
-			margin: 1rem 0 0 -0.2rem;
+			width: 60px;
+			height: 60px;
+			border-width: 6px;
+			margin: 20px 0 0 0;
 			animation-direction: reverse;
 			animation-duration: 2.4s;
 			&::after {
-				width: 130%;
-				height: 130%;
-				margin: -15%;
+				//border-width: 15px;
+				width: 106%;
+				height: 106%;
+				margin: -3%;
 			}
 		}
 	}
