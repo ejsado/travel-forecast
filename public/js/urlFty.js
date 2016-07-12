@@ -187,6 +187,21 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 			}
 		},
 		
+		createPricelineHotelsUrl: function(destination) {
+			var url = "https://www.priceline.com/stay/#/search/hotels/";
+			var placeName = destination.name.split(' ').join('+');
+			url += placeName + "/";
+			var startDate = destination.dates[0];
+			var endDate = destination.dates[destination.dates.length - 1];
+			if (dateFty.datesEqual(startDate, endDate)) {
+				endDate = new Date(endDate);
+				endDate.setDate(endDate.getDate() + 1);
+			}
+			url += dateFty.createPricelineDateString(startDate) + "/" + dateFty.createPricelineDateString(endDate) + "/";
+			url += "1?searchType=CITY&page=1";
+			return url;
+		},
+		
 		shortUrlThrottle: false,
 		
 		buildShortUrl: function() {

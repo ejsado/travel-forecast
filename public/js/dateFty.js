@@ -54,6 +54,10 @@ function dateFty($filter) {
 			return $filter('date')(dateObj, 'MMddyy');
 		},
 		
+		createPricelineDateString: function(dateObj) {
+			return $filter('date')(dateObj, 'yyyyMMdd');
+		},
+		
 		// expand a compresssed date string
 		createDateFromString: function(dateStr) {
 			if (dateStr.length == 6) {

@@ -35,14 +35,15 @@ function distanceFty() {
 								distance: results[n].distance,
 								duration: results[n].duration
 							};
+							//factory.distanceList[destinationList[i].name][destinationList[n].name].duration.text += " driving";
 						} else {
 							factory.distanceList[destinationList[i].name][destinationList[n].name] = {
 								distance: {
-									text: "Unknown distance",
+									text: "unknown distance",
 									value: 0
 								},
 								duration: {
-									text: "Unknown travel time",
+									text: "unknown duration",
 									value: 0
 								}
 							};

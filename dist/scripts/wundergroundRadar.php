@@ -1,5 +1,5 @@
 <?php
-	
+	echo exec('whoami');
 	echo "Getting radar images... ";
 	$wBaseUrl = "http://api.wunderground.com/api/6be50baeecbb66f7/radar/image.png?";
 	

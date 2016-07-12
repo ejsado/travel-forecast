@@ -263,7 +263,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 							if (dateRangeList[n].departure < dateFty.today) {
 								dateRangeList[n].departure = new Date(dateFty.today);
 							}
-							// switch dates if one departure is before arrival
+							// switch dates if departure is before arrival
 							if (dateRangeList[n].arrival > dateRangeList[n].departure) {
 								destinationFty.addDestination(
 									result,
@@ -277,13 +277,13 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 									dateRangeList[n].departure
 								);
 							}
-							// get forecast for added destination
-							forecastFty.attemptGetForecast(result.coords.lat, result.coords.lng, result.name);
 						} else {
 							console.log("destination date range invalid");
 							dateRangeInvalid = true;
 						}
 					}
+					// get forecast for added destination
+					forecastFty.attemptGetForecast(result.coords.lat, result.coords.lng, result.name);
 					// if done adding destinations
 					if (count == urlDestinations.length) {
 						// enable buttons
@@ -448,6 +448,10 @@ function dateFty($filter) {
 		// create a compressed date string
 		createDateString: function(dateObj) {
 			return $filter('date')(dateObj, 'MMddyy');
+		},
+		
+		createPricelineDateString: function(dateObj) {
+			return $filter('date')(dateObj, 'yyyyMMdd');
 		},
 		
 		// expand a compresssed date string
@@ -826,14 +830,15 @@ function distanceFty() {
 								distance: results[n].distance,
 								duration: results[n].duration
 							};
+							//factory.distanceList[destinationList[i].name][destinationList[n].name].duration.text += " driving";
 						} else {
 							factory.distanceList[destinationList[i].name][destinationList[n].name] = {
 								distance: {
-									text: "Unknown distance",
+									text: "unknown distance",
 									value: 0
 								},
 								duration: {
-									text: "Unknown travel time",
+									text: "unknown duration",
 									value: 0
 								}
 							};
@@ -1814,6 +1819,21 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 					return "";
 				}
 			}
+		},
+		
+		createPricelineHotelsUrl: function(destination) {
+			var url = "https://www.priceline.com/stay/#/search/hotels/";
+			var placeName = destination.name.split(' ').join('+');
+			url += placeName + "/";
+			var startDate = destination.dates[0];
+			var endDate = destination.dates[destination.dates.length - 1];
+			if (dateFty.datesEqual(startDate, endDate)) {
+				endDate = new Date(endDate);
+				endDate.setDate(endDate.getDate() + 1);
+			}
+			url += dateFty.createPricelineDateString(startDate) + "/" + dateFty.createPricelineDateString(endDate) + "/";
+			url += "1?searchType=CITY&page=1";
+			return url;
 		},
 		
 		shortUrlThrottle: false,

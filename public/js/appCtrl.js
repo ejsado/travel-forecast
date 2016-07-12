@@ -95,7 +95,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 							if (dateRangeList[n].departure < dateFty.today) {
 								dateRangeList[n].departure = new Date(dateFty.today);
 							}
-							// switch dates if one departure is before arrival
+							// switch dates if departure is before arrival
 							if (dateRangeList[n].arrival > dateRangeList[n].departure) {
 								destinationFty.addDestination(
 									result,
@@ -109,13 +109,13 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 									dateRangeList[n].departure
 								);
 							}
-							// get forecast for added destination
-							forecastFty.attemptGetForecast(result.coords.lat, result.coords.lng, result.name);
 						} else {
 							console.log("destination date range invalid");
 							dateRangeInvalid = true;
 						}
 					}
+					// get forecast for added destination
+					forecastFty.attemptGetForecast(result.coords.lat, result.coords.lng, result.name);
 					// if done adding destinations
 					if (count == urlDestinations.length) {
 						// enable buttons

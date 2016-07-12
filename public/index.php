@@ -11,7 +11,7 @@
 			Travel Weathr - Show the weather for every destination in your trip
 		</title>
 		
-		<meta name="description" content="Build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with. Every time you visit the link, your freshly updated forecast will be shown.">
+		<meta name="description" content="Build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then easily find flights and hotels for each destination.">
 		
 		<link rel="shortcut icon" type="image/ico" href="/favicon.png">
 		
@@ -22,7 +22,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-animate.js"></script>
 		<!-- endbuild -->
 		
-		<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $googleKey; ?>"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $googleKey; ?>&libraries=places"></script>
 		
 		<script>
 			var googleKey = "<?php echo $googleKey; ?>";
@@ -262,6 +262,13 @@
 												<div class="destination-name" title="{{ destination.name }}">
 													{{ destination.name }}
 												</div>
+												<div class="destination-hotels">
+													<a href="{{ appUtils.urlFty.createPricelineHotelsUrl(destination) }}">
+														<span>
+															Find a hotel
+														</span>
+													</a>
+												</div>
 											</div>
 										</td>
 									</tr>
@@ -269,18 +276,29 @@
 										<td class="estimation-cell">
 											<div class="estimation-container"
 												ng-hide="$index == appUtils.destinationFty.destinationList.length - 1">
-												&varr;
-												{{
-													appUtils.distanceFty.distanceList[destination.name]
-													[appUtils.destinationFty.destinationList[$index + 1].name].duration.text
-												}}
-												&mdash;
-												<a href="{{ appUtils.urlFty.createDirectionsUrl([
-														destination,
-														appUtils.destinationFty.destinationList[$index + 1]
-													]) }}">
-													directions
-												</a>
+												<div class="float-left varr">
+													&varr;
+												</div>
+												<div>
+													Driving:
+													<strong>
+														{{
+															appUtils.distanceFty.distanceList[destination.name]
+															[appUtils.destinationFty.destinationList[$index + 1].name].duration.text
+														}}
+													</strong>
+												</div>
+												<div>
+													<a href="{{ appUtils.urlFty.createDirectionsUrl([
+															destination,
+															appUtils.destinationFty.destinationList[$index + 1]
+														]) }}">
+														Get directions</a>
+													&mdash;
+													<a href="http://www.dpbolvw.net/click-8108989-10392969-1467996812000">
+														Book a flight
+													</a>
+												</div>
 											</div>
 										</td>
 									</tr>
@@ -348,7 +366,7 @@
 												ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates) &&
 													appUtils.dateFty.datesEqual(travelDate, calendarUtils.selectedDate)"
 												ng-style="{'width': (appUtils.forecastFty.forecastList[destination.name]
-													[appUtils.dateFty.createDateString(travelDate)].text.length / 2.8) + 'rem'}">
+													[appUtils.dateFty.createDateString(travelDate)].text.length / 4) + 'rem'}">
 												<p class="weather-text">
 													{{
 														appUtils.forecastFty.forecastList[destination.name]
@@ -419,7 +437,7 @@
 			</div>
 		</aside>
 		
-		
+		<script src="//www.anrdoezrs.net/am/8108989/include/allCj/impressions/page/am.js"></script>
 		
 		<script>
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
