@@ -1,3 +1,25 @@
+/** !save
+* 
+* @source:https://github.com/ejsado/travel-forecast/blob/master/dist/js/app.js
+*
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
+
 function alertFty($sce, $timeout) {
 	
 	var factory = {
@@ -170,6 +192,25 @@ function alertFty($sce, $timeout) {
 	return factory;
 	
 }
+/**
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
+
 function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dateFty, urlFty, distanceFty, alertFty) {
 	
 	angular.element(document).ready(function () {
@@ -378,6 +419,25 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 
 
 
+/**
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
+
 function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty, alertFty) {
 	
 	var self = this;
@@ -399,6 +459,25 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		alertFty.displayMessage("Destination removed. Hit your browser's back button to undo.", "warning");
 	}
 }
+/**
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
+
 function dateFty($filter) {
 	
 	var factory = {
@@ -626,6 +705,25 @@ function dateFty($filter) {
 
 
 
+/**
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
+
 function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 	
 	var factory = {
@@ -810,6 +908,25 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 
 
 
+/**
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
+
 function distanceFty() {
 	
 	var factory = {
@@ -873,6 +990,25 @@ function distanceFty() {
 	return factory;
 	
 }
+/**
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
+
 function forecastFty($http, $timeout, dateFty, destinationFty) {
 	
 	var factory = {
@@ -1114,6 +1250,25 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 
 
 
+/**
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
+
 function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distanceFty, alertFty) {
 	
 	var self = this;
@@ -1276,6 +1431,25 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 
 
 
+
+/**
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
 
 function locationFty() {
 	
@@ -1450,6 +1624,25 @@ function locationFty() {
 
 
 
+
+/**
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
 
 function mapCtrl($scope, $timeout, locationFty) {
 	
@@ -1649,6 +1842,25 @@ function mapCtrl($scope, $timeout, locationFty) {
 
 
 
+
+/**
+* Travel Weathr - build a weather forecast calendar
+* Copyright (C) 2016  Eric Sadowski
+* 
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Affero General Public License for more details.
+* 
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* 
+*/
 
 function urlFty($timeout, $location, $http, dateFty, locationFty) {
 	

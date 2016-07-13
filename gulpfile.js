@@ -45,7 +45,11 @@ gulp.task('compressJs', function() {
         .pipe(gulp.dest(jsDest))
 		.pipe(rename('app.min.js'))
 		.pipe(uglify({
-			mangle: false
+			mangle: false,
+			preserveComments: function(node, comment) {
+				//console.log(comment);
+				return comment.value.includes("!save");
+			}
 		}))
 		.pipe(gulp.dest(jsDest));
 });
