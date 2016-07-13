@@ -16,7 +16,7 @@
 		<meta property="og:title" content="Travel Weathr - Show the weather for every destination in your trip" />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="http://www.travelweathr.com/" />
-		<meta property="og:image" content="http://www.travelweathr.com/img/logo-128.png" />
+		<meta property="og:image" content="http://www.travelweathr.com/img/logo-colored-bg-256.png" />
 		<meta property="og:description" content="Build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then easily find flights and hotels for each destination.">
 		
 		<meta name="description" content="Build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then easily find flights and hotels for each destination.">
@@ -76,7 +76,7 @@
 						<button
 							ng-click="appUtils.clear()"
 							ng-disabled="appUtils.destinationFty.loadingDestinations">
-							<img src="/img/logo-128.png" alt="">
+							<img src="/img/logo-colored-128.png" alt="">
 							<span>Travel Weathr</span>
 						</button>
 					</div>
