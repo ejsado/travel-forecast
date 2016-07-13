@@ -8,14 +8,17 @@ function alertFty($sce, $timeout) {
 		
 		messageContent: '',
 		
-		displayMessage: function(mContent) {
+		messageCssClass: '',
+		
+		displayMessage: function(mContent, mClass) {
+			factory.messageCssClass = mClass || '';
 			$timeout.cancel(factory.messageTimer);
 			// set message to "Nope" if no message is set
 			mContent = mContent || 'Nope.';
 			factory.messageContent = mContent;
 			factory.showMessage = true;
 			// hide message after 9 seconds
-			factory.messageTimer = $timeout(factory.hideMessage, 9000);
+			factory.messageTimer = $timeout(factory.hideMessage, 8000);
 		},
 		
 		hideMessage: function() {
@@ -203,10 +206,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		urlFty.clearUrlParamTrip();
 		urlFty.buildUrlParamUnits(forecastFty.units);
 		urlFty.buildUrlParamSort(destinationFty.sortBy);
+		alertFty.displayMessage("All destinations removed. Hit your browser's back button to undo.", "warning");
 	}
-	
-	// flag to disable buttons while destinations are loading
-	self.loadingDestinations = false;
 	
 	// load destinations from url
 	getDataFromUrl();
@@ -227,7 +228,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		}
 		
 		if (urlDestinations.length > 0) {
-			self.loadingDestinations = true;
+			destinationFty.loadingDestinations = true;
 		} else {
 			urlFty.buildUrlParamUnits(forecastFty.units);
 			urlFty.buildUrlParamSort(destinationFty.sortBy);
@@ -287,7 +288,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 					// if done adding destinations
 					if (count == urlDestinations.length) {
 						// enable buttons
-						self.loadingDestinations = false;
+						destinationFty.loadingDestinations = false;
 						console.log("done loading destinations");
 						// show errors, if any
 						if (count != destinationFty.destinationList.length) {
@@ -376,7 +377,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 
 
 
-function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty) {
+function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty, alertFty) {
 	
 	var self = this;
 	
@@ -394,6 +395,7 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		urlFty.buildUrlParamUnits(forecastFty.units);
 		urlFty.buildUrlParamSort(destinationFty.sortBy);
 		locationFty.drawOnMap(destinationFty.destinationList);
+		alertFty.displayMessage("Destination removed. Hit your browser's back button to undo.", "warning");
 	}
 }
 function dateFty($filter) {
@@ -650,6 +652,9 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 		
 		sortBy: "departure",
 		
+		// flag to disable buttons while destinations are loading
+		loadingDestinations: false,
+		
 		addDestination: function(place, arrival, departure) {
 			var destAdded = false;
 			// iterate through destination list
@@ -661,7 +666,9 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 					if (!dateFty.datesWithinDays(factory.destinationList[i].dates[0], departure, dateFty.maxDateRange)) {
 						console.log("destination date range greater than 30 days");
 						// show message
-						alertFty.displayMessage("Staying for more than " + dateFty.maxDateRange + " days? That's absurd.");
+						if (!factory.loadingDestinations) {
+							alertFty.displayMessage("Forecasts are limited to " + dateFty.maxDateRange + " days per destination.", "error");
+						}
 						return destAdded;
 					}
 					// add all dates within date range
@@ -673,13 +680,17 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 					// rebuild date ranges
 					factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
 					destAdded = true;
-					alertFty.displayMessage("I merged the dates for this destination.");
+					if (!factory.loadingDestinations) {
+						alertFty.displayMessage("I merged the dates for this destination.", "info");
+					}
 				}
 			}
 			// if too many destinations
-			if (factory.destinationList.length > 10) {
+			if (factory.destinationList.length >= 10) {
 				console.log("maximum destinations reached");
-				alertFty.displayMessage("More than 10 destinations? That's ridiculous.");
+				if (!factory.loadingDestinations) {
+					alertFty.displayMessage("Maximum of 10 destinations. Remove a destination to add this one.", "error");
+				}
 				return destAdded;
 			}
 			// if destination was not added yet
@@ -695,6 +706,9 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 					}]
 				});
 				console.log("new destination added");
+				if (!factory.loadingDestinations) {
+					alertFty.displayMessage("New destination added!", "success");
+				}
 				destAdded = true;
 			}
 			// sort destinations
@@ -1209,7 +1223,7 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 				if (arrival > departure) {
 					destinationFty.addDestination(place, departure, arrival);
 					console.log("switched dates");
-					alertFty.displayMessage("Your dates were backwards, so I switched them for you.");
+					alertFty.displayMessage("Your dates were backwards, so I switched them for you.", "info");
 				} else {
 					destinationFty.addDestination(place, arrival, departure);
 				}
@@ -1230,13 +1244,12 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
 				console.log("destination list", destinationFty.destinationList);
 				console.log("date list", dateFty.dateList);
-				alertFty.displayMessage("Destination added!");
 				urlFty.monetizeLinks();
 			} else {
-				alertFty.displayMessage("Nah, those dates don't work for me. Try again.");
+				alertFty.displayMessage("Your date range is invalid. Forecasts are limited to " + dateFty.maxDateRange + " days per destination.", "error");
 			}
 		} else {
-			alertFty.displayMessage("That place doesn't exist.");
+			alertFty.displayMessage("That place doesn't exist.", "error");
 		}
 	}
 	

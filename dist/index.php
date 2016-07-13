@@ -69,7 +69,7 @@
 					<div id="logo-container">
 						<button
 							ng-click="appUtils.clear()"
-							ng-disabled="appUtils.loadingDestinations">
+							ng-disabled="appUtils.destinationFty.loadingDestinations">
 							<img src="/img/logo-128.png" alt="">
 							<span>Travel Weathr</span>
 						</button>
@@ -169,13 +169,14 @@
 							</div>
 							<button id="add-button" class="btn"
 								ng-click="formUtils.attemptAddDestination(appUtils.locationFty.locationDetails, formUtils.startDate, formUtils.endDate)"
-								ng-disabled="appUtils.loadingDestinations">
+								ng-disabled="appUtils.destinationFty.loadingDestinations">
 								Add Forecast
 							</button>
 						</div>
-						<div id="alert-message">
+						<div id="alert-message"
+							ng-show="appUtils.alertFty.showMessage">
 							<span id="alert-message-content"
-								ng-show="appUtils.alertFty.showMessage">
+								ng-class="appUtils.alertFty.messageCssClass">
 								{{ appUtils.alertFty.messageContent }}
 							</span>
 						</div>
@@ -249,7 +250,7 @@
 											<div class="destination-container">
 												<button class="remove-button" title="remove"
 													ng-click="calendarUtils.removeSingleDestination($index)"
-													ng-disabled="appUtils.loadingDestinations">
+													ng-disabled="appUtils.destinationFty.loadingDestinations">
 													&times;
 												</button>
 												<div class="float-left">
@@ -384,7 +385,7 @@
 						ng-hide="appUtils.destinationFty.destinationList.length < 2">
 						<button class="btn-link btn-link-alt"
 							ng-click="appUtils.clear()"
-							ng-disabled="appUtils.loadingDestinations">
+							ng-disabled="appUtils.destinationFty.loadingDestinations">
 							Remove All Destinations
 						</button>
 						&nbsp;

@@ -304,11 +304,8 @@ header, main {
 			&.error {
 				background: #fda0a0;
 			}
-			&.info {
-				background: #a0dafd;
-			}
-			&.success {
-				background: #8be0c1;
+			&.info, &.success {
+				background: #cbbef1;
 			}
 		}
 	}
