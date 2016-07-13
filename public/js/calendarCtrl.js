@@ -1,4 +1,4 @@
-function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty) {
+function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty, alertFty) {
 	
 	var self = this;
 	
@@ -16,5 +16,6 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		urlFty.buildUrlParamUnits(forecastFty.units);
 		urlFty.buildUrlParamSort(destinationFty.sortBy);
 		locationFty.drawOnMap(destinationFty.destinationList);
+		alertFty.displayMessage("Destination removed. Hit your browser's back button to undo.", "warning");
 	}
 }

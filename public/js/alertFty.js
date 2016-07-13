@@ -8,7 +8,10 @@ function alertFty($sce, $timeout) {
 		
 		messageContent: '',
 		
-		displayMessage: function(mContent) {
+		messageCssClass: '',
+		
+		displayMessage: function(mContent, mClass) {
+			factory.messageCssClass = mClass || '';
 			$timeout.cancel(factory.messageTimer);
 			// set message to "Nope" if no message is set
 			mContent = mContent || 'Nope.';

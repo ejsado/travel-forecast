@@ -1,3 +1,13 @@
+.spinner {
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	border: 0.3rem solid transparent;
+	border-top-color: #CCC;
+	border-bottom-color: #CCC;
+	animation: rotate 1.5s linear 0s infinite;
+}
+					
 #loading-mask {
 	position: fixed;
 	z-index: 2000;
@@ -15,44 +25,16 @@
 		display: inline-block;
 		margin-right: -0.3rem;
 	}
-	#cog-container {
-		width: 140px;
+	#spinner-container {
+		width: 2rem;
 		margin: 0 auto;
 		vertical-align: middle;
 		display: inline-block;
 		white-space: normal;
-	}
-	.cog {
-		position: relative;
-		float: left;
-		width: 80px;
-		height: 80px;
-		border-radius: 50%;
-		border: 10px dotted #CCC;
-		animation: rotate 3s linear 0s infinite;
-		&::after {
-			content: "";
-			display: block;
-			position: absolute;
-			width: 110%;
-			height: 110%;
-			margin: -5%;
-			border-radius: 50%;
-			border: 15px solid #CCC;
-		}
-		&.small {
-			width: 60px;
-			height: 60px;
-			border-width: 6px;
-			margin: 20px 0 0 0;
-			animation-direction: reverse;
-			animation-duration: 2.4s;
-			&::after {
-				//border-width: 15px;
-				width: 106%;
-				height: 106%;
-				margin: -3%;
-			}
+		.spinner {
+			width: 4rem;
+			height: 4rem;
+			border-width: 0.6rem;
 		}
 	}
 }
@@ -297,23 +279,41 @@ header, main {
 		height: 3rem;
 	}
 	#alert-message {
-		min-height: 2rem;
+		position: fixed;
+		width: 100%;
+		max-width: 40rem;
+		margin: 0 auto;
 		text-align: center;
+		top: 0;
+		transform: translateY(6rem);
+		transition: transform 200ms;
+		&.ng-hide {
+			transform: translateY(0);
+		}
 		#alert-message-content {
-			margin: 0;
 			font-size: 1rem;
-			color: #FFF;
-			background: #888;
+			color: #000;
+			background: #CCC;
 			padding: 0.5rem 1rem;
 			border-radius: 0.2rem;
-			transition: opacity 200ms;
-			&.ng-hide {
-				opacity: 0;
+			//box-shadow: 0 0 0.5rem rgba(0,0,0,0.2);
+			border: 1px solid rgba(255,255,255,0.6);
+			&.warning {
+				background: #ffda6e;
+			}
+			&.error {
+				background: #fda0a0;
+			}
+			&.info {
+				background: #a0dafd;
+			}
+			&.success {
+				background: #8be0c1;
 			}
 		}
 	}
 	.money-box {
-		margin: 1rem 0 1.5rem;
+		margin: 2rem 0 1.5rem;
 		text-align: center;
 		a {
 			display: inline-flex;
@@ -533,6 +533,7 @@ header, main {
 		overflow: auto;
 		padding-right: calc(10vw + 6rem);
 		display: flex;
+		overflow-y: hidden;
 		.weather-table {
 			margin-left: 0.5rem;
 			.weather-container {
@@ -555,14 +556,7 @@ header, main {
 					left: 0;
 					background: #FFF;
 					.spinner {
-						width: 2rem;
-						height: 2rem;
 						margin: 2.5rem 1rem;
-						border-radius: 50%;
-						border: 4px solid transparent;
-						border-top-color: #CCC;
-						border-bottom-color: #CCC;
-						animation: rotate 1.5s linear 0s infinite;
 					}
 				}
 				.weather-icon {

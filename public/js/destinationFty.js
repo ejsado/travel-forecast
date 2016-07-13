@@ -25,6 +25,9 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 		
 		sortBy: "departure",
 		
+		// flag to disable buttons while destinations are loading
+		loadingDestinations: false,
+		
 		addDestination: function(place, arrival, departure) {
 			var destAdded = false;
 			// iterate through destination list
@@ -36,7 +39,9 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 					if (!dateFty.datesWithinDays(factory.destinationList[i].dates[0], departure, dateFty.maxDateRange)) {
 						console.log("destination date range greater than 30 days");
 						// show message
-						alertFty.displayMessage("Staying for more than " + dateFty.maxDateRange + " days? That's absurd.");
+						if (!factory.loadingDestinations) {
+							alertFty.displayMessage("Forecasts are limited to " + dateFty.maxDateRange + " days per destination.", "error");
+						}
 						return destAdded;
 					}
 					// add all dates within date range
@@ -48,13 +53,17 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 					// rebuild date ranges
 					factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
 					destAdded = true;
-					alertFty.displayMessage("I merged the dates for this destination.");
+					if (!factory.loadingDestinations) {
+						alertFty.displayMessage("I merged the dates for this destination.", "info");
+					}
 				}
 			}
 			// if too many destinations
-			if (factory.destinationList.length > 10) {
+			if (factory.destinationList.length >= 10) {
 				console.log("maximum destinations reached");
-				alertFty.displayMessage("More than 10 destinations? That's ridiculous.");
+				if (!factory.loadingDestinations) {
+					alertFty.displayMessage("Maximum of 10 destinations. Remove a destination to add this one.", "error");
+				}
 				return destAdded;
 			}
 			// if destination was not added yet
@@ -70,6 +79,9 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 					}]
 				});
 				console.log("new destination added");
+				if (!factory.loadingDestinations) {
+					alertFty.displayMessage("New destination added!", "success");
+				}
 				destAdded = true;
 			}
 			// sort destinations

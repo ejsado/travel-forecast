@@ -108,7 +108,7 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 				if (arrival > departure) {
 					destinationFty.addDestination(place, departure, arrival);
 					console.log("switched dates");
-					alertFty.displayMessage("Your dates were backwards, so I switched them for you.");
+					alertFty.displayMessage("Your dates were backwards, so I switched them for you.", "info");
 				} else {
 					destinationFty.addDestination(place, arrival, departure);
 				}
@@ -129,13 +129,12 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
 				console.log("destination list", destinationFty.destinationList);
 				console.log("date list", dateFty.dateList);
-				alertFty.displayMessage("Destination added!");
 				urlFty.monetizeLinks();
 			} else {
-				alertFty.displayMessage("Nah, those dates don't work for me. Try again.");
+				alertFty.displayMessage("Your date range is invalid. Forecasts are limited to " + dateFty.maxDateRange + " days per destination.", "error");
 			}
 		} else {
-			alertFty.displayMessage("That place doesn't exist.");
+			alertFty.displayMessage("That place doesn't exist.", "error");
 		}
 	}
 	

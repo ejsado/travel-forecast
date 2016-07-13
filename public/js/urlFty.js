@@ -248,7 +248,7 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 				}
 			}
 			if (oldScript != null) {
-				//console.log("old script", oldScript);
+				console.log("old script", oldScript);
 				scriptUrl = oldScript.src;
 				head.removeChild(oldScript);
 			}
@@ -256,6 +256,7 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 			script.src = scriptUrl;
 			script.dataset.desc = "monetize";
 			head.appendChild(script);
+			console.log("added monetization script");
 		}
 		
 	};

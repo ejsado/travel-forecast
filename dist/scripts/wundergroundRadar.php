@@ -1,11 +1,14 @@
 <?php
 	
-	echo "Getting radar images... \n";
-	echo getcwd() . "\n";
+	//echo "Getting radar images... \n";
+	//echo getcwd() . "\n";
+	//echo $_SERVER['HOME'] . "\n";
+	//echo getenv("HOME") . "\n";
+	
 	
 	$wBaseUrl = "http://api.wunderground.com/api/6be50baeecbb66f7/radar/image.png?";
 	
-	$iBaseDir = "/~/../public/img/radar/";
+	$iBaseDir = $_SERVER['HOME'] . "../public/img/radar/";
 	
 	// get USA radar
 	copy($wBaseUrl . 'minlat=15&minlon=-170&maxlat=50&maxlon=-50&width=1200&height=400&noclutter=1&rainsnow=1&smooth=1', $iBaseDir . 'usa.png');
@@ -27,6 +30,6 @@
 	
 	//sleep(2);
 	
-	echo " Done. Probably.";
+	//echo "Done. Probably.\n";
 	
 ?>

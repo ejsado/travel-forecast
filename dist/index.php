@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <?php include '../protected/keys.php'; ?>
 
 <html
@@ -57,9 +59,8 @@
 	<body>
 		<aside id="loading-mask"
 			ng-hide="appUtils.doneLoading">
-			<div id="cog-container">
-				<div class="cog"></div>
-				<div class="cog small"></div>
+			<div id="spinner-container">
+				<div class="spinner"></div>
 			</div>
 		</aside>
 		<div id="flex-container">
@@ -293,7 +294,7 @@
 														Get directions</a>
 													&mdash;
 													<a href="http://www.dpbolvw.net/click-8108989-10392969-1467996812000">
-														Book a flight
+														Search flights
 													</a>
 												</div>
 											</div>

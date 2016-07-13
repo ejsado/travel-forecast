@@ -35,10 +35,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		urlFty.clearUrlParamTrip();
 		urlFty.buildUrlParamUnits(forecastFty.units);
 		urlFty.buildUrlParamSort(destinationFty.sortBy);
+		alertFty.displayMessage("All destinations removed. Hit your browser's back button to undo.", "warning");
 	}
-	
-	// flag to disable buttons while destinations are loading
-	self.loadingDestinations = false;
 	
 	// load destinations from url
 	getDataFromUrl();
@@ -59,7 +57,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		}
 		
 		if (urlDestinations.length > 0) {
-			self.loadingDestinations = true;
+			destinationFty.loadingDestinations = true;
 		} else {
 			urlFty.buildUrlParamUnits(forecastFty.units);
 			urlFty.buildUrlParamSort(destinationFty.sortBy);
@@ -119,7 +117,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 					// if done adding destinations
 					if (count == urlDestinations.length) {
 						// enable buttons
-						self.loadingDestinations = false;
+						destinationFty.loadingDestinations = false;
 						console.log("done loading destinations");
 						// show errors, if any
 						if (count != destinationFty.destinationList.length) {
@@ -145,7 +143,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 							);
 						}
 						// make affiliate links
-						urlFty.monetizeLinks();
+						$timeout(urlFty.monetizeLinks, 500);
 					}
 				}, function(result) {
 					console.log("coords unknown, skipping location");

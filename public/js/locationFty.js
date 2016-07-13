@@ -124,12 +124,12 @@ function locationFty() {
 					console.log("location found", results);
 					var resultMatch;
 					for (var i = 0; i < results.length; i++) {
-						if (!results[i].types.includes("premise") &&
-							!results[i].types.includes("street_address") &&
-							!results[i].types.includes("route") &&
-							!results[i].types.includes("intersection") &&
-							!results[i].types.includes("subpremise") &&
-							!results[i].formatted_address.includes("Township")
+						if (results[i].types.indexOf("premise") < 0 &&
+							results[i].types.indexOf("street_address") < 0 &&
+							results[i].types.indexOf("route") < 0 &&
+							results[i].types.indexOf("intersection") < 0 &&
+							results[i].types.indexOf("subpremise") < 0 &&
+							results[i].formatted_address.indexOf("Township") < 0
 						) {
 							resultMatch = results[i];
 							break;
