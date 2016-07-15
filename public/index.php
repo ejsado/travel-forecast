@@ -10,16 +10,16 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 		
 		<title ng-bind="appUtils.urlFty.getPageTitle(appUtils.destinationFty.destinationList)">
-			Travel Weathr - Show the weather for every destination in your trip
+			Travel Weathr - Compare the weather for multiple destinations
 		</title>
 		
-		<meta property="og:title" content="Travel Weathr - Show the weather for every destination in your trip" />
+		<meta property="og:title" content="Travel Weathr - Compare the weather" />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="http://www.travelweathr.com/" />
 		<meta property="og:image" content="http://www.travelweathr.com/img/logo-colored-bg-256.png" />
-		<meta property="og:description" content="Build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then easily find flights and hotels for each destination.">
+		<meta property="og:description" content="Build a weather forecast calendar for multiple vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then easily find flights and hotels for each destination.">
 		
-		<meta name="description" content="Build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then easily find flights and hotels for each destination.">
+		<meta name="description" content="Build a weather forecast calendar for multiple vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then easily find flights and hotels for each destination.">
 		
 		<link rel="shortcut icon" type="image/ico" href="/favicon.png">
 		
@@ -119,7 +119,9 @@
 			<main>
 				<section id="map-container"
 					ng-controller="mapCtrl as mapUtils">
-					<input type="checkbox" id="hide-map">
+					<input type="checkbox" id="hide-map"
+						ng-model="mapUtils.hideMap"
+						ng-change="appUtils.urlFty.buildUrlParamMap(mapUtils.hideMap)">
 					<div id="map-drawer">
 						<div id="map"></div>
 						<div id="map-ad">

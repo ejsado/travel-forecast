@@ -17,9 +17,11 @@
 * 
 */
 
-function mapCtrl($scope, $timeout, locationFty) {
+function mapCtrl($scope, $timeout, locationFty, urlFty) {
 	
 	var self = this;
+	
+	self.hideMap = urlFty.getUrlMap();
 	
 	var radarImages = [
 		{

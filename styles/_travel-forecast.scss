@@ -155,9 +155,11 @@ header, main {
 		height: 33.4rem;
 		transition: height 500ms;
 		display: flex;
+		overflow: hidden;
 	}
 	#map {
 		flex: 1 1 auto;
+		min-height: 33.4rem;
 	}
 	#map-ad {
 		flex: 0 0 auto;

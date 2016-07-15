@@ -71,6 +71,25 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 			$location.search('s', newSort);
 		},
 		
+		getUrlMap: function() {
+			var urlParams = $location.search();
+			var param = urlParams.m;
+			if (param == '0') {
+				return true;
+			}
+			return false;
+		},
+		
+		buildUrlParamMap: function(hideMap) {
+			var showMap = '1';
+			if (hideMap) {
+				showMap = '0';
+			}
+			console.log("add url map");
+			factory.paramsUpdated = true;
+			$location.search('m', showMap);
+		},
+		
 		clearUrlParamTrip: function() {
 			factory.paramsUpdated = true;
 			$location.search('t');

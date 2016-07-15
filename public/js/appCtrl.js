@@ -93,6 +93,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		
 		var dateRangeInvalid = false;
 		
+		var tooManyDestinations = false;
+		
 		function delayLoadDestination(latLng, dateRangeList, delay, count) {
 			$timeout(function() {
 				// find coordinates
@@ -134,19 +136,19 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 					// get forecast for added destination
 					forecastFty.attemptGetForecast(result.coords.lat, result.coords.lng, result.name);
 					// if done adding destinations
-					if (count == urlDestinations.length) {
+					if (count == urlDestinations.length || count > 10) {
 						// enable buttons
 						destinationFty.loadingDestinations = false;
 						console.log("done loading destinations");
 						// show errors, if any
 						if (count != destinationFty.destinationList.length) {
-							if (destinationsNotFound) {
-								alertFty.displayModal(alertFty.destinationsNotFoundModal);
-							} else if (dateRangeInvalid) {
-								alertFty.displayModal(alertFty.dateRangeInvalidModal);
-							} else {
-								alertFty.displayModal(alertFty.destinationsMergedModal);
-							}
+							alertFty.displayModal(alertFty.destinationsMergedModal);
+						} else if (destinationsNotFound) {
+							alertFty.displayModal(alertFty.destinationsNotFoundModal);
+						} else if (dateRangeInvalid) {
+							alertFty.displayModal(alertFty.dateRangeInvalidModal);
+						} else if (tooManyDestinations) {
+							
 						}
 						// rebuild url
 						urlFty.buildUrlParamTrip(destinationFty.destinationList);
@@ -172,6 +174,10 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		}		
 		// for each destination in url
 		for (var i = 0; i < urlDestinations.length; i++) {
+			if (i >= 10) {
+				tooManyDestinations = true;
+				break;
+			}
 			var latLng = new google.maps.LatLng({
 				lat: urlDestinations[i].coords.lat,
 				lng: urlDestinations[i].coords.lng

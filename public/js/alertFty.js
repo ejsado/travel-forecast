@@ -20,7 +20,7 @@
 * 
 */
 
-function alertFty($sce, $timeout) {
+function alertFty($sce, $timeout, dateFty) {
 	
 	var factory = {
 		
@@ -76,7 +76,8 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'Invalid URL',
 					text: [
-						"Your URL parameters are invalid. I'm ignoring them."
+						"Your URL parameters are invalid. I'm ignoring them.",
+						"The URL must be a specific format, and if I can't read it, I can't load it."
 					]
 				}
 			]
@@ -88,7 +89,8 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'Destinations Merged',
 					text: [
-						"I merged some of your destinations because they were too close."
+						"I merged some of your destinations because they were too close.",
+						"This is because some of your latitude/longitude coordinates were in the same area geographically."
 					]
 				}
 			]
@@ -100,7 +102,20 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'Destinations Skipped',
 					text: [
-						"I skipped some of your destinations because I couldn't find them."
+						"I skipped some of your destinations because I couldn't find them.",
+						"This could be an issue with incorrect latitude/longtude coordinates or Google'e location service might be down."
+					]
+				}
+			]
+		},
+		
+		tooManyDestinationsModal: {
+			buttonText: 'Fine',
+			content: [
+				{
+					title: 'Too Many Destinations',
+					text: [
+						"Unfortunately, I can't show more than 10 destinations at a time, so I only loaded the first 10."
 					]
 				}
 			]
@@ -112,7 +127,8 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'Date Ranges Invalid',
 					text: [
-						"Some of your date ranges were invalid, so I skipped them."
+						"Some of your date ranges were invalid, so I skipped them.",
+						"Forecasts are limited to " + dateFty.maxDateRange + " days per destination. Dates must be within the next 5 years."
 					]
 				}
 			]
@@ -124,7 +140,7 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'What is this?',
 					text: [
-						"Travel Weathr allows you to build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures.",
+						"Travel Weathr allows you to build a weather forecast calendar for multiple vacation destinations with varied arrivals and departures.",
 						"Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with. Every time you visit the link, your freshly updated forecast will be shown."
 					]
 				},
@@ -138,15 +154,29 @@ function alertFty($sce, $timeout) {
 					]
 				},
 				{
+					title: 'Which browsers are supported?',
+					text: [
+						'Uhhhhh, the latest ones?',
+						"Look, I'm only one man and there are so many browser configurations. I developed this whole thing in Chrome on Windows 10, so you can expect it to work fine there. I also did some basic testing with the other popular browsers (Firefox, IE 10+) and they seem to work..."
+					]
+				},
+				{
 					title: 'I found a bug.',
 					text: [
 						'Ew, just squish it. Or report it on the <a href="https://github.com/ejsado/travel-forecast/issues">github page</a>.'
 					]
 				},
 				{
+					title: 'How can I support your projects?',
+					text: [
+						'Disable adblock. Just kidding, no one actually does that do they?',
+						'If you purchase anything from <a href="http://www.jdoqocy.com/click-8108989-10954362-1445347180000">Backcountry</a> or book anything through <a href="http://www.jdoqocy.com/click-8108989-10592070-1466085945000">Priceline</a> via my affiliate links, I get some of the profit.'
+					]
+				},
+				{
 					title: 'What else you got?',
 					text: [
-						'You can find my other projects on <a href="http://www.ericsadowski.com/">my website</a>. Or you can take a look at <a href="http://codepen.io/ejsado/">my codepen profile</a> for my code demos.'
+						'You can find my other projects on <a href="http://www.ericsadowski.com/">ericsadowski.com</a>. Or you can take a look at <a href="http://codepen.io/ejsado/">my codepen profile</a> for my code demos.'
 					]
 				}
 			]
