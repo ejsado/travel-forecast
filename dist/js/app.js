@@ -1265,7 +1265,7 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 				var dateStr = dateFty.createDateString(new Date(response.data.daily.data[i].time * 1000));
 				forecast[dateStr] = forecast[dateStr] || {};
 				forecast[dateStr].high = Math.round(response.data.daily.data[i].temperatureMax);
-				forecast[dateStr].precip = Math.round(response.data.daily.data[i].precipProbability * 100);
+				forecast[dateStr].precip = Math.ceil(response.data.daily.data[i].precipProbability * 10) * 10;
 				forecast[dateStr].text = response.data.daily.data[i].summary;
 				forecast[dateStr].low = Math.round(response.data.daily.data[i].temperatureMin);
 				forecast[dateStr].icon = response.data.daily.data[i].icon;
@@ -1277,7 +1277,7 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 			var forecast = {};
 			forecast.high = Math.round(response.data.daily.data[0].temperatureMax);
 			if ("precipProbability" in response.data.daily.data[0]) {
-				forecast.precip = Math.round(response.data.daily.data[0].precipProbability * 100);
+				forecast.precip = Math.ceil(response.data.daily.data[0].precipProbability * 10) * 10;
 			} else {
 				forecast.precip = 0;
 			}
