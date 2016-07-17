@@ -388,7 +388,7 @@
 													ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates) &&
 														appUtils.dateFty.datesEqual(travelDate, calendarUtils.selectedDate)"
 													ng-style="{'width': (appUtils.forecastFty.forecastList[destination.name]
-														[appUtils.dateFty.createDateString(travelDate)].text.length / 4) + 'rem'}">
+														[appUtils.dateFty.createDateString(travelDate)].text.length / 5) + 'rem'}">
 													<p class="weather-text">
 														{{
 															appUtils.forecastFty.forecastList[destination.name]
