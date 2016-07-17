@@ -17,9 +17,21 @@
 * 
 */
 
-function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distanceFty, alertFty) {
+function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty, distanceFty, alertFty, locationFty) {
 	
 	var self = this;
+	
+	self.typeAheadResults = [];
+	
+	self.showTypeAhead = false;
+	
+	self.highlightIndex = 0;
+	
+	// clicked marker (red)
+	var marker = null;
+	
+	// throttle flag to reduce map clicks
+	var throttle = false;
 	
 	// set default dates
 	
@@ -32,6 +44,116 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 	self.showStartDatePicker = false;
 	
 	self.showEndDatePicker = false;
+	
+	function removeMarker() {
+		if (marker) {
+			marker.setMap(null);
+			marker = null;
+		}
+	}
+	
+	function replaceMapMarker(map, position) {
+		console.log("replace marker");
+		removeMarker();
+		marker = new google.maps.Marker({
+			map: map,
+			position: position,
+			zIndex: 100
+		});
+	}
+	
+	function centerMap(map, position) {
+		console.log("center map");
+		map.panTo(position);
+	}
+	
+	function zoomMap(map, zoomLevel) {
+		map.setZoom(zoomLevel);
+	}
+	
+	function addressFound(resultsList) {
+		//console.log("addresses found");
+		self.typeAheadResults = resultsList;
+		//self.showTypeAhead = true;
+		$scope.$apply();
+	}
+	
+	function addressNotFound(result) {
+		//console.log("address not found");
+		locationFty.locationDetails = result;
+		removeMarker();
+		$scope.$apply();
+	}
+	
+	function coordsFound(result) {
+		//console.log("coords found");
+		locationFty.locationDetails = result;
+		$scope.$apply();
+	}
+	
+	function coordsUnknown(result) {
+		//console.log("coords unknown", result);
+		locationFty.locationDetails = result;
+		$scope.$apply();
+	}
+	
+	self.highlightResult = function(e) {
+		//console.log("key pressed", e.which);
+		if (e.which == 40) {
+			// down key pressed
+			e.preventDefault();
+			if (self.highlightIndex < (self.typeAheadResults.length - 1)) {
+				self.highlightIndex++;
+			}
+		} else if (e.which == 38) {
+			// up key pressed
+			e.preventDefault();
+			if (self.highlightIndex > 0) {
+				self.highlightIndex--;
+			}
+		} else if (e.which == 13) {
+			// enter key pressed
+			if (self.highlightIndex < 0) {
+				self.highlightIndex = 0;
+			}
+			self.setLocation(self.typeAheadResults[self.highlightIndex]);
+		} else {
+			self.highlightIndex = 0;
+		}
+	}
+	
+	self.setLocation = function(loc) {
+		locationFty.locationDetails = loc;
+		centerMap(locationFty.map, loc.coords);
+		zoomMap(locationFty.map, 10);
+		replaceMapMarker(locationFty.map, loc.coords);
+		self.showTypeAhead = false;
+	}
+	
+	self.delayHideTypeAhead = function() {
+		$timeout(function() {
+			self.showTypeAhead = false;
+		}, 100);
+	}
+	
+	self.locationSearch = function(query) {
+		if (query.length > 3) {
+			console.log("search for " + query);
+			locationFty.geocodeAddress(query, addressFound, addressNotFound);
+		}
+	}
+	
+	locationFty.map.addListener('click', function(e) {
+		if (!throttle) {
+			throttle = true;
+			replaceMapMarker(locationFty.map, e.latLng);
+			locationFty.geocodeLatLng(e.latLng, coordsFound, coordsUnknown);
+			// limit map clicks to once a second
+			$timeout(function() {
+				throttle = false;
+			}, 1000);
+		}
+	});
 	
 	// user chooses an arrival date in the date picker
 	function updateStartDate() {
@@ -103,16 +225,21 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 		//reposition: false
 	});
 	
-	// user chose new units (F or C)
-	self.unitsChanged = function() {
-		urlFty.buildUrlParamUnits(forecastFty.units);
-	};
+	var mainElement = document.getElementById("main");
+	var mainElementHeight = mainElement.getBoundingClientRect().height;
 	
-	self.sortOptions = ["departure", "arrival", "name"];
-	
-	self.sortChanged = function() {
-		urlFty.buildUrlParamSort(destinationFty.sortBy);
-		destinationFty.destinationList.sort(destinationFty.destinationCompare);
+	function scrollToBottom() {
+		//console.log("scroll begin");
+		$timeout(function() {
+			mainElement.scrollTop = mainElement.scrollTop + 50;
+			if ((mainElement.scrollTop + mainElementHeight) < mainElement.scrollHeight) {
+				//console.log("scroll recursive");
+				scrollToBottom();
+			} else {
+				//console.log("scroll end");
+				window.scrollTo(0, mainElement.scrollHeight);
+			}
+		}, 30);
 	}
 	
 	self.attemptAddDestination = function(place, arrival, departure) {
@@ -143,6 +270,8 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 							$scope.$apply();
 						}
 					);
+				} else {
+					scrollToBottom();
 				}
 				// add destination to url by rebuilding it
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);

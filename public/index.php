@@ -10,10 +10,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 		
 		<title ng-bind="appUtils.urlFty.getPageTitle(appUtils.destinationFty.destinationList)">
-			Travel Weathr - Compare the weather for multiple destinations
+			Travel Weathr - Plan for the weather
 		</title>
 		
-		<meta property="og:title" content="Travel Weathr - Compare the weather" />
+		<meta property="og:title" content="Travel Weathr - Plan for the weather" />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="http://www.travelweathr.com/" />
 		<meta property="og:image" content="http://www.travelweathr.com/img/logo-colored-bg-256.png" />
@@ -116,12 +116,9 @@
 					</div>
 				</div>
 			</header>
-			<main>
+			<main id="main">
 				<section id="map-container"
 					ng-controller="mapCtrl as mapUtils">
-					<input type="checkbox" id="hide-map"
-						ng-model="mapUtils.hideMap"
-						ng-change="appUtils.urlFty.buildUrlParamMap(mapUtils.hideMap)">
 					<div id="map-drawer">
 						<div id="map"></div>
 						<div id="map-ad">
@@ -138,35 +135,29 @@
 							</div>
 						</div>
 					</div>
-					<label id="hide-map-switch" class="btn-link" for="hide-map">
-						Map
-					</label>
-					<div class="width-container">
-						<div class="center-inputs">
-							<input id="location-search" type="text" placeholder="Search for a destination"
-								ng-model="query"
-								ng-model-options="{debounce: 500}"
-								ng-change="mapUtils.locationSearch(query)"
-								ng-click="mapUtils.showTypeAhead = true; mapUtils.highlightIndex = 0"
-								ng-blur="mapUtils.delayHideTypeAhead()"
-								ng-keydown="mapUtils.highlightResult($event)">
-							<div id="location-type-ahead"
-								ng-show="mapUtils.showTypeAhead"
-								ng-mouseover="mapUtils.highlightIndex = -1">
-								<button class="type-ahead-result"
-									ng-repeat="result in mapUtils.typeAheadResults"
-									ng-click="mapUtils.setLocation(result)"
-									ng-class="{'highlight': mapUtils.highlightIndex == $index}">
-									{{ result.name }}
-								</button>
-							</div>
-						</div>
-					</div>
 				</section>
 				<section id="form-container"
-					ng-controller="formCtrl as formUtils">
+					ng-controller="formCtrl as formUtils"
+					ng-show="appUtils.showAddForecast">
 					<div class="center-inputs">
-						<div>
+						<input id="location-search" type="text" placeholder="Search for a destination"
+							ng-model="query"
+							ng-model-options="{debounce: 500}"
+							ng-change="formUtils.locationSearch(query)"
+							ng-click="formUtils.showTypeAhead = true; formUtils.highlightIndex = 0"
+							ng-blur="formUtils.delayHideTypeAhead()"
+							ng-keydown="formUtils.highlightResult($event)">
+						<div id="location-type-ahead"
+							ng-show="formUtils.showTypeAhead"
+							ng-mouseover="formUtils.highlightIndex = -1">
+							<button class="type-ahead-result"
+								ng-repeat="result in formUtils.typeAheadResults"
+								ng-click="formUtils.setLocation(result)"
+								ng-class="{'highlight': formUtils.highlightIndex == $index}">
+								{{ result.name }}
+							</button>
+						</div>
+						<div id="selected-location">
 							<img id="marker" src="/img/spotlight-poi.png" alt="">
 							<p class="label">
 								Selected Destination
@@ -204,39 +195,15 @@
 							</span>
 						</div>
 						<div class="money-box">
-							<a href="http://www.backcountry.com/sc/activities" target="_top">
-								<div class="money-text">
-									Going on an adventure? <strong>Get the gear you need</strong>
-								</div>
-								<div class="money-image">
-									<img src="/img/backcountry.jpg" width="120" height="60" alt="Backcountry.com Logo Banner" border="0"/>
-								</div>
-							</a>
-						</div>
-					</div>
-					<div id="view-options"
-						ng-hide="appUtils.destinationFty.destinationList.length == 0">
-						<input type="radio" id="imperial-units" name="units" value="imperial" class="hidden-radio"
-							ng-model="appUtils.forecastFty.units"
-							ng-change="formUtils.unitsChanged()">
-						<label class="btn btn-small btn-left btn-muted" for="imperial-units">
-							F &deg;
-						</label>
-						<input type="radio" id="metric-units" name="units" value="metric" class="hidden-radio"
-							ng-model="appUtils.forecastFty.units"
-							ng-change="formUtils.unitsChanged()">
-						<label class="btn btn-small btn-right btn-muted" for="metric-units">
-							C &deg;
-						</label>
-						<div class="input-container">
-							<label for="sort-by" class="label">
-								Sort By
-							</label>
-							<select id="sort-by"
-								ng-model="appUtils.destinationFty.sortBy"
-								ng-options="value for value in formUtils.sortOptions"
-								ng-change="formUtils.sortChanged()">
-							</select>
+							<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+							<!-- small footer ad -->
+							<ins class="adsbygoogle"
+								 style="display:inline-block;width:320px;height:100px"
+								 data-ad-client="ca-pub-7172783409470168"
+								 data-ad-slot="9787968738"></ins>
+							<script>
+								(adsbygoogle = window.adsbygoogle || []).push({});
+							</script>
 						</div>
 					</div>
 					<aside id="pikaday-container">
@@ -249,157 +216,198 @@
 							ng-show="formUtils.showEndDatePicker"></div>
 					</aside>
 				</section>
+				<section id="hide-controls-container">
+					<div class="tab-edge left"></div>
+					<div class="tab">
+						<button id="hide-controls"
+							ng-click="appUtils.toggleAddForecast()">
+							{{ appUtils.showAddForecastText }}
+							<span
+								ng-class="{'reverse': appUtils.showAddForecast}">
+								&dtrif;
+							</span>
+						</button>
+					</div>
+					<div class="tab-edge right"></div>
+				</section>
 				<section id="calendar-container"
 					ng-controller="calendarCtrl as calendarUtils">
-					<div id="calendar-content">
-						<div id="calendar-destinations">
-							<table id="destinations-table">
-								<thead>
-									<tr>
-										<th>
-											
-										</th>
-										<th>
-											
-										</th>
-										<th>
-											
-										</th>
-									</tr>
-								</thead>
-								<tbody ng-repeat="destination in appUtils.destinationFty.destinationList">
-									<tr>
-										<td class="destination-cell">
-											<div class="destination-container">
-												<button class="remove-button" title="remove"
-													ng-click="calendarUtils.removeSingleDestination($index)"
-													ng-disabled="appUtils.destinationFty.loadingDestinations">
-													&times;
-												</button>
-												<div class="float-left">
-													<div class="marker">
-														{{ $index + 1 }}
+					<div id="view-options"
+						ng-hide="appUtils.destinationFty.destinationList.length == 0">
+						<input type="radio" id="imperial-units" name="units" value="imperial" class="hidden-radio"
+							ng-model="appUtils.forecastFty.units"
+							ng-change="calendarUtils.unitsChanged()">
+						<label class="btn btn-small btn-left btn-muted" for="imperial-units">
+							F &deg;
+						</label>
+						<input type="radio" id="metric-units" name="units" value="metric" class="hidden-radio"
+							ng-model="appUtils.forecastFty.units"
+							ng-change="calendarUtils.unitsChanged()">
+						<label class="btn btn-small btn-right btn-muted" for="metric-units">
+							C &deg;
+						</label>
+						<div class="input-container">
+							<label for="sort-by" class="label">
+								Sort By
+							</label>
+							<select id="sort-by"
+								ng-model="appUtils.destinationFty.sortBy"
+								ng-options="value for value in calendarUtils.sortOptions"
+								ng-change="calendarUtils.sortChanged()">
+							</select>
+						</div>
+					</div>
+					<div id="calendar-wrapper">
+						<div id="calendar-content">
+							<div id="calendar-destinations">
+								<table id="destinations-table">
+									<thead>
+										<tr>
+											<th>
+												
+											</th>
+											<th>
+												
+											</th>
+											<th>
+												
+											</th>
+										</tr>
+									</thead>
+									<tbody ng-repeat="destination in appUtils.destinationFty.destinationList">
+										<tr>
+											<td class="destination-cell">
+												<div class="destination-container">
+													<button class="remove-button" title="remove"
+														ng-click="calendarUtils.removeSingleDestination($index)"
+														ng-disabled="appUtils.destinationFty.loadingDestinations">
+														&times;
+													</button>
+													<div class="float-left">
+														<div class="marker">
+															{{ $index + 1 }}
+														</div>
+													</div>
+													<div class="destination-name" title="{{ destination.name }}">
+														{{ destination.name }}
+													</div>
+													<div class="destination-hotels">
+														<a href="{{ appUtils.urlFty.createPricelineHotelsUrl(destination) }}">
+															<span>
+																Find a hotel
+															</span>
+														</a>
 													</div>
 												</div>
-												<div class="destination-name" title="{{ destination.name }}">
-													{{ destination.name }}
+											</td>
+										</tr>
+										<tr>
+											<td class="estimation-cell">
+												<div class="estimation-container"
+													ng-hide="$index == appUtils.destinationFty.destinationList.length - 1">
+													<div class="float-left varr">
+														&varr;
+													</div>
+													<div>
+														Driving:
+														<strong>
+															{{
+																appUtils.distanceFty.distanceList[destination.name]
+																[appUtils.destinationFty.destinationList[$index + 1].name].duration.text
+															}}
+														</strong>
+													</div>
+													<div>
+														<a href="{{ appUtils.urlFty.createDirectionsUrl([
+																destination,
+																appUtils.destinationFty.destinationList[$index + 1]
+															]) }}">
+															Get directions</a>
+														&mdash;
+														<a href="http://www.dpbolvw.net/click-8108989-10392969-1467996812000">
+															Search flights
+														</a>
+													</div>
 												</div>
-												<div class="destination-hotels">
-													<a href="{{ appUtils.urlFty.createPricelineHotelsUrl(destination) }}">
-														<span>
-															Find a hotel
-														</span>
-													</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="estimation-cell">
-											<div class="estimation-container"
-												ng-hide="$index == appUtils.destinationFty.destinationList.length - 1">
-												<div class="float-left varr">
-													&varr;
-												</div>
-												<div>
-													Driving:
-													<strong>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div id="calendar-weather">
+								<table class="weather-table"
+									ng-repeat="consecutiveDates in appUtils.dateFty.dateList">
+									<thead>
+										<tr>
+											<th ng-repeat="travelDate in consecutiveDates">
+												{{ travelDate | date: 'MMM d' }}
+											</th>
+										</tr>
+									</thead>
+									<tbody ng-repeat="destination in appUtils.destinationFty.destinationList">
+										<tr>
+											<td class="weather-cell"
+												ng-repeat="travelDate in consecutiveDates">
+												<div class="weather-container"
+													ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates)"
+													ng-click="calendarUtils.setSelectedDate(travelDate)">
+													<div class="loading-forecast"
+														ng-hide="appUtils.forecastFty.forecastList[destination.name]
+																[appUtils.dateFty.createDateString(travelDate)]">
+														<div class="spinner"></div>
+													</div>
+													<div class="weather-icon" 
+														ng-class="appUtils.forecastFty.forecastList[destination.name]
+															[appUtils.dateFty.createDateString(travelDate)].icon">
+													</div>
+													<div class="high-temp">
+														&uarr;
 														{{
-															appUtils.distanceFty.distanceList[destination.name]
-															[appUtils.destinationFty.destinationList[$index + 1].name].duration.text
+															appUtils.forecastFty.convertDegrees(
+																appUtils.forecastFty.forecastList[destination.name]
+																[appUtils.dateFty.createDateString(travelDate)].high
+															)
+														}}&deg;
+													</div>
+													<div class="low-temp">
+														&darr;
+														{{
+															appUtils.forecastFty.convertDegrees(
+																appUtils.forecastFty.forecastList[destination.name]
+																[appUtils.dateFty.createDateString(travelDate)].low
+															)
+														}}&deg;
+													</div>
+													<div class="rain-chance">
+														&becaus;
+														{{
+															appUtils.forecastFty.forecastList[destination.name]
+															[appUtils.dateFty.createDateString(travelDate)].precip
+														}}%
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="weather-text-cell"
+												ng-repeat="travelDate in consecutiveDates">
+												<div class="weather-text-container"
+													ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates) &&
+														appUtils.dateFty.datesEqual(travelDate, calendarUtils.selectedDate)"
+													ng-style="{'width': (appUtils.forecastFty.forecastList[destination.name]
+														[appUtils.dateFty.createDateString(travelDate)].text.length / 4) + 'rem'}">
+													<p class="weather-text">
+														{{
+															appUtils.forecastFty.forecastList[destination.name]
+															[appUtils.dateFty.createDateString(travelDate)].text
 														}}
-													</strong>
+													</p>
 												</div>
-												<div>
-													<a href="{{ appUtils.urlFty.createDirectionsUrl([
-															destination,
-															appUtils.destinationFty.destinationList[$index + 1]
-														]) }}">
-														Get directions</a>
-													&mdash;
-													<a href="http://www.dpbolvw.net/click-8108989-10392969-1467996812000">
-														Search flights
-													</a>
-												</div>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div id="calendar-weather">
-							<table class="weather-table"
-								ng-repeat="consecutiveDates in appUtils.dateFty.dateList">
-								<thead>
-									<tr>
-										<th ng-repeat="travelDate in consecutiveDates">
-											{{ travelDate | date: 'MMM d' }}
-										</th>
-									</tr>
-								</thead>
-								<tbody ng-repeat="destination in appUtils.destinationFty.destinationList">
-									<tr>
-										<td class="weather-cell"
-											ng-repeat="travelDate in consecutiveDates">
-											<div class="weather-container"
-												ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates)"
-												ng-click="calendarUtils.setSelectedDate(travelDate)">
-												<div class="loading-forecast"
-													ng-hide="appUtils.forecastFty.forecastList[destination.name]
-															[appUtils.dateFty.createDateString(travelDate)]">
-													<div class="spinner"></div>
-												</div>
-												<div class="weather-icon" 
-													ng-class="appUtils.forecastFty.forecastList[destination.name]
-														[appUtils.dateFty.createDateString(travelDate)].icon">
-												</div>
-												<div class="high-temp">
-													&uarr;
-													{{
-														appUtils.forecastFty.convertDegrees(
-															appUtils.forecastFty.forecastList[destination.name]
-															[appUtils.dateFty.createDateString(travelDate)].high
-														)
-													}}&deg;
-												</div>
-												<div class="low-temp">
-													&darr;
-													{{
-														appUtils.forecastFty.convertDegrees(
-															appUtils.forecastFty.forecastList[destination.name]
-															[appUtils.dateFty.createDateString(travelDate)].low
-														)
-													}}&deg;
-												</div>
-												<div class="rain-chance">
-													&becaus;
-													{{
-														appUtils.forecastFty.forecastList[destination.name]
-														[appUtils.dateFty.createDateString(travelDate)].precip
-													}}%
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td class="weather-text-cell"
-											ng-repeat="travelDate in consecutiveDates">
-											<div class="weather-text-container"
-												ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates) &&
-													appUtils.dateFty.datesEqual(travelDate, calendarUtils.selectedDate)"
-												ng-style="{'width': (appUtils.forecastFty.forecastList[destination.name]
-													[appUtils.dateFty.createDateString(travelDate)].text.length / 4) + 'rem'}">
-												<p class="weather-text">
-													{{
-														appUtils.forecastFty.forecastList[destination.name]
-														[appUtils.dateFty.createDateString(travelDate)].text
-													}}
-												</p>
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</section>
@@ -417,15 +425,14 @@
 						</a>
 					</div>
 					<div class="money-box">
-						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-						<!-- small footer ad -->
-						<ins class="adsbygoogle"
-							 style="display:inline-block;width:320px;height:100px"
-							 data-ad-client="ca-pub-7172783409470168"
-							 data-ad-slot="9787968738"></ins>
-						<script>
-							(adsbygoogle = window.adsbygoogle || []).push({});
-						</script>
+						<a href="http://www.backcountry.com/sc/activities" target="_top">
+							<div class="money-text">
+								Going on an adventure? <strong>Get the gear you need</strong>
+							</div>
+							<div class="money-image">
+								<img src="/img/backcountry.jpg" width="120" height="60" alt="Backcountry.com Logo Banner" border="0"/>
+							</div>
+						</a>
 					</div>
 				</section>
 				<section>

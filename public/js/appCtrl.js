@@ -43,6 +43,19 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	self.alertFty = alertFty;
 	
+	self.showAddForecast = true;
+	
+	self.showAddForecastText = "Hide Tools";
+	
+	self.toggleAddForecast = function() {
+		self.showAddForecast = !self.showAddForecast;
+		if (self.showAddForecast) {
+			self.showAddForecastText = "Hide Tools";
+		} else {
+			self.showAddForecastText = "Show Tools";
+		}
+	}
+	
 	// select input text on click
 	self.highlightInput = function(e) {
 		e.target.select();
@@ -189,9 +202,11 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		if (urlDestinations.length >= 1) {
 			// center the map on the first destination
 			locationFty.map.panTo(new google.maps.LatLng({
-				lat: urlDestinations[0].coords.lat,
-				lng: urlDestinations[0].coords.lng
+				lat: urlDestinations[urlDestinations.length - 1].coords.lat,
+				lng: urlDestinations[urlDestinations.length - 1].coords.lng
 			}));
+			// minimize the Add Forecast controls
+			self.toggleAddForecast();
 		}
 	}
 	

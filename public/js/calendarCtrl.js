@@ -21,6 +21,18 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 	
 	var self = this;
 	
+	// user chose new units (F or C)
+	self.unitsChanged = function() {
+		urlFty.buildUrlParamUnits(forecastFty.units);
+	};
+	
+	self.sortOptions = ["departure", "arrival", "name"];
+	
+	self.sortChanged = function() {
+		urlFty.buildUrlParamSort(destinationFty.sortBy);
+		destinationFty.destinationList.sort(destinationFty.destinationCompare);
+	}
+	
 	// show the weather description of this date for each destination
 	self.selectedDate = new Date(dateFty.today);
 	
