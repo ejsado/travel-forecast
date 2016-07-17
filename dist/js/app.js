@@ -829,7 +829,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 						console.log("destination date range greater than 30 days");
 						// show message
 						if (!factory.loadingDestinations) {
-							alertFty.displayMessage("Forecasts are limited to " + dateFty.maxDateRange + " days per destination.", "error");
+							alertFty.displayMessage("Forecasts are limited to " + dateFty.maxDateRange + " days per destination from first arrival to last departure.", "error");
 						}
 						return destAdded;
 					}
