@@ -20,7 +20,7 @@
 * 
 */
 
-function alertFty($sce, $timeout) {
+function alertFty($sce, $timeout, dateFty) {
 	
 	var factory = {
 		
@@ -76,7 +76,8 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'Invalid URL',
 					text: [
-						"Your URL parameters are invalid. I'm ignoring them."
+						"Your URL parameters are invalid. I'm ignoring them.",
+						"The URL must be a specific format, and if I can't read it, I can't load it."
 					]
 				}
 			]
@@ -88,7 +89,8 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'Destinations Merged',
 					text: [
-						"I merged some of your destinations because they were too close."
+						"I merged some of your destinations because they were too close.",
+						"This is because some of your latitude/longitude coordinates were in the same area geographically."
 					]
 				}
 			]
@@ -100,7 +102,20 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'Destinations Skipped',
 					text: [
-						"I skipped some of your destinations because I couldn't find them."
+						"I skipped some of your destinations because I couldn't find them.",
+						"This could be an issue with incorrect latitude/longtude coordinates or Google'e location service might be down."
+					]
+				}
+			]
+		},
+		
+		tooManyDestinationsModal: {
+			buttonText: 'Fine',
+			content: [
+				{
+					title: 'Too Many Destinations',
+					text: [
+						"Unfortunately, I can't show more than 10 destinations at a time, so I only loaded the first 10."
 					]
 				}
 			]
@@ -112,7 +127,8 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'Date Ranges Invalid',
 					text: [
-						"Some of your date ranges were invalid, so I skipped them."
+						"Some of your date ranges were invalid, so I skipped them.",
+						"Forecasts are limited to " + dateFty.maxDateRange + " days per destination. Dates must be within the next 5 years."
 					]
 				}
 			]
@@ -124,7 +140,7 @@ function alertFty($sce, $timeout) {
 				{
 					title: 'What is this?',
 					text: [
-						"Travel Weathr allows you to build a weather forecast calendar for all of your vacation destinations with varied arrivals and departures.",
+						"Travel Weathr allows you to build a weather forecast calendar for multiple vacation destinations with varied arrivals and departures.",
 						"Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with. Every time you visit the link, your freshly updated forecast will be shown."
 					]
 				},
@@ -138,15 +154,29 @@ function alertFty($sce, $timeout) {
 					]
 				},
 				{
+					title: 'Which browsers are supported?',
+					text: [
+						'Uhhhhh, the latest ones?',
+						"Look, I'm only one man and there are so many browser configurations. I developed this whole thing in Chrome on Windows 10, so you can expect it to work fine there. I also did some basic testing with the other popular browsers (Firefox, IE 10+) and they seem to work..."
+					]
+				},
+				{
 					title: 'I found a bug.',
 					text: [
 						'Ew, just squish it. Or report it on the <a href="https://github.com/ejsado/travel-forecast/issues">github page</a>.'
 					]
 				},
 				{
+					title: 'How can I support your projects?',
+					text: [
+						'Disable adblock. Just kidding, no one actually does that do they?',
+						'If you purchase anything from <a href="http://www.jdoqocy.com/click-8108989-10954362-1445347180000">Backcountry</a> or book anything through <a href="http://www.jdoqocy.com/click-8108989-10592070-1466085945000">Priceline</a> via my affiliate links, I get some of the profit.'
+					]
+				},
+				{
 					title: 'What else you got?',
 					text: [
-						'You can find my other projects on <a href="http://www.ericsadowski.com/">my website</a>. Or you can take a look at <a href="http://codepen.io/ejsado/">my codepen profile</a> for my code demos.'
+						'You can find my other projects on <a href="http://www.ericsadowski.com/">ericsadowski.com</a>. Or you can take a look at <a href="http://codepen.io/ejsado/">my codepen profile</a> for my code demos.'
 					]
 				}
 			]
@@ -237,6 +267,19 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	self.alertFty = alertFty;
 	
+	self.showAddForecast = true;
+	
+	self.showAddForecastText = "Hide Tools";
+	
+	self.toggleAddForecast = function() {
+		self.showAddForecast = !self.showAddForecast;
+		if (self.showAddForecast) {
+			self.showAddForecastText = "Hide Tools";
+		} else {
+			self.showAddForecastText = "Show Tools";
+		}
+	}
+	
 	// select input text on click
 	self.highlightInput = function(e) {
 		e.target.select();
@@ -287,6 +330,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		
 		var dateRangeInvalid = false;
 		
+		var tooManyDestinations = false;
+		
 		function delayLoadDestination(latLng, dateRangeList, delay, count) {
 			$timeout(function() {
 				// find coordinates
@@ -328,19 +373,19 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 					// get forecast for added destination
 					forecastFty.attemptGetForecast(result.coords.lat, result.coords.lng, result.name);
 					// if done adding destinations
-					if (count == urlDestinations.length) {
+					if (count == urlDestinations.length || count > 10) {
 						// enable buttons
 						destinationFty.loadingDestinations = false;
 						console.log("done loading destinations");
 						// show errors, if any
 						if (count != destinationFty.destinationList.length) {
-							if (destinationsNotFound) {
-								alertFty.displayModal(alertFty.destinationsNotFoundModal);
-							} else if (dateRangeInvalid) {
-								alertFty.displayModal(alertFty.dateRangeInvalidModal);
-							} else {
-								alertFty.displayModal(alertFty.destinationsMergedModal);
-							}
+							alertFty.displayModal(alertFty.destinationsMergedModal);
+						} else if (destinationsNotFound) {
+							alertFty.displayModal(alertFty.destinationsNotFoundModal);
+						} else if (dateRangeInvalid) {
+							alertFty.displayModal(alertFty.dateRangeInvalidModal);
+						} else if (tooManyDestinations) {
+							
 						}
 						// rebuild url
 						urlFty.buildUrlParamTrip(destinationFty.destinationList);
@@ -366,6 +411,10 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		}		
 		// for each destination in url
 		for (var i = 0; i < urlDestinations.length; i++) {
+			if (i >= 10) {
+				tooManyDestinations = true;
+				break;
+			}
 			var latLng = new google.maps.LatLng({
 				lat: urlDestinations[i].coords.lat,
 				lng: urlDestinations[i].coords.lng
@@ -377,9 +426,11 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		if (urlDestinations.length >= 1) {
 			// center the map on the first destination
 			locationFty.map.panTo(new google.maps.LatLng({
-				lat: urlDestinations[0].coords.lat,
-				lng: urlDestinations[0].coords.lng
+				lat: urlDestinations[urlDestinations.length - 1].coords.lat,
+				lng: urlDestinations[urlDestinations.length - 1].coords.lng
 			}));
+			// minimize the Add Forecast controls
+			self.toggleAddForecast();
 		}
 	}
 	
@@ -441,6 +492,18 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty, alertFty) {
 	
 	var self = this;
+	
+	// user chose new units (F or C)
+	self.unitsChanged = function() {
+		urlFty.buildUrlParamUnits(forecastFty.units);
+	};
+	
+	self.sortOptions = ["departure", "arrival", "name"];
+	
+	self.sortChanged = function() {
+		urlFty.buildUrlParamSort(destinationFty.sortBy);
+		destinationFty.destinationList.sort(destinationFty.destinationCompare);
+	}
 	
 	// show the weather description of this date for each destination
 	self.selectedDate = new Date(dateFty.today);
@@ -1269,9 +1332,21 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 * 
 */
 
-function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distanceFty, alertFty) {
+function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty, distanceFty, alertFty, locationFty) {
 	
 	var self = this;
+	
+	self.typeAheadResults = [];
+	
+	self.showTypeAhead = false;
+	
+	self.highlightIndex = 0;
+	
+	// clicked marker (red)
+	var marker = null;
+	
+	// throttle flag to reduce map clicks
+	var throttle = false;
 	
 	// set default dates
 	
@@ -1284,6 +1359,116 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 	self.showStartDatePicker = false;
 	
 	self.showEndDatePicker = false;
+	
+	function removeMarker() {
+		if (marker) {
+			marker.setMap(null);
+			marker = null;
+		}
+	}
+	
+	function replaceMapMarker(map, position) {
+		console.log("replace marker");
+		removeMarker();
+		marker = new google.maps.Marker({
+			map: map,
+			position: position,
+			zIndex: 100
+		});
+	}
+	
+	function centerMap(map, position) {
+		console.log("center map");
+		map.panTo(position);
+	}
+	
+	function zoomMap(map, zoomLevel) {
+		map.setZoom(zoomLevel);
+	}
+	
+	function addressFound(resultsList) {
+		//console.log("addresses found");
+		self.typeAheadResults = resultsList;
+		//self.showTypeAhead = true;
+		$scope.$apply();
+	}
+	
+	function addressNotFound(result) {
+		//console.log("address not found");
+		locationFty.locationDetails = result;
+		removeMarker();
+		$scope.$apply();
+	}
+	
+	function coordsFound(result) {
+		//console.log("coords found");
+		locationFty.locationDetails = result;
+		$scope.$apply();
+	}
+	
+	function coordsUnknown(result) {
+		//console.log("coords unknown", result);
+		locationFty.locationDetails = result;
+		$scope.$apply();
+	}
+	
+	self.highlightResult = function(e) {
+		//console.log("key pressed", e.which);
+		if (e.which == 40) {
+			// down key pressed
+			e.preventDefault();
+			if (self.highlightIndex < (self.typeAheadResults.length - 1)) {
+				self.highlightIndex++;
+			}
+		} else if (e.which == 38) {
+			// up key pressed
+			e.preventDefault();
+			if (self.highlightIndex > 0) {
+				self.highlightIndex--;
+			}
+		} else if (e.which == 13) {
+			// enter key pressed
+			if (self.highlightIndex < 0) {
+				self.highlightIndex = 0;
+			}
+			self.setLocation(self.typeAheadResults[self.highlightIndex]);
+		} else {
+			self.highlightIndex = 0;
+		}
+	}
+	
+	self.setLocation = function(loc) {
+		locationFty.locationDetails = loc;
+		centerMap(locationFty.map, loc.coords);
+		zoomMap(locationFty.map, 10);
+		replaceMapMarker(locationFty.map, loc.coords);
+		self.showTypeAhead = false;
+	}
+	
+	self.delayHideTypeAhead = function() {
+		$timeout(function() {
+			self.showTypeAhead = false;
+		}, 100);
+	}
+	
+	self.locationSearch = function(query) {
+		if (query.length > 3) {
+			console.log("search for " + query);
+			locationFty.geocodeAddress(query, addressFound, addressNotFound);
+		}
+	}
+	
+	locationFty.map.addListener('click', function(e) {
+		if (!throttle) {
+			throttle = true;
+			replaceMapMarker(locationFty.map, e.latLng);
+			locationFty.geocodeLatLng(e.latLng, coordsFound, coordsUnknown);
+			// limit map clicks to once a second
+			$timeout(function() {
+				throttle = false;
+			}, 1000);
+		}
+	});
 	
 	// user chooses an arrival date in the date picker
 	function updateStartDate() {
@@ -1355,16 +1540,21 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 		//reposition: false
 	});
 	
-	// user chose new units (F or C)
-	self.unitsChanged = function() {
-		urlFty.buildUrlParamUnits(forecastFty.units);
-	};
+	var mainElement = document.getElementById("main");
+	var mainElementHeight = mainElement.getBoundingClientRect().height;
 	
-	self.sortOptions = ["departure", "arrival", "name"];
-	
-	self.sortChanged = function() {
-		urlFty.buildUrlParamSort(destinationFty.sortBy);
-		destinationFty.destinationList.sort(destinationFty.destinationCompare);
+	function scrollToBottom() {
+		//console.log("scroll begin");
+		$timeout(function() {
+			mainElement.scrollTop = mainElement.scrollTop + 50;
+			if ((mainElement.scrollTop + mainElementHeight) < mainElement.scrollHeight) {
+				//console.log("scroll recursive");
+				scrollToBottom();
+			} else {
+				//console.log("scroll end");
+				window.scrollTo(0, mainElement.scrollHeight);
+			}
+		}, 30);
 	}
 	
 	self.attemptAddDestination = function(place, arrival, departure) {
@@ -1395,6 +1585,8 @@ function formCtrl($scope, destinationFty, forecastFty, dateFty, urlFty, distance
 							$scope.$apply();
 						}
 					);
+				} else {
+					scrollToBottom();
 				}
 				// add destination to url by rebuilding it
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
@@ -1644,9 +1836,11 @@ function locationFty() {
 * 
 */
 
-function mapCtrl($scope, $timeout, locationFty) {
+function mapCtrl(locationFty) {
 	
 	var self = this;
+	
+	//self.hideMap = urlFty.getUrlMap();
 	
 	var radarImages = [
 		{
@@ -1699,127 +1893,6 @@ function mapCtrl($scope, $timeout, locationFty) {
 		);
 	}
 	
-	self.typeAheadResults = [];
-	
-	self.showTypeAhead = false;
-	
-	self.highlightIndex = 0;
-	
-	// clicked marker (red)
-	var marker = null;
-	
-	// throttle flag to reduce map clicks
-	var throttle = false;
-	
-	function removeMarker() {
-		if (marker) {
-			marker.setMap(null);
-			marker = null;
-		}
-	}
-	
-	function replaceMapMarker(map, position) {
-		console.log("replace marker");
-		removeMarker();
-		marker = new google.maps.Marker({
-			map: map,
-			position: position,
-			zIndex: 100
-		});
-	}
-	
-	function centerMap(map, position) {
-		console.log("center map");
-		map.panTo(position);
-	}
-	
-	function zoomMap(map, zoomLevel) {
-		map.setZoom(zoomLevel);
-	}
-	
-	function addressFound(resultsList) {
-		//console.log("addresses found");
-		self.typeAheadResults = resultsList;
-		//self.showTypeAhead = true;
-		$scope.$apply();
-	}
-	
-	function addressNotFound(result) {
-		//console.log("address not found");
-		locationFty.locationDetails = result;
-		removeMarker();
-		$scope.$apply();
-	}
-	
-	function coordsFound(result) {
-		//console.log("coords found");
-		locationFty.locationDetails = result;
-		$scope.$apply();
-	}
-	
-	function coordsUnknown(result) {
-		//console.log("coords unknown", result);
-		locationFty.locationDetails = result;
-		$scope.$apply();
-	}
-	
-	self.highlightResult = function(e) {
-		//console.log("key pressed", e.which);
-		if (e.which == 40) {
-			// down key pressed
-			e.preventDefault();
-			if (self.highlightIndex < (self.typeAheadResults.length - 1)) {
-				self.highlightIndex++;
-			}
-		} else if (e.which == 38) {
-			// up key pressed
-			e.preventDefault();
-			if (self.highlightIndex > 0) {
-				self.highlightIndex--;
-			}
-		} else if (e.which == 13) {
-			// enter key pressed
-			if (self.highlightIndex < 0) {
-				self.highlightIndex = 0;
-			}
-			self.setLocation(self.typeAheadResults[self.highlightIndex]);
-		} else {
-			self.highlightIndex = 0;
-		}
-	}
-	
-	self.setLocation = function(loc) {
-		locationFty.locationDetails = loc;
-		centerMap(locationFty.map, loc.coords);
-		zoomMap(locationFty.map, 10);
-		replaceMapMarker(locationFty.map, loc.coords);
-		self.showTypeAhead = false;
-	}
-	
-	self.delayHideTypeAhead = function() {
-		$timeout(function() {
-			self.showTypeAhead = false;
-		}, 100);
-	}
-	
-	self.locationSearch = function(query) {
-		if (query.length > 3) {
-			console.log("search for " + query);
-			locationFty.geocodeAddress(query, addressFound, addressNotFound);
-		}
-	}
-	
-	locationFty.map.addListener('click', function(e) {
-		if (!throttle) {
-			throttle = true;
-			replaceMapMarker(locationFty.map, e.latLng);
-			locationFty.geocodeLatLng(e.latLng, coordsFound, coordsUnknown);
-			// limit map clicks to once a second
-			$timeout(function() {
-				throttle = false;
-			}, 1000);
-		}
-	});
 	
 }
 
