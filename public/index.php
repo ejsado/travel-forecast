@@ -10,10 +10,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 		
 		<title ng-bind="appUtils.urlFty.getPageTitle(appUtils.destinationFty.destinationList)">
-			Travel Weathr - Plan for the weather
+			Travel Weathr - Forecast Calendar
 		</title>
 		
-		<meta property="og:title" content="Travel Weathr - Plan for the weather" />
+		<meta property="og:title" content="Travel Weathr - Forecast Calendar" />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="http://www.travelweathr.com/" />
 		<meta property="og:image" content="http://www.travelweathr.com/img/logo-colored-bg-256.png" />
