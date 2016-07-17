@@ -172,13 +172,6 @@
 								Add Forecast
 							</button>
 						</div>
-						<div id="alert-message"
-							ng-show="appUtils.alertFty.showMessage">
-							<span id="alert-message-content"
-								ng-class="appUtils.alertFty.messageCssClass">
-								{{ appUtils.alertFty.messageContent }}
-							</span>
-						</div>
 						<div class="money-box">
 							<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 							<!-- small footer ad -->
@@ -430,6 +423,14 @@
 				</section>
 			</main>
 		</div>
+		
+		<aside id="alert-message"
+			ng-show="appUtils.alertFty.showMessage">
+			<span id="alert-message-content"
+				ng-class="appUtils.alertFty.messageCssClass">
+				{{ appUtils.alertFty.messageContent }}
+			</span>
+		</aside>
 		
 		<aside class="modal-container"
 			ng-show="appUtils.alertFty.showModal">

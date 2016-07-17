@@ -273,40 +273,6 @@ header, main {
 		margin: 1rem auto 2rem;
 		//outline: 1px solid red;
 	}
-	#alert-message {
-		position: fixed;
-		z-index: 9;
-		pointer-events: none;
-		width: 100%;
-		max-width: 40rem;
-		margin: 0 auto;
-		text-align: center;
-		top: 0;
-		transform: translateY(6rem);
-		transition: transform 200ms;
-		&.ng-hide {
-			transform: translateY(0);
-		}
-		#alert-message-content {
-			pointer-events: auto;
-			font-size: 1rem;
-			color: #000;
-			background: #CCC;
-			padding: 0.5rem 1rem;
-			border-radius: 0.2rem;
-			//box-shadow: 0 0 0.5rem rgba(0,0,0,0.2);
-			border: 1px solid rgba(255,255,255,0.6);
-			&.warning {
-				background: #ffda6e;
-			}
-			&.error {
-				background: #fda0a0;
-			}
-			&.info, &.success {
-				background: #f1bedc;
-			}
-		}
-	}
 	#pikaday-container {
 		$pm: 15px;
 		$pw: 240px + ($pm * 2);
@@ -692,6 +658,42 @@ header, main {
 		}
 	}
 }
+
+#alert-message {
+	position: fixed;
+	z-index: 9;
+	pointer-events: none;
+	width: 100%;
+	margin: 0;
+	text-align: center;
+	top: 0;
+	transform: translateY(6rem);
+	transition: transform 200ms;
+	&.ng-hide {
+		transform: translateY(0);
+	}
+	#alert-message-content {
+		pointer-events: auto;
+		font-size: 1rem;
+		color: #000;
+		background: #CCC;
+		padding: 0.5rem 1rem;
+		border-radius: 0.2rem;
+		//box-shadow: 0 0 0.5rem rgba(0,0,0,0.2);
+		border: 1px solid rgba(255,255,255,0.6);
+		white-space: nowrap;
+		&.warning {
+			background: #ffda6e;
+		}
+		&.error {
+			background: #fda0a0;
+		}
+		&.info, &.success {
+			background: #f1bedc;
+		}
+	}
+}
+
 .credit-link {
 	font-size: 0.75rem;
 	text-align: center;
