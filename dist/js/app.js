@@ -40,7 +40,7 @@ function alertFty($sce, $timeout, dateFty) {
 			factory.messageContent = mContent;
 			factory.showMessage = true;
 			// hide message after 9 seconds
-			factory.messageTimer = $timeout(factory.hideMessage, 800000);
+			factory.messageTimer = $timeout(factory.hideMessage, 8000);
 		},
 		
 		hideMessage: function() {
@@ -157,7 +157,7 @@ function alertFty($sce, $timeout, dateFty) {
 					title: 'Which browsers are supported?',
 					text: [
 						'Uhhhhh, the latest ones?',
-						"Look, I'm only one man and there are so many browser configurations. I developed this whole thing in Chrome on Windows 10, so you can expect it to work fine there. I also did some basic testing with the other popular browsers (Firefox, IE 10+) and they seem to work..."
+						"Look, I'm only one man and there are so many browser configurations. I developed this whole thing in Chrome on Windows 10, so you can expect it to work fine there. I also did some basic testing with the other popular browsers (Firefox, IE 10+, Chrome for Android) and they seem to work..."
 					]
 				},
 				{
@@ -267,9 +267,12 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	self.alertFty = alertFty;
 	
-	self.showAddForecast = true;
+	self.openAddForecast = function() {
+		self.showAddForecast = true;
+		self.showAddForecastText = "Hide Tools";
+	}
 	
-	self.showAddForecastText = "Hide Tools";
+	self.openAddForecast();
 	
 	self.toggleAddForecast = function() {
 		self.showAddForecast = !self.showAddForecast;
@@ -285,6 +288,15 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		e.target.select();
 	}
 	
+	// used when the logo is clicked
+	self.resetPage = function() {
+		if (destinationFty.destinationList.length > 0) {
+			self.clear();
+		} else {
+			self.openAddForecast();
+		}
+	}
+	
 	// remove all destinations
 	self.clear = function() {
 		destinationFty.clearDestinations();
@@ -292,6 +304,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		urlFty.buildUrlParamUnits(forecastFty.units);
 		urlFty.buildUrlParamSort(destinationFty.sortBy);
 		alertFty.displayMessage("All destinations removed. Hit your browser's back button to undo.", "warning");
+		self.openAddForecast();
 	}
 	
 	// load destinations from url
@@ -571,7 +584,7 @@ function dateFty($filter) {
 		maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
 		
 		// max consecutive days per destination
-		maxDateRange: 3,
+		maxDateRange: 30,
 		
 		datesEqual: function(date1, date2) {
 			return Math.abs(date1.getTime() - date2.getTime()) < 1000*60*60*8; // within 8 hours

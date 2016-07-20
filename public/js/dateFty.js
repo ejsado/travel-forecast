@@ -47,7 +47,7 @@ function dateFty($filter) {
 		maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
 		
 		// max consecutive days per destination
-		maxDateRange: 3,
+		maxDateRange: 30,
 		
 		datesEqual: function(date1, date2) {
 			return Math.abs(date1.getTime() - date2.getTime()) < 1000*60*60*8; // within 8 hours

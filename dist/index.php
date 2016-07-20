@@ -74,7 +74,7 @@
 				<div id="header-wrapper" class="width-container">
 					<div id="logo-container">
 						<button
-							ng-click="appUtils.clear()"
+							ng-click="appUtils.resetPage()"
 							ng-disabled="appUtils.destinationFty.loadingDestinations">
 							<img src="/img/logo-colored-128.png" alt="">
 							<span>Travel Weathr</span>

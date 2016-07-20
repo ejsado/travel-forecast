@@ -40,7 +40,7 @@ function alertFty($sce, $timeout, dateFty) {
 			factory.messageContent = mContent;
 			factory.showMessage = true;
 			// hide message after 9 seconds
-			factory.messageTimer = $timeout(factory.hideMessage, 800000);
+			factory.messageTimer = $timeout(factory.hideMessage, 8000);
 		},
 		
 		hideMessage: function() {
@@ -157,7 +157,7 @@ function alertFty($sce, $timeout, dateFty) {
 					title: 'Which browsers are supported?',
 					text: [
 						'Uhhhhh, the latest ones?',
-						"Look, I'm only one man and there are so many browser configurations. I developed this whole thing in Chrome on Windows 10, so you can expect it to work fine there. I also did some basic testing with the other popular browsers (Firefox, IE 10+) and they seem to work..."
+						"Look, I'm only one man and there are so many browser configurations. I developed this whole thing in Chrome on Windows 10, so you can expect it to work fine there. I also did some basic testing with the other popular browsers (Firefox, IE 10+, Chrome for Android) and they seem to work..."
 					]
 				},
 				{

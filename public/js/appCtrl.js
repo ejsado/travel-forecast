@@ -43,9 +43,12 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	self.alertFty = alertFty;
 	
-	self.showAddForecast = true;
+	self.openAddForecast = function() {
+		self.showAddForecast = true;
+		self.showAddForecastText = "Hide Tools";
+	}
 	
-	self.showAddForecastText = "Hide Tools";
+	self.openAddForecast();
 	
 	self.toggleAddForecast = function() {
 		self.showAddForecast = !self.showAddForecast;
@@ -61,6 +64,15 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		e.target.select();
 	}
 	
+	// used when the logo is clicked
+	self.resetPage = function() {
+		if (destinationFty.destinationList.length > 0) {
+			self.clear();
+		} else {
+			self.openAddForecast();
+		}
+	}
+	
 	// remove all destinations
 	self.clear = function() {
 		destinationFty.clearDestinations();
@@ -68,6 +80,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		urlFty.buildUrlParamUnits(forecastFty.units);
 		urlFty.buildUrlParamSort(destinationFty.sortBy);
 		alertFty.displayMessage("All destinations removed. Hit your browser's back button to undo.", "warning");
+		self.openAddForecast();
 	}
 	
 	// load destinations from url
