@@ -69,10 +69,6 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 						}
 						return destAdded;
 					} else {
-						/* // add all dates within date range
-						factory.destinationList[i].dates.push.apply(factory.destinationList[i].dates, dateFty.enumerateDateRange(arrival, departure));
-						// remove duplicate dates
-						factory.destinationList[i].dates = dateFty.removeDuplicateDates(factory.destinationList[i].dates); */
 						// replace date list
 						factory.destinationList[i].dates = newDateList;
 						// sort dates
