@@ -40,7 +40,7 @@ function alertFty($sce, $timeout, dateFty) {
 			factory.messageContent = mContent;
 			factory.showMessage = true;
 			// hide message after 9 seconds
-			factory.messageTimer = $timeout(factory.hideMessage, 8000);
+			factory.messageTimer = $timeout(factory.hideMessage, 800000);
 		},
 		
 		hideMessage: function() {

@@ -47,7 +47,7 @@ function dateFty($filter) {
 		maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
 		
 		// max consecutive days per destination
-		maxDateRange: 30,
+		maxDateRange: 3,
 		
 		datesEqual: function(date1, date2) {
 			return Math.abs(date1.getTime() - date2.getTime()) < 1000*60*60*8; // within 8 hours
@@ -55,7 +55,7 @@ function dateFty($filter) {
 		
 		// check if both dates have a maximum number of days between them
 		datesWithinDays: function(date1, date2, days) {
-			return Math.abs(date1.getTime() - date2.getTime()) < (1000*60*60*24*days + 1000*60*60*8); // within number of days of each other +8 hours
+			return Math.abs(date1.getTime() - date2.getTime()) < (1000*60*60*24*days);// + 1000*60*60*8); // within number of days of each other
 		},
 		
 		validDate: function(d) {

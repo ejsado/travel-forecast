@@ -149,19 +149,19 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 					// get forecast for added destination
 					forecastFty.attemptGetForecast(result.coords.lat, result.coords.lng, result.name);
 					// if done adding destinations
-					if (count == urlDestinations.length || count > 10) {
+					if (count == urlDestinations.length || count >= 10) {
 						// enable buttons
 						destinationFty.loadingDestinations = false;
 						console.log("done loading destinations");
 						// show errors, if any
-						if (count != destinationFty.destinationList.length) {
-							alertFty.displayModal(alertFty.destinationsMergedModal);
-						} else if (destinationsNotFound) {
+						if (destinationsNotFound) {
 							alertFty.displayModal(alertFty.destinationsNotFoundModal);
 						} else if (dateRangeInvalid) {
 							alertFty.displayModal(alertFty.dateRangeInvalidModal);
 						} else if (tooManyDestinations) {
-							
+							alertFty.displayModal(alertFty.tooManyDestinationsModal);
+						} else if (count != destinationFty.destinationList.length) {
+							alertFty.displayModal(alertFty.destinationsMergedModal);
 						}
 						// rebuild url
 						urlFty.buildUrlParamTrip(destinationFty.destinationList);

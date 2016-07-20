@@ -54,26 +54,35 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 				// if destination exists
 				if (place.name == factory.destinationList[i].name) {
 					console.log("destination exists");
-					// if date range too large
-					if (!dateFty.datesWithinDays(factory.destinationList[i].dates[0], departure, dateFty.maxDateRange)) {
-						console.log("destination date range greater than 30 days");
+					// make new date list
+					var newDateList = dateFty.enumerateDateRange(arrival, departure);
+					// add dates from destination
+					Array.prototype.push.apply(newDateList, factory.destinationList[i].dates);
+					// remove duplicate dates
+					newDateList = dateFty.removeDuplicateDates(newDateList);
+					// if date list too large
+					if (newDateList.length > dateFty.maxDateRange) {
+						console.log("destination date count greater than max days");
 						// show message
 						if (!factory.loadingDestinations) {
-							alertFty.displayMessage("Forecasts are limited to " + dateFty.maxDateRange + " days per destination from first arrival to last departure.", "error");
+							alertFty.displayMessage("Forecasts are limited to " + dateFty.maxDateRange + " days per destination. You have " + (dateFty.maxDateRange - factory.destinationList[i].dates.length) + " day(s) left here.", "error");
 						}
 						return destAdded;
-					}
-					// add all dates within date range
-					factory.destinationList[i].dates.push.apply(factory.destinationList[i].dates, dateFty.enumerateDateRange(arrival, departure));
-					// remove duplicate dates
-					factory.destinationList[i].dates = dateFty.removeDuplicateDates(factory.destinationList[i].dates);
-					// sort dates
-					factory.destinationList[i].dates.sort(dateFty.dateCompare);
-					// rebuild date ranges
-					factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
-					destAdded = true;
-					if (!factory.loadingDestinations) {
-						alertFty.displayMessage("I merged the dates for this destination.", "info");
+					} else {
+						/* // add all dates within date range
+						factory.destinationList[i].dates.push.apply(factory.destinationList[i].dates, dateFty.enumerateDateRange(arrival, departure));
+						// remove duplicate dates
+						factory.destinationList[i].dates = dateFty.removeDuplicateDates(factory.destinationList[i].dates); */
+						// replace date list
+						factory.destinationList[i].dates = newDateList;
+						// sort dates
+						factory.destinationList[i].dates.sort(dateFty.dateCompare);
+						// rebuild date ranges
+						factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
+						destAdded = true;
+						if (!factory.loadingDestinations) {
+							alertFty.displayMessage("I merged the dates for this destination.", "info");
+						}
 					}
 				}
 			}

@@ -40,7 +40,7 @@ function alertFty($sce, $timeout, dateFty) {
 			factory.messageContent = mContent;
 			factory.showMessage = true;
 			// hide message after 9 seconds
-			factory.messageTimer = $timeout(factory.hideMessage, 8000);
+			factory.messageTimer = $timeout(factory.hideMessage, 800000);
 		},
 		
 		hideMessage: function() {
@@ -373,19 +373,19 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 					// get forecast for added destination
 					forecastFty.attemptGetForecast(result.coords.lat, result.coords.lng, result.name);
 					// if done adding destinations
-					if (count == urlDestinations.length || count > 10) {
+					if (count == urlDestinations.length || count >= 10) {
 						// enable buttons
 						destinationFty.loadingDestinations = false;
 						console.log("done loading destinations");
 						// show errors, if any
-						if (count != destinationFty.destinationList.length) {
-							alertFty.displayModal(alertFty.destinationsMergedModal);
-						} else if (destinationsNotFound) {
+						if (destinationsNotFound) {
 							alertFty.displayModal(alertFty.destinationsNotFoundModal);
 						} else if (dateRangeInvalid) {
 							alertFty.displayModal(alertFty.dateRangeInvalidModal);
 						} else if (tooManyDestinations) {
-							
+							alertFty.displayModal(alertFty.tooManyDestinationsModal);
+						} else if (count != destinationFty.destinationList.length) {
+							alertFty.displayModal(alertFty.destinationsMergedModal);
 						}
 						// rebuild url
 						urlFty.buildUrlParamTrip(destinationFty.destinationList);
@@ -571,7 +571,7 @@ function dateFty($filter) {
 		maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
 		
 		// max consecutive days per destination
-		maxDateRange: 30,
+		maxDateRange: 3,
 		
 		datesEqual: function(date1, date2) {
 			return Math.abs(date1.getTime() - date2.getTime()) < 1000*60*60*8; // within 8 hours
@@ -579,7 +579,7 @@ function dateFty($filter) {
 		
 		// check if both dates have a maximum number of days between them
 		datesWithinDays: function(date1, date2, days) {
-			return Math.abs(date1.getTime() - date2.getTime()) < (1000*60*60*24*days + 1000*60*60*8); // within number of days of each other +8 hours
+			return Math.abs(date1.getTime() - date2.getTime()) < (1000*60*60*24*days);// + 1000*60*60*8); // within number of days of each other
 		},
 		
 		validDate: function(d) {
@@ -824,26 +824,35 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 				// if destination exists
 				if (place.name == factory.destinationList[i].name) {
 					console.log("destination exists");
-					// if date range too large
-					if (!dateFty.datesWithinDays(factory.destinationList[i].dates[0], departure, dateFty.maxDateRange)) {
-						console.log("destination date range greater than 30 days");
+					// make new date list
+					var newDateList = dateFty.enumerateDateRange(arrival, departure);
+					// add dates from destination
+					Array.prototype.push.apply(newDateList, factory.destinationList[i].dates);
+					// remove duplicate dates
+					newDateList = dateFty.removeDuplicateDates(newDateList);
+					// if date list too large
+					if (newDateList.length > dateFty.maxDateRange) {
+						console.log("destination date count greater than max days");
 						// show message
 						if (!factory.loadingDestinations) {
-							alertFty.displayMessage("Forecasts are limited to " + dateFty.maxDateRange + " days per destination from first arrival to last departure.", "error");
+							alertFty.displayMessage("Forecasts are limited to " + dateFty.maxDateRange + " days per destination. You have " + (dateFty.maxDateRange - factory.destinationList[i].dates.length) + " day(s) left here.", "error");
 						}
 						return destAdded;
-					}
-					// add all dates within date range
-					factory.destinationList[i].dates.push.apply(factory.destinationList[i].dates, dateFty.enumerateDateRange(arrival, departure));
-					// remove duplicate dates
-					factory.destinationList[i].dates = dateFty.removeDuplicateDates(factory.destinationList[i].dates);
-					// sort dates
-					factory.destinationList[i].dates.sort(dateFty.dateCompare);
-					// rebuild date ranges
-					factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
-					destAdded = true;
-					if (!factory.loadingDestinations) {
-						alertFty.displayMessage("I merged the dates for this destination.", "info");
+					} else {
+						/* // add all dates within date range
+						factory.destinationList[i].dates.push.apply(factory.destinationList[i].dates, dateFty.enumerateDateRange(arrival, departure));
+						// remove duplicate dates
+						factory.destinationList[i].dates = dateFty.removeDuplicateDates(factory.destinationList[i].dates); */
+						// replace date list
+						factory.destinationList[i].dates = newDateList;
+						// sort dates
+						factory.destinationList[i].dates.sort(dateFty.dateCompare);
+						// rebuild date ranges
+						factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
+						destAdded = true;
+						if (!factory.loadingDestinations) {
+							alertFty.displayMessage("I merged the dates for this destination.", "info");
+						}
 					}
 				}
 			}
@@ -1360,6 +1369,8 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 	
 	self.showEndDatePicker = false;
 	
+	var firstDestination = true;
+	
 	function removeMarker() {
 		if (marker) {
 			marker.setMap(null);
@@ -1477,7 +1488,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 		
 		// find max date range
 		var d = new Date(self.startDate);
-		d.setDate(d.getDate() + dateFty.maxDateRange);
+		d.setDate(d.getDate() + dateFty.maxDateRange - 1);
 		
 		// restrict end (departure) date picker
 		pickEndDate.setMinDate(self.startDate);
@@ -1521,7 +1532,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 	
 	// find max date for departure
 	var maxEndDate = dateFty.setCommonTime(new Date());
-	maxEndDate.setDate(maxEndDate.getDate() + dateFty.maxDateRange);
+	maxEndDate.setDate(maxEndDate.getDate() + dateFty.maxDateRange - 1);
 	
 	// set departure date picker
 	var pickEndDate = new Pikaday({
@@ -1575,6 +1586,11 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				}
 				// get forecast for added destination
 				forecastFty.attemptGetForecast(place.coords.lat, place.coords.lng, place.name);
+				// if this is the first destination added by the user
+				if (firstDestination) {
+					scrollToBottom();
+					firstDestination = false;
+				}
 				// if more than one destination
 				if (destinationFty.destinationList.length > 1) {
 					// get estimated travel time between destinations
@@ -1585,8 +1601,6 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 							$scope.$apply();
 						}
 					);
-				} else {
-					scrollToBottom();
 				}
 				// add destination to url by rebuilding it
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);

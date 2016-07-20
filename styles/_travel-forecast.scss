@@ -673,6 +673,8 @@ header, main {
 		transform: translateY(0);
 	}
 	#alert-message-content {
+		display: inline-block;
+		line-height: 1.5;
 		pointer-events: auto;
 		font-size: 1rem;
 		color: #000;
@@ -681,7 +683,6 @@ header, main {
 		border-radius: 0.2rem;
 		//box-shadow: 0 0 0.5rem rgba(0,0,0,0.2);
 		border: 1px solid rgba(255,255,255,0.6);
-		white-space: nowrap;
 		&.warning {
 			background: #ffda6e;
 		}

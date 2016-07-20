@@ -45,6 +45,8 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 	
 	self.showEndDatePicker = false;
 	
+	var firstDestination = true;
+	
 	function removeMarker() {
 		if (marker) {
 			marker.setMap(null);
@@ -162,7 +164,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 		
 		// find max date range
 		var d = new Date(self.startDate);
-		d.setDate(d.getDate() + dateFty.maxDateRange);
+		d.setDate(d.getDate() + dateFty.maxDateRange - 1);
 		
 		// restrict end (departure) date picker
 		pickEndDate.setMinDate(self.startDate);
@@ -206,7 +208,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 	
 	// find max date for departure
 	var maxEndDate = dateFty.setCommonTime(new Date());
-	maxEndDate.setDate(maxEndDate.getDate() + dateFty.maxDateRange);
+	maxEndDate.setDate(maxEndDate.getDate() + dateFty.maxDateRange - 1);
 	
 	// set departure date picker
 	var pickEndDate = new Pikaday({
@@ -260,6 +262,11 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				}
 				// get forecast for added destination
 				forecastFty.attemptGetForecast(place.coords.lat, place.coords.lng, place.name);
+				// if this is the first destination added by the user
+				if (firstDestination) {
+					scrollToBottom();
+					firstDestination = false;
+				}
 				// if more than one destination
 				if (destinationFty.destinationList.length > 1) {
 					// get estimated travel time between destinations
@@ -270,8 +277,6 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 							$scope.$apply();
 						}
 					);
-				} else {
-					scrollToBottom();
 				}
 				// add destination to url by rebuilding it
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
