@@ -50,6 +50,11 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	self.openAddForecast();
 	
+	self.closeAddForecast = function() {
+		self.showAddForecast = false;
+		self.showAddForecastText = "Show Tools";
+	}
+	
 	self.toggleAddForecast = function() {
 		self.showAddForecast = !self.showAddForecast;
 		if (self.showAddForecast) {
@@ -219,7 +224,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 				lng: urlDestinations[urlDestinations.length - 1].coords.lng
 			}));
 			// minimize the Add Forecast controls
-			self.toggleAddForecast();
+			self.closeAddForecast();
 		}
 	}
 	
