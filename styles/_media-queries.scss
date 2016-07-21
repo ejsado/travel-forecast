@@ -14,10 +14,11 @@
 			font-size: 14px;
 		}
 		#map-container {
+			background: #DDD;
 			#map-drawer {
-				height: 0;
+				height: 1px;
 			}
-			#hide-map-switch {
+			#map {
 				display: none;
 			}
 		}
@@ -40,10 +41,15 @@
 	/* mobile devices in portrait */
 	@media (orientation: portrait) {
 		html {
-			font-size: 12px;
+			font-size: 13px;
 		}
-		#map-container #map-drawer {
-			height: 20rem;
+		#map-container {
+			#map-drawer {
+				height: 20rem;
+			}
+			#map {
+				min-height: 20rem;
+			}
 		}
 		/* tablets */
 		@media	(min-device-width: 550px) {

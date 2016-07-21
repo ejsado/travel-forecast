@@ -857,10 +857,6 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 						}
 						return destAdded;
 					} else {
-						/* // add all dates within date range
-						factory.destinationList[i].dates.push.apply(factory.destinationList[i].dates, dateFty.enumerateDateRange(arrival, departure));
-						// remove duplicate dates
-						factory.destinationList[i].dates = dateFty.removeDuplicateDates(factory.destinationList[i].dates); */
 						// replace date list
 						factory.destinationList[i].dates = newDateList;
 						// sort dates
@@ -1574,8 +1570,9 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 	
 	function scrollToBottom() {
 		//console.log("scroll begin");
+		mainElementHeight = mainElement.getBoundingClientRect().height;
 		$timeout(function() {
-			mainElement.scrollTop = mainElement.scrollTop + 50;
+			mainElement.scrollTop = mainElement.scrollTop + 30;
 			if ((mainElement.scrollTop + mainElementHeight) < mainElement.scrollHeight) {
 				//console.log("scroll recursive");
 				scrollToBottom();

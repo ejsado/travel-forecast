@@ -232,8 +232,9 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 	
 	function scrollToBottom() {
 		//console.log("scroll begin");
+		mainElementHeight = mainElement.getBoundingClientRect().height;
 		$timeout(function() {
-			mainElement.scrollTop = mainElement.scrollTop + 50;
+			mainElement.scrollTop = mainElement.scrollTop + 30;
 			if ((mainElement.scrollTop + mainElementHeight) < mainElement.scrollHeight) {
 				//console.log("scroll recursive");
 				scrollToBottom();

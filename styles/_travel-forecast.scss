@@ -207,7 +207,7 @@ header, main {
 	padding: 0 1rem;
 	background: #DDD;
 	overflow: hidden;
-	max-height: 30rem;
+	max-height: 40rem;
 	transition: max-height 500ms;
 	&.ng-hide {
 		max-height: 0;
@@ -270,6 +270,7 @@ header, main {
 	}
 	.money-box {
 		width: 320px;
+		max-height: 100px;
 		margin: 1rem auto 2rem;
 		//outline: 1px solid red;
 	}
@@ -328,7 +329,7 @@ header, main {
 #hide-controls-container {
 	display: flex;
 	background: #DDD;
-	border-top: 0.3rem solid #DDD;
+	border-top: 0.5rem solid #DDD;
 	margin-bottom: 1rem;
 	.tab {
 		background: #F2F2F2;
