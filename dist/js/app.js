@@ -141,7 +141,8 @@ function alertFty($sce, $timeout, dateFty) {
 					title: 'What is this?',
 					text: [
 						"Travel Weathr allows you to build a weather forecast calendar for multiple vacation destinations with varied arrivals and departures.",
-						"Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with. Every time you visit the link, your freshly updated forecast will be shown."
+						"Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with. Every time you visit the link, your freshly updated forecast will be shown.",
+						"Each day in your forecast calendar will show the expected high temperature (&uarr;), low temperature (&darr;), and chance of rain (&becaus;)."
 					]
 				},
 				{
@@ -158,12 +159,6 @@ function alertFty($sce, $timeout, dateFty) {
 					text: [
 						'Uhhhhh, the latest ones?',
 						"Look, I'm only one man and there are so many browser configurations. I developed this whole thing in Chrome on Windows 10, so you can expect it to work fine there. I also did some basic testing with the other popular browsers (Firefox, IE 10+, Chrome for Android) and they seem to work..."
-					]
-				},
-				{
-					title: 'I found a bug.',
-					text: [
-						'Ew, just squish it. Or report it on the <a href="https://github.com/ejsado/travel-forecast/issues">github page</a>.'
 					]
 				},
 				{
