@@ -142,15 +142,16 @@ function alertFty($sce, $timeout, dateFty) {
 					text: [
 						"Travel Weathr allows you to build a weather forecast calendar for multiple vacation destinations with varied arrivals and departures.",
 						"Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with. Every time you visit the link, your freshly updated forecast will be shown.",
-						"Each day in your forecast calendar will show the expected high temperature (&uarr;), low temperature (&darr;), and chance of rain (&becaus;)."
+						"Each day in your forecast calendar will show the expected high temperature (&uarr;), low temperature (&darr;), and chance of rain (&becaus;).",
+						"* Note that weather predictions beyond 7 days from today are a best guess based on historical data and will not show an accurate chance of rain."
 					]
 				},
 				{
 					title: 'Who provides the data?',
 					text: [
-						'<a href="https://developer.forecast.io/">Dark Sky</a> provides the weather data',
-						'<a href="https://developers.google.com/maps/">Google</a> provides the map and location data',
-						'<a href="https://www.wunderground.com/?apiref=98798f3caba1662f">Weather Underground</a> provides the precipitation radar which is overlayed on the map',
+						'&bull; <a href="https://developer.forecast.io/">Dark Sky</a> provides the weather data',
+						'&bull; <a href="https://developers.google.com/maps/">Google</a> provides the map and location data',
+						'&bull; <a href="https://www.wunderground.com/?apiref=98798f3caba1662f">Weather Underground</a> provides the precipitation radar which is overlayed on the map',
 						'* Note that radar is only available for North America, Europe, and Australia'
 					]
 				},
