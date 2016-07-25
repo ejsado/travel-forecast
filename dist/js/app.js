@@ -720,9 +720,7 @@ function dateFty($filter) {
 		
 		// date 2 is immediately after date 1
 		consecutiveDates: function(date1, date2) {
-			var d = new Date(date1);
-			d.setDate(d.getDate() + 1);
-			if (factory.datesEqual(d, date2)) {
+			if (date1.getMonth() == date2.getMonth() && date1.getDate() < date2.getDate()) {
 				return true;
 			}
 			return false;
@@ -1605,6 +1603,9 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				}
 				// if more than one destination
 				if (destinationFty.destinationList.length > 1) {
+					// pan to all destinations
+					locationFty.map.setZoom(4);
+					locationFty.map.panToBounds(locationFty.destinationBounds);
 					// get estimated travel time between destinations
 					distanceFty.getDistances(
 						destinationFty.destinationList,
@@ -1677,13 +1678,16 @@ function locationFty() {
 		
 		// define map and center view on USA
 		map: new google.maps.Map(document.getElementById('map'), {
-			zoom: 4,
+			zoom: 3,
 			center: {lat: 38.509490, lng: -96.767578},
 			clickableIcons: false
 		}),
 		
 		// list of numbered map markers (blue)
 		markerList: [],
+		
+		// map bounds that contain all destinations
+		destinationBounds: new google.maps.LatLngBounds(),
 		
 		// line between destination markers
 		routeLine: new google.maps.Polyline({
@@ -1732,6 +1736,7 @@ function locationFty() {
 		drawOnMap: function(destList) {
 			factory.buildMapMarkers(destList);
 			factory.buildRouteLine(destList);
+			factory.buildBoundingBox(destList);
 		},
 		
 		buildMapMarkers: function(destList) {
@@ -1768,6 +1773,15 @@ function locationFty() {
 				coordsList.push(destList[i].coords);
 			}
 			factory.routeLine.setPath(coordsList);
+		},
+		
+		buildBoundingBox: function(destList) {
+			var bounds = new google.maps.LatLngBounds();
+			for (var i = 0; i < destList.length; i++) {
+				bounds.extend(new google.maps.LatLng(destList[i].coords.lat, destList[i].coords.lng));
+			}
+			console.log("bounds", bounds);
+			factory.destinationBounds = bounds;
 		},
 		
 		// find text query
