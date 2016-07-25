@@ -125,6 +125,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 	}
 	
 	self.setLocation = function(loc) {
+		self.query = loc.name;
 		locationFty.locationDetails = loc;
 		centerMap(locationFty.map, loc.coords);
 		zoomMap(locationFty.map, 10);

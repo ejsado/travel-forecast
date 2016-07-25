@@ -126,9 +126,9 @@
 					ng-show="appUtils.showAddForecast">
 					<div class="center-inputs">
 						<input id="location-search" type="text" placeholder="Search for a destination"
-							ng-model="query"
+							ng-model="formUtils.query"
 							ng-model-options="{debounce: 500}"
-							ng-change="formUtils.locationSearch(query)"
+							ng-change="formUtils.locationSearch(formUtils.query)"
 							ng-click="formUtils.showTypeAhead = true; formUtils.highlightIndex = 0"
 							ng-blur="formUtils.delayHideTypeAhead()"
 							ng-keydown="formUtils.highlightResult($event)">
@@ -136,7 +136,7 @@
 							ng-show="formUtils.showTypeAhead"
 							ng-mouseover="formUtils.highlightIndex = -1">
 							<button class="type-ahead-result"
-								ng-repeat="result in formUtils.typeAheadResults"
+								ng-repeat="result in formUtils.typeAheadResults | limitTo: 5"
 								ng-click="formUtils.setLocation(result)"
 								ng-class="{'highlight': formUtils.highlightIndex == $index}">
 								{{ result.name }}
