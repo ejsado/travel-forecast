@@ -182,9 +182,7 @@ function dateFty($filter) {
 		
 		// date 2 is immediately after date 1
 		consecutiveDates: function(date1, date2) {
-			var d = new Date(date1);
-			d.setDate(d.getDate() + 1);
-			if (factory.datesEqual(d, date2)) {
+			if (date1.getMonth() == date2.getMonth() && date1.getDate() < date2.getDate()) {
 				return true;
 			}
 			return false;

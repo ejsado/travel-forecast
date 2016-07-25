@@ -25,13 +25,16 @@ function locationFty() {
 		
 		// define map and center view on USA
 		map: new google.maps.Map(document.getElementById('map'), {
-			zoom: 4,
+			zoom: 3,
 			center: {lat: 38.509490, lng: -96.767578},
 			clickableIcons: false
 		}),
 		
 		// list of numbered map markers (blue)
 		markerList: [],
+		
+		// map bounds that contain all destinations
+		destinationBounds: new google.maps.LatLngBounds(),
 		
 		// line between destination markers
 		routeLine: new google.maps.Polyline({
@@ -80,6 +83,7 @@ function locationFty() {
 		drawOnMap: function(destList) {
 			factory.buildMapMarkers(destList);
 			factory.buildRouteLine(destList);
+			factory.buildBoundingBox(destList);
 		},
 		
 		buildMapMarkers: function(destList) {
@@ -116,6 +120,15 @@ function locationFty() {
 				coordsList.push(destList[i].coords);
 			}
 			factory.routeLine.setPath(coordsList);
+		},
+		
+		buildBoundingBox: function(destList) {
+			var bounds = new google.maps.LatLngBounds();
+			for (var i = 0; i < destList.length; i++) {
+				bounds.extend(new google.maps.LatLng(destList[i].coords.lat, destList[i].coords.lng));
+			}
+			console.log("bounds", bounds);
+			factory.destinationBounds = bounds;
 		},
 		
 		// find text query

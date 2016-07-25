@@ -271,6 +271,9 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				}
 				// if more than one destination
 				if (destinationFty.destinationList.length > 1) {
+					// pan to all destinations
+					locationFty.map.setZoom(4);
+					locationFty.map.panToBounds(locationFty.destinationBounds);
 					// get estimated travel time between destinations
 					distanceFty.getDistances(
 						destinationFty.destinationList,
