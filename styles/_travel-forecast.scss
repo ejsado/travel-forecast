@@ -378,7 +378,7 @@ header, main {
 		margin: 0;
 		padding: 0;
 		th {
-			height: 1.5rem;
+			height: 3rem;
 			font-size: 0.9rem;
 			color: #666;
 			padding: 0;
@@ -392,9 +392,11 @@ header, main {
 				height: 8rem;
 			}
 			.destination-container, .weather-container {
-				margin-right: 0.5rem;
 				background: #FFF;
 				border-radius: 0.2rem;
+			}
+			.weather-container {
+				margin-right: 0.5rem;
 			}
 			&.estimation-cell, &.weather-text-cell {
 				height: 4rem;
@@ -427,7 +429,7 @@ header, main {
 	#calendar-destinations {
 		flex: 0 0 auto;
 		.destination-container, .estimation-container {
-			max-width: 14rem;
+			width: 14rem;
 		}
 		.destination-container {
 			position: relative;
@@ -517,7 +519,12 @@ header, main {
 		display: flex;
 		overflow-y: hidden;
 		.weather-table {
-			margin-left: 0.5rem;
+			margin-left: 1rem;
+			.month-name {
+				border: 0.2rem solid #CCC;
+				border-bottom: none;
+				height: 0.6rem;
+			}
 			.weather-container {
 				position: relative;
 				font-size: 0.9rem;
@@ -541,10 +548,25 @@ header, main {
 						margin: 2.5rem 1rem;
 					}
 				}
+				.day-name, .day-number {
+					position: absolute;
+					top: 0;
+					text-transform: uppercase;
+					color: #AAA;
+					font-size: 0.8rem;
+					line-height: 1;
+					margin: 0.25rem;
+				}
+				.day-name {
+					left: 0;
+				}
+				.day-number {
+					right: 0;
+				}
 				.weather-icon {
 					width: 2rem;
 					height: 2rem;
-					margin: 0.25rem auto 0.5rem;
+					margin: 0.7rem auto 0.2rem;
 					background: url(/img/weather.png);
 					background-size: 700%;
 					background-position: 0% 3%;

@@ -332,8 +332,9 @@
 									ng-repeat="consecutiveDates in appUtils.dateFty.dateList">
 									<thead>
 										<tr>
-											<th ng-repeat="travelDate in consecutiveDates">
-												{{ travelDate | date: 'MMM d' }}
+											<th colspan="{{ consecutiveDates.length }}">
+												{{ consecutiveDates[0] | date: 'MMMM yyyy' }}
+												<div class="month-name"></div>
 											</th>
 										</tr>
 									</thead>
@@ -348,6 +349,12 @@
 														ng-hide="appUtils.forecastFty.forecastList[destination.name]
 																[appUtils.dateFty.createDateString(travelDate)]">
 														<div class="spinner"></div>
+													</div>
+													<div class="day-name">
+														{{ travelDate | date: 'EEE' }}
+													</div>
+													<div class="day-number">
+														{{ travelDate | date: 'd' }}
 													</div>
 													<div class="weather-icon" 
 														ng-class="appUtils.forecastFty.forecastList[destination.name]
@@ -388,7 +395,7 @@
 													ng-show="appUtils.dateFty.dateInArray(travelDate, destination.dates) &&
 														appUtils.dateFty.datesEqual(travelDate, calendarUtils.selectedDate)"
 													ng-style="{'width': (appUtils.forecastFty.forecastList[destination.name]
-														[appUtils.dateFty.createDateString(travelDate)].text.length / 5) + 'rem'}">
+														[appUtils.dateFty.createDateString(travelDate)].text.length / 4.5) + 'rem'}">
 													<p class="weather-text">
 														{{
 															appUtils.forecastFty.forecastList[destination.name]
