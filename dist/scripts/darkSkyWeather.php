@@ -23,7 +23,7 @@
 			$date = '';
 		}
 		
-		$json = file_get_contents('https://api.forecast.io/forecast/' . $darkSkyKey . '/' . $lat . ',' . $lng . $date . '?units=us&exclude=minutely,hourly,flags,alerts');
+		$json = file_get_contents('https://api.forecast.io/forecast/' . $darkSkyKey . '/' . $lat . ',' . $lng . $date . '?units=us&exclude=minutely,hourly,flags');
 		
 		$obj = json_decode($json);
 		echo json_encode($obj, JSON_PRETTY_PRINT);

@@ -136,6 +136,7 @@
 						</div>
 					</div>
 				</section>
+				<section id="form-top"></section>
 				<section id="form-container"
 					ng-controller="formCtrl as formUtils"
 					ng-show="appUtils.locationFty.showAddForecast">
@@ -373,6 +374,11 @@
 														<div class="day-number">
 															{{ travelDate | date: 'd' }}
 														</div>
+														<div class="weather-alert-indicator"
+															ng-show="appUtils.forecastFty.forecastList[destination.name]
+																[appUtils.dateFty.createDateString(travelDate)].alerts.length > 0">
+															!
+														</div>
 														<div class="weather-icon" 
 															ng-class="appUtils.forecastFty.forecastList[destination.name]
 																[appUtils.dateFty.createDateString(travelDate)].icon">
@@ -415,14 +421,17 @@
 															}}
 														</p>
 														<p class="date-tools">
-															<button class="btn-link btn-link-alt"
+															<button class="btn-link"
 																ng-disabled="appUtils.destinationFty.loadingDestinations"
-																ng-click="calendarUtils.removeDate($index, destination.name)">
+																ng-click="calendarUtils.removeDate(travelDate, destination.name)">
 																remove day
 															</button>
-															<span>
+															<span 
+																ng-show="appUtils.forecastFty.forecastList[destination.name]
+																	[appUtils.dateFty.createDateString(travelDate)].alerts.length > 0">
 																&mdash;
-																<button class="btn-link">
+																<button class="btn-link btn-link-alt"
+																	ng-click="calendarUtils.showAlerts(destination.name, appUtils.dateFty.createDateString(travelDate))">
 																	alert info
 																</button>
 															</span>
@@ -461,6 +470,11 @@
 													</div>
 													<div class="day-number">
 														{{ travelDate | date: 'd' }}
+													</div>
+													<div class="weather-alert-indicator"
+														ng-show="appUtils.forecastFty.forecastList[destination.name]
+															[appUtils.dateFty.createDateString(travelDate)].alerts.length > 0">
+														!
 													</div>
 													<div class="weather-icon" 
 														ng-class="appUtils.forecastFty.forecastList[destination.name]
@@ -507,6 +521,22 @@
 															appUtils.forecastFty.forecastList[destination.name]
 															[appUtils.dateFty.createDateString(travelDate)].text
 														}}
+													</p>
+													<p class="date-tools">
+														<button class="btn-link"
+															ng-disabled="appUtils.destinationFty.loadingDestinations"
+															ng-click="calendarUtils.removeDate(travelDate, destination.name)">
+															remove day
+														</button>
+														<span 
+															ng-show="appUtils.forecastFty.forecastList[destination.name]
+																[appUtils.dateFty.createDateString(travelDate)].alerts.length > 0">
+															&mdash;
+															<button class="btn-link btn-link-alt"
+																ng-click="calendarUtils.showAlerts(destination.name, appUtils.dateFty.createDateString(travelDate))">
+																alert info
+															</button>
+														</span>
 													</p>
 												</div>
 											</td>

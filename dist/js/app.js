@@ -263,27 +263,6 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	self.alertFty = alertFty;
 	
-	self.openAddForecast = function() {
-		self.showAddForecast = true;
-		self.showAddForecastText = "Hide Tools";
-	}
-	
-	self.openAddForecast();
-	
-	self.closeAddForecast = function() {
-		self.showAddForecast = false;
-		self.showAddForecastText = "Show Tools";
-	}
-	
-	self.toggleAddForecast = function() {
-		self.showAddForecast = !self.showAddForecast;
-		if (self.showAddForecast) {
-			self.showAddForecastText = "Hide Tools";
-		} else {
-			self.showAddForecastText = "Show Tools";
-		}
-	}
-	
 	// select input text on click
 	self.highlightInput = function(e) {
 		e.target.select();
@@ -294,7 +273,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		if (destinationFty.destinationList.length > 0) {
 			self.clear();
 		} else {
-			self.openAddForecast();
+			locationFty.openAddForecast();
 		}
 	}
 	
@@ -305,7 +284,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		urlFty.buildUrlParamUnits(forecastFty.units);
 		urlFty.buildUrlParamSort(destinationFty.sortBy);
 		alertFty.displayMessage("All destinations removed. Hit your browser's back button to undo.", "warning");
-		self.openAddForecast();
+		locationFty.openAddForecast();
 	}
 	
 	// load destinations from url
@@ -444,7 +423,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 				lng: urlDestinations[urlDestinations.length - 1].coords.lng
 			}));
 			// minimize the Add Forecast controls
-			self.closeAddForecast();
+			locationFty.closeAddForecast();
 		}
 	}
 	
@@ -503,7 +482,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 * 
 */
 
-function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty, alertFty) {
+function calendarCtrl($scope, $anchorScroll, $filter, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty, alertFty) {
 	
 	var self = this;
 	
@@ -544,6 +523,41 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 	
 	self.setSelectedDate = function(date) {
 		self.selectedDate = date;
+	}
+	
+	self.selectDestination = function(index) {
+		locationFty.locationDetails.name = destinationFty.destinationList[index].name;
+		locationFty.locationDetails.coords = destinationFty.destinationList[index].coords;
+		locationFty.openAddForecast();
+		$anchorScroll('form-top');
+	}
+	
+	self.removeDate = function(dateToRemove, destName) {
+		// remove date
+		destinationFty.removeDateFromDestination(dateToRemove, destName);
+		// rebuild url
+		urlFty.buildUrlParamTrip(destinationFty.destinationList);
+	}
+	
+	self.showAlerts = function(destName, dateStr) {
+		var forecastAlerts = forecastFty.forecastList[destName][dateStr].alerts;
+		var alertContent = [];
+		for (var i = 0; i < forecastAlerts.length; i++) {
+			var alertText = {
+				title: forecastAlerts[i].title,
+				text: [
+					forecastAlerts[i].description,
+					"<strong>Begins:</strong> " + $filter('date')(new Date(forecastAlerts[i].time * 1000), 'MMMM d, yyyy h:mm a'),
+					"<strong>Expires:</strong> " + $filter('date')(new Date(forecastAlerts[i].expires * 1000), 'MMMM d, yyyy h:mm a')
+				]
+			};
+			alertContent.push(alertText);
+		}
+		var weatherAlertModal = {
+			buttonText: "Got it",
+			content: alertContent
+		};
+		alertFty.displayModal(alertFty.trustDialogText(weatherAlertModal));
 	}
 	
 	self.removeSingleDestination = function(index) {
@@ -684,13 +698,13 @@ function dateFty($filter) {
 			console.log("date list", factory.dateList);
 		},
 		
-		// combine consecutive dates into an array of arrays
+		// combine consecutive dates in month into an array of arrays
 		groupDates: function(dList) {
 			var groupedDates = [[]];
 			groupedDates[0].push(dList[0]);
 			var n = 0;
 			for (var i = 1; i < dList.length; i++) {
-				if (factory.consecutiveDates(dList[i-1], dList[i])) {
+				if (factory.consecutiveDatesInMonth(dList[i-1], dList[i])) {
 					groupedDates[n].push(dList[i]);
 				} else {
 					n++;
@@ -726,6 +740,15 @@ function dateFty($filter) {
 			for (var i = 0; i < array.length; i++) {
 				if (factory.datesEqual(d, array[i])) {
 					return true;
+				}
+			}
+			return false;
+		},
+		
+		dateInArrayIndex: function(d, array) {
+			for (var i = 0; i < array.length; i++) {
+				if (factory.datesEqual(d, array[i])) {
+					return i;
 				}
 			}
 			return false;
@@ -767,6 +790,16 @@ function dateFty($filter) {
 		
 		// date 2 is immediately after date 1
 		consecutiveDates: function(date1, date2) {
+			var d = new Date(date1);
+			d.setDate(d.getDate() + 1);
+			if (factory.datesEqual(d, date2)) {
+				return true;
+			}
+			return false;
+		},
+		
+		// date 2 is in the same month as date 1
+		consecutiveDatesInMonth: function(date1, date2) {
 			if (date1.getMonth() == date2.getMonth() && date1.getDate() < date2.getDate()) {
 				return true;
 			}
@@ -946,6 +979,33 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			// return if the destination was successfully added
 			console.log("destination list", factory.destinationList);
 			return destAdded;
+		},
+		
+		removeDateFromDestination: function(dateToRemove, destinationName) {
+			// iterate through destination list
+			for (var i = 0; i < factory.destinationList.length; i++) {
+				// if destination exists
+				if (destinationName == factory.destinationList[i].name) {
+					// remove date at index
+					factory.destinationList[i].dates.splice(dateFty.dateInArrayIndex(dateToRemove, factory.destinationList[i].dates), 1);
+					if (factory.destinationList[i].dates.length == 0) {
+						// remove destination if all dates are removed
+						factory.removeDestination(i, false);
+						alertFty.displayMessage("Destination removed because there were no dates left. Hit your browser's back button to undo.", "warning");
+					} else {
+						// rebuild date ranges
+						factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
+						alertFty.displayMessage("Date removed. Hit your browser's back button to undo.", "warning");
+						console.log("destination date removed", factory.destinationList);
+					}
+					// sort destinations
+					factory.destinationList.sort(factory.destinationCompare);
+					// update map markers
+					locationFty.drawOnMap(factory.destinationList);
+					// rebuild date list
+					dateFty.buildDateList(factory.destinationList);
+				}
+			}
 		},
 		
 		removeDestination: function(indexToRemove, rebuild) {
@@ -1334,6 +1394,20 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 				forecast[dateStr].text = response.data.daily.data[i].summary;
 				forecast[dateStr].low = Math.round(response.data.daily.data[i].temperatureMin);
 				forecast[dateStr].icon = response.data.daily.data[i].icon;
+				forecast[dateStr].alerts = [];
+			}
+			if ("alerts" in response.data) {
+				for (var i = 0; i < response.data.alerts.length; i++) {
+					var startDate = dateFty.setCommonTime(new Date(response.data.alerts[i].time * 1000));
+					var endDate = dateFty.setCommonTime(new Date(response.data.alerts[i].expires * 1000));
+					console.log("alert range", startDate, endDate);
+					var alertDates = dateFty.enumerateDateRange(startDate, endDate);
+					console.log("alert dates", alertDates);
+					for (var n = 0; n < alertDates.length; n++) {
+						var dateStr = dateFty.createDateString(alertDates[n]);
+						forecast[dateStr].alerts.push(response.data.alerts[i]);
+					}
+				}
 			}
 			return forecast;
 		},
@@ -1732,6 +1806,29 @@ function locationFty() {
 		
 		// map bounds that contain all destinations
 		destinationBounds: new google.maps.LatLngBounds(),
+		
+		showAddForecast: true,
+		
+		showAddForecastText: "Hide Tools",
+		
+		openAddForecast: function() {
+			factory.showAddForecast = true;
+			factory.showAddForecastText = "Hide Tools";
+		},
+		
+		closeAddForecast: function() {
+			factory.showAddForecast = false;
+			factory.showAddForecastText = "Show Tools";
+		},
+		
+		toggleAddForecast: function() {
+			factory.showAddForecast = !factory.showAddForecast;
+			if (factory.showAddForecast) {
+				factory.showAddForecastText = "Hide Tools";
+			} else {
+				factory.showAddForecastText = "Show Tools";
+			}
+		},
 		
 		// line between destination markers
 		routeLine: new google.maps.Polyline({

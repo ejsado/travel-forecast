@@ -17,7 +17,7 @@
 * 
 */
 
-function calendarCtrl($scope, $anchorScroll, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty, alertFty) {
+function calendarCtrl($scope, $anchorScroll, $filter, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty, alertFty) {
 	
 	var self = this;
 	
@@ -64,14 +64,35 @@ function calendarCtrl($scope, $anchorScroll, destinationFty, urlFty, locationFty
 		locationFty.locationDetails.name = destinationFty.destinationList[index].name;
 		locationFty.locationDetails.coords = destinationFty.destinationList[index].coords;
 		locationFty.openAddForecast();
-		$anchorScroll('form-container');
+		$anchorScroll('form-top');
 	}
 	
-	self.removeDate = function(dateIndex, destName) {
+	self.removeDate = function(dateToRemove, destName) {
 		// remove date
-		destinationFty.removeDateFromDestination(dateIndex, destName);
+		destinationFty.removeDateFromDestination(dateToRemove, destName);
 		// rebuild url
 		urlFty.buildUrlParamTrip(destinationFty.destinationList);
+	}
+	
+	self.showAlerts = function(destName, dateStr) {
+		var forecastAlerts = forecastFty.forecastList[destName][dateStr].alerts;
+		var alertContent = [];
+		for (var i = 0; i < forecastAlerts.length; i++) {
+			var alertText = {
+				title: forecastAlerts[i].title,
+				text: [
+					forecastAlerts[i].description,
+					"<strong>Begins:</strong> " + $filter('date')(new Date(forecastAlerts[i].time * 1000), 'MMMM d, yyyy h:mm a'),
+					"<strong>Expires:</strong> " + $filter('date')(new Date(forecastAlerts[i].expires * 1000), 'MMMM d, yyyy h:mm a')
+				]
+			};
+			alertContent.push(alertText);
+		}
+		var weatherAlertModal = {
+			buttonText: "Got it",
+			content: alertContent
+		};
+		alertFty.displayModal(alertFty.trustDialogText(weatherAlertModal));
 	}
 	
 	self.removeSingleDestination = function(index) {

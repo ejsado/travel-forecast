@@ -604,6 +604,20 @@ header, main {
 				.day-number {
 					right: 0;
 				}
+				.weather-alert-indicator {
+					position: absolute;
+					width: 1rem;
+					height: 1rem;
+					text-align: center;
+					line-height: 1rem;
+					font-size: 0.8rem;
+					font-weight: bold;
+					border-radius: 50%;
+					background: #E5417B;
+					color: #FFF;
+					top: 1.4rem;
+					left: 0.25rem;;
+				}
 				.weather-icon {
 					width: 2rem;
 					height: 2rem;
@@ -655,6 +669,7 @@ header, main {
 			}
 			.weather-text-container {
 				position: absolute;
+				z-index: 1;
 				top: 0.25rem;
 				left: 0;
 				padding: 0.25rem;

@@ -102,13 +102,13 @@ function dateFty($filter) {
 			console.log("date list", factory.dateList);
 		},
 		
-		// combine consecutive dates into an array of arrays
+		// combine consecutive dates in month into an array of arrays
 		groupDates: function(dList) {
 			var groupedDates = [[]];
 			groupedDates[0].push(dList[0]);
 			var n = 0;
 			for (var i = 1; i < dList.length; i++) {
-				if (factory.consecutiveDates(dList[i-1], dList[i])) {
+				if (factory.consecutiveDatesInMonth(dList[i-1], dList[i])) {
 					groupedDates[n].push(dList[i]);
 				} else {
 					n++;
@@ -144,6 +144,15 @@ function dateFty($filter) {
 			for (var i = 0; i < array.length; i++) {
 				if (factory.datesEqual(d, array[i])) {
 					return true;
+				}
+			}
+			return false;
+		},
+		
+		dateInArrayIndex: function(d, array) {
+			for (var i = 0; i < array.length; i++) {
+				if (factory.datesEqual(d, array[i])) {
+					return i;
 				}
 			}
 			return false;
@@ -185,6 +194,16 @@ function dateFty($filter) {
 		
 		// date 2 is immediately after date 1
 		consecutiveDates: function(date1, date2) {
+			var d = new Date(date1);
+			d.setDate(d.getDate() + 1);
+			if (factory.datesEqual(d, date2)) {
+				return true;
+			}
+			return false;
+		},
+		
+		// date 2 is in the same month as date 1
+		consecutiveDatesInMonth: function(date1, date2) {
 			if (date1.getMonth() == date2.getMonth() && date1.getDate() < date2.getDate()) {
 				return true;
 			}

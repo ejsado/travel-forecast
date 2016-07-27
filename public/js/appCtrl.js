@@ -53,7 +53,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		if (destinationFty.destinationList.length > 0) {
 			self.clear();
 		} else {
-			self.openAddForecast();
+			locationFty.openAddForecast();
 		}
 	}
 	
@@ -64,7 +64,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 		urlFty.buildUrlParamUnits(forecastFty.units);
 		urlFty.buildUrlParamSort(destinationFty.sortBy);
 		alertFty.displayMessage("All destinations removed. Hit your browser's back button to undo.", "warning");
-		self.openAddForecast();
+		locationFty.openAddForecast();
 	}
 	
 	// load destinations from url

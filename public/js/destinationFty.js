@@ -119,13 +119,13 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			return destAdded;
 		},
 		
-		removeDateFromDestination: function(dateIndex, destinationName) {
+		removeDateFromDestination: function(dateToRemove, destinationName) {
 			// iterate through destination list
 			for (var i = 0; i < factory.destinationList.length; i++) {
 				// if destination exists
 				if (destinationName == factory.destinationList[i].name) {
 					// remove date at index
-					factory.destinationList[i].dates.splice(dateIndex, 1);
+					factory.destinationList[i].dates.splice(dateFty.dateInArrayIndex(dateToRemove, factory.destinationList[i].dates), 1);
 					if (factory.destinationList[i].dates.length == 0) {
 						// remove destination if all dates are removed
 						factory.removeDestination(i, false);
@@ -134,6 +134,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 						// rebuild date ranges
 						factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
 						alertFty.displayMessage("Date removed. Hit your browser's back button to undo.", "warning");
+						console.log("destination date removed", factory.destinationList);
 					}
 					// sort destinations
 					factory.destinationList.sort(factory.destinationCompare);

@@ -214,6 +214,20 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 				forecast[dateStr].text = response.data.daily.data[i].summary;
 				forecast[dateStr].low = Math.round(response.data.daily.data[i].temperatureMin);
 				forecast[dateStr].icon = response.data.daily.data[i].icon;
+				forecast[dateStr].alerts = [];
+			}
+			if ("alerts" in response.data) {
+				for (var i = 0; i < response.data.alerts.length; i++) {
+					var startDate = dateFty.setCommonTime(new Date(response.data.alerts[i].time * 1000));
+					var endDate = dateFty.setCommonTime(new Date(response.data.alerts[i].expires * 1000));
+					console.log("alert range", startDate, endDate);
+					var alertDates = dateFty.enumerateDateRange(startDate, endDate);
+					console.log("alert dates", alertDates);
+					for (var n = 0; n < alertDates.length; n++) {
+						var dateStr = dateFty.createDateString(alertDates[n]);
+						forecast[dateStr].alerts.push(response.data.alerts[i]);
+					}
+				}
 			}
 			return forecast;
 		},
