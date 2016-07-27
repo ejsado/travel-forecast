@@ -414,6 +414,19 @@
 																[appUtils.dateFty.createDateString(travelDate)].text
 															}}
 														</p>
+														<p class="date-tools">
+															<button class="btn-link btn-link-alt"
+																ng-disabled="appUtils.destinationFty.loadingDestinations"
+																ng-click="calendarUtils.removeDate($index, destination.name)">
+																remove day
+															</button>
+															<span>
+																&mdash;
+																<button class="btn-link">
+																	alert info
+																</button>
+															</span>
+														</p>
 													</div>
 												</div>
 											</td>

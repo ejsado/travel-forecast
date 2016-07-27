@@ -121,7 +121,7 @@ header, main {
 		
 	}
 	&:disabled {
-		color: #DDD;
+		color: #AAA;
 		cursor: default;
 		&:hover {
 			
@@ -400,11 +400,11 @@ header, main {
 				margin: 0 0.25rem;
 			}
 			&.estimation-cell, &.weather-text-cell {
-				height: 4rem;
+				height: 5rem;
 				position: relative;
 			}
 			&.weather-stack-cell {
-				height: 12rem;
+				height: 13rem;
 				vertical-align: top;
 				white-space: nowrap;
 			}
@@ -522,7 +522,7 @@ header, main {
 		.estimation-container {
 			padding: 0 0.5rem;
 			font-size: 0.8rem;
-			line-height: 1.5;
+			line-height: 1.6;
 			.varr {
 				height: 100%;
 				width: 1rem;
@@ -657,12 +657,11 @@ header, main {
 				position: absolute;
 				top: 0.25rem;
 				left: 0;
-				height: 2.75rem;
 				padding: 0.25rem;
 				font-size: 0.75rem;
 				background: #DDD;
 				border-radius: 0.2rem;
-				min-width: 8rem;
+				min-width: 9rem;
 				max-width: calc(10vw + 10rem);
 				transition: opacity 200ms;
 				&::after {
@@ -692,6 +691,15 @@ header, main {
 					overflow: hidden;
 					line-height: 1.5;
 					white-space: normal;
+				}
+				.date-tools {
+					margin: 0.4rem 0 0 0;
+					padding: 0;
+					font-size: 0.6rem;
+					button {
+						font-size: inherit;
+						text-transform: uppercase;
+					}
 				}
 			}
 		}

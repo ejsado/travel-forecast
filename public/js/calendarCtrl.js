@@ -67,6 +67,13 @@ function calendarCtrl($scope, $anchorScroll, destinationFty, urlFty, locationFty
 		$anchorScroll('form-container');
 	}
 	
+	self.removeDate = function(dateIndex, destName) {
+		// remove date
+		destinationFty.removeDateFromDestination(dateIndex, destName);
+		// rebuild url
+		urlFty.buildUrlParamTrip(destinationFty.destinationList);
+	}
+	
 	self.removeSingleDestination = function(index) {
 		destinationFty.removeDestination(index);
 		dateFty.buildDateList(destinationFty.destinationList);

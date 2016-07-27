@@ -119,6 +119,32 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			return destAdded;
 		},
 		
+		removeDateFromDestination: function(dateIndex, destinationName) {
+			// iterate through destination list
+			for (var i = 0; i < factory.destinationList.length; i++) {
+				// if destination exists
+				if (destinationName == factory.destinationList[i].name) {
+					// remove date at index
+					factory.destinationList[i].dates.splice(dateIndex, 1);
+					if (factory.destinationList[i].dates.length == 0) {
+						// remove destination if all dates are removed
+						factory.removeDestination(i, false);
+						alertFty.displayMessage("Destination removed because there were no dates left. Hit your browser's back button to undo.", "warning");
+					} else {
+						// rebuild date ranges
+						factory.destinationList[i].dateRanges = dateFty.createDateRanges(factory.destinationList[i].dates);
+						alertFty.displayMessage("Date removed. Hit your browser's back button to undo.", "warning");
+					}
+					// sort destinations
+					factory.destinationList.sort(factory.destinationCompare);
+					// update map markers
+					locationFty.drawOnMap(factory.destinationList);
+					// rebuild date list
+					dateFty.buildDateList(factory.destinationList);
+				}
+			}
+		},
+		
 		removeDestination: function(indexToRemove, rebuild) {
 			factory.destinationList.splice(indexToRemove, 1);
 			if (rebuild) {
