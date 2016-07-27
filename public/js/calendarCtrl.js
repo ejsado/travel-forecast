@@ -17,7 +17,7 @@
 * 
 */
 
-function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty, alertFty) {
+function calendarCtrl($scope, $anchorScroll, destinationFty, urlFty, locationFty, dateFty, forecastFty, distanceFty, alertFty) {
 	
 	var self = this;
 	
@@ -58,6 +58,13 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 	
 	self.setSelectedDate = function(date) {
 		self.selectedDate = date;
+	}
+	
+	self.selectDestination = function(index) {
+		locationFty.locationDetails.name = destinationFty.destinationList[index].name;
+		locationFty.locationDetails.coords = destinationFty.destinationList[index].coords;
+		locationFty.openAddForecast();
+		$anchorScroll('form-container');
 	}
 	
 	self.removeSingleDestination = function(index) {

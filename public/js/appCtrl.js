@@ -43,27 +43,6 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 	
 	self.alertFty = alertFty;
 	
-	self.openAddForecast = function() {
-		self.showAddForecast = true;
-		self.showAddForecastText = "Hide Tools";
-	}
-	
-	self.openAddForecast();
-	
-	self.closeAddForecast = function() {
-		self.showAddForecast = false;
-		self.showAddForecastText = "Show Tools";
-	}
-	
-	self.toggleAddForecast = function() {
-		self.showAddForecast = !self.showAddForecast;
-		if (self.showAddForecast) {
-			self.showAddForecastText = "Hide Tools";
-		} else {
-			self.showAddForecastText = "Show Tools";
-		}
-	}
-	
 	// select input text on click
 	self.highlightInput = function(e) {
 		e.target.select();
@@ -224,7 +203,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 				lng: urlDestinations[urlDestinations.length - 1].coords.lng
 			}));
 			// minimize the Add Forecast controls
-			self.closeAddForecast();
+			locationFty.closeAddForecast();
 		}
 	}
 	

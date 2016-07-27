@@ -138,7 +138,7 @@
 				</section>
 				<section id="form-container"
 					ng-controller="formCtrl as formUtils"
-					ng-show="appUtils.showAddForecast">
+					ng-show="appUtils.locationFty.showAddForecast">
 					<div class="center-inputs">
 						<input id="location-search" type="text" placeholder="Search for a destination"
 							ng-model="formUtils.query"
@@ -213,10 +213,10 @@
 					<div class="tab-edge left"></div>
 					<div class="tab">
 						<button id="hide-controls"
-							ng-click="appUtils.toggleAddForecast()">
-							{{ appUtils.showAddForecastText }}
+							ng-click="appUtils.locationFty.toggleAddForecast()">
+							{{ appUtils.locationFty.showAddForecastText }}
 							<span
-								ng-class="{'reverse': appUtils.showAddForecast}">
+								ng-class="{'reverse': appUtils.locationFty.showAddForecast}">
 								&dtrif;
 							</span>
 						</button>
@@ -227,18 +227,20 @@
 					ng-controller="calendarCtrl as calendarUtils">
 					<div id="view-options"
 						ng-hide="appUtils.destinationFty.destinationList.length == 0">
-						<input type="radio" id="imperial-units" name="units" value="imperial" class="hidden-radio"
-							ng-model="appUtils.forecastFty.units"
-							ng-change="calendarUtils.unitsChanged()">
-						<label class="btn btn-small btn-left btn-muted" for="imperial-units">
-							F &deg;
-						</label>
-						<input type="radio" id="metric-units" name="units" value="metric" class="hidden-radio"
-							ng-model="appUtils.forecastFty.units"
-							ng-change="calendarUtils.unitsChanged()">
-						<label class="btn btn-small btn-right btn-muted" for="metric-units">
-							C &deg;
-						</label>
+						<div id="unit-switch">
+							<input type="radio" id="imperial-units" name="units" value="imperial" class="hidden-radio"
+								ng-model="appUtils.forecastFty.units"
+								ng-change="calendarUtils.unitsChanged()">
+							<label class="btn btn-small btn-left btn-muted" for="imperial-units">
+								F &deg;
+							</label>
+							<input type="radio" id="metric-units" name="units" value="metric" class="hidden-radio"
+								ng-model="appUtils.forecastFty.units"
+								ng-change="calendarUtils.unitsChanged()">
+							<label class="btn btn-small btn-right btn-muted" for="metric-units">
+								C &deg;
+							</label>
+						</div>
 						<div class="input-container">
 							<label for="calendar-view" class="label">
 								View
@@ -269,12 +271,6 @@
 											<th>
 												
 											</th>
-											<th>
-												
-											</th>
-											<th>
-												
-											</th>
 										</tr>
 									</thead>
 									<tbody ng-repeat="destination in appUtils.destinationFty.destinationList">
@@ -285,6 +281,11 @@
 														ng-click="calendarUtils.removeSingleDestination($index)"
 														ng-disabled="appUtils.destinationFty.loadingDestinations">
 														&times;
+													</button>
+													<button class="edit-button" title="add dates"
+														ng-click="calendarUtils.selectDestination($index)"
+														ng-disabled="appUtils.destinationFty.loadingDestinations">
+														+
 													</button>
 													<div class="float-left">
 														<div class="marker">

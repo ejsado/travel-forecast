@@ -411,12 +411,17 @@ header, main {
 		}
 	}
 	#view-options {
-		width: 22.5rem;
-		margin: 0 auto 1rem;
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: flex-end;
+		#unit-switch {
+			margin-bottom: 1rem;
+		}
 		.input-container {
-			display: inline-block;
-			width: 7rem;
-			margin: 0 0 0 1rem;
+			width: 8rem;
+			margin: 0 0 1rem 1rem;
 			select {
 				padding: 0.33rem 0.5rem;
 				text-transform: capitalize;
@@ -440,7 +445,7 @@ header, main {
 		.destination-container {
 			position: relative;
 			line-height: 1.5;
-			padding: 1.2rem 1rem 0 0.5rem;
+			padding: 1.4rem 1rem 0 0.5rem;
 			.marker {
 				width: 1.2rem;
 				height: 1.2rem;
@@ -452,7 +457,7 @@ header, main {
 				font-size: 0.8rem;
 				margin: 0.1rem 0.5rem 3rem 0;
 			}
-			.remove-button {
+			.remove-button, .edit-button {
 				position: absolute;
 				display: block;
 				line-height: 0.5;
@@ -469,6 +474,13 @@ header, main {
 				outline: 0;
 				&:hover {
 					color: #E5417B;
+				}
+			}
+			.edit-button {
+				right: 1.5rem;
+				color: #6fc5ef;
+				&:hover {
+					color: #189fe0;
 				}
 			}
 			.destination-name {

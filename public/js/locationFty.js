@@ -36,6 +36,29 @@ function locationFty() {
 		// map bounds that contain all destinations
 		destinationBounds: new google.maps.LatLngBounds(),
 		
+		showAddForecast: true,
+		
+		showAddForecastText: "Hide Tools",
+		
+		openAddForecast: function() {
+			factory.showAddForecast = true;
+			factory.showAddForecastText = "Hide Tools";
+		},
+		
+		closeAddForecast: function() {
+			factory.showAddForecast = false;
+			factory.showAddForecastText = "Show Tools";
+		},
+		
+		toggleAddForecast: function() {
+			factory.showAddForecast = !factory.showAddForecast;
+			if (factory.showAddForecast) {
+				factory.showAddForecastText = "Hide Tools";
+			} else {
+				factory.showAddForecastText = "Show Tools";
+			}
+		},
+		
 		// line between destination markers
 		routeLine: new google.maps.Polyline({
 			path: [],
