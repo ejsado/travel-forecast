@@ -117,15 +117,9 @@ header, main {
 	color: #189FE0;
 	text-decoration: underline;
 	font-size: 1rem;
-	&:hover {
-		
-	}
 	&:disabled {
 		color: #AAA;
 		cursor: default;
-		&:hover {
-			
-		}
 	}
 }
 .btn-link-alt {
