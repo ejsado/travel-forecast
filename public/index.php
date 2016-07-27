@@ -283,19 +283,18 @@
 														ng-disabled="appUtils.destinationFty.loadingDestinations">
 														&times;
 													</button>
-													<button class="edit-button" title="add dates"
-														ng-click="calendarUtils.selectDestination($index)"
-														ng-disabled="appUtils.destinationFty.loadingDestinations">
-														+
-													</button>
 													<div class="float-left">
 														<div class="marker">
 															{{ $index + 1 }}
 														</div>
 													</div>
-													<div class="destination-name" title="{{ destination.name }}">
-														{{ destination.name }}
-													</div>
+													<button class="destination-name" title="add dates to {{ destination.name }}"
+														ng-click="calendarUtils.selectDestination($index)"
+														ng-disabled="appUtils.destinationFty.loadingDestinations">
+														<span>
+															{{ destination.name }}
+														</span>
+													</button>
 													<div class="destination-hotels">
 														<a href="{{ appUtils.urlFty.createPricelineHotelsUrl(destination) }}">
 															<span>
