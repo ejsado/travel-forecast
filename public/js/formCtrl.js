@@ -258,7 +258,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				if (arrival > departure) {
 					destinationFty.addDestination(place, departure, arrival);
 					console.log("switched dates");
-					alertFty.displayMessage("Your dates were backwards, so I switched them for you.", "info");
+					//alertFty.displayMessage("Your dates were backwards, so I switched them for you.", "info");
 				} else {
 					destinationFty.addDestination(place, arrival, departure);
 				}
@@ -285,7 +285,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				}
 				// add destination to url by rebuilding it
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
-				console.log("destination list", destinationFty.destinationList);
+				//console.log("destination list", destinationFty.destinationList);
 				console.log("date list", dateFty.dateList);
 				urlFty.monetizeLinks();
 			} else {

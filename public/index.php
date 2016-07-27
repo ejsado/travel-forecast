@@ -240,6 +240,16 @@
 							C &deg;
 						</label>
 						<div class="input-container">
+							<label for="calendar-view" class="label">
+								View
+							</label>
+							<select id="calendar-view"
+								ng-model="calendarUtils.calendarView"
+								ng-options="value for value in calendarUtils.viewOptions"
+								ng-change="calendarUtils.viewChanged()">
+							</select>
+						</div>
+						<div class="input-container">
 							<label for="sort-by" class="label">
 								Sort By
 							</label>
@@ -329,12 +339,94 @@
 							</div>
 							<div id="calendar-weather">
 								<table class="weather-table"
-									ng-repeat="consecutiveDates in appUtils.dateFty.dateList">
+									ng-show="calendarUtils.calendarView == 'stack'">
+									<thead>
+										<tr>
+											<th>
+												
+											</th>
+										</tr>
+									</thead>
+									<tbody ng-repeat="destination in appUtils.destinationFty.destinationList">
+										<tr>
+											<td class="weather-stack-cell">
+												<div class="weather-float"
+													ng-repeat="travelDate in destination.dates">
+													<div class="vertical-month-name"
+														ng-if="calendarUtils.newMonth(destination, $index)">
+														<div class="rotated-month-name">
+															{{ travelDate | date: 'MMMM yyyy' }}
+															<div class="month-indicator"></div>
+														</div>
+													</div>
+													<div class="weather-container"
+														ng-click="calendarUtils.setSelectedDate(travelDate)">
+														<div class="loading-forecast"
+															ng-hide="appUtils.forecastFty.forecastList[destination.name]
+																	[appUtils.dateFty.createDateString(travelDate)]">
+															<div class="spinner"></div>
+														</div>
+														<div class="day-name">
+															{{ travelDate | date: 'EEE' }}
+														</div>
+														<div class="day-number">
+															{{ travelDate | date: 'd' }}
+														</div>
+														<div class="weather-icon" 
+															ng-class="appUtils.forecastFty.forecastList[destination.name]
+																[appUtils.dateFty.createDateString(travelDate)].icon">
+														</div>
+														<div class="high-temp">
+															&uarr;
+															{{
+																appUtils.forecastFty.convertDegrees(
+																	appUtils.forecastFty.forecastList[destination.name]
+																	[appUtils.dateFty.createDateString(travelDate)].high
+																)
+															}}&deg;
+														</div>
+														<div class="low-temp">
+															&darr;
+															{{
+																appUtils.forecastFty.convertDegrees(
+																	appUtils.forecastFty.forecastList[destination.name]
+																	[appUtils.dateFty.createDateString(travelDate)].low
+																)
+															}}&deg;
+														</div>
+														<div class="rain-chance">
+															&becaus;
+															{{
+																appUtils.forecastFty.forecastList[destination.name]
+																[appUtils.dateFty.createDateString(travelDate)].precip
+															}}%
+														</div>
+													</div>
+													<div class="weather-text-container stack-push"
+														ng-show="appUtils.dateFty.datesEqual(travelDate, calendarUtils.selectedDate)"
+														ng-style="{'width': (appUtils.forecastFty.forecastList[destination.name]
+															[appUtils.dateFty.createDateString(travelDate)].text.length / 4.5) + 'rem'}"
+														ng-class="{'new-month-push': calendarUtils.newMonth(destination, $index)}">
+														<p class="weather-text">
+															{{
+																appUtils.forecastFty.forecastList[destination.name]
+																[appUtils.dateFty.createDateString(travelDate)].text
+															}}
+														</p>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="weather-table timeline-month"
+									ng-repeat="consecutiveDates in appUtils.dateFty.dateList"
+									ng-show="calendarUtils.calendarView == 'timeline'">
 									<thead>
 										<tr>
 											<th colspan="{{ consecutiveDates.length }}">
 												{{ consecutiveDates[0] | date: 'MMMM yyyy' }}
-												<div class="month-name"></div>
+												<div class="month-indicator"></div>
 											</th>
 										</tr>
 									</thead>

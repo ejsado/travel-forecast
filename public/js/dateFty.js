@@ -155,7 +155,10 @@ function dateFty($filter) {
 			for (var d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
 				enumDates.push(new Date(d));
 			}
-			enumDates.push(new Date(end));
+			// iterating through dates is not perfect, add the end date if it wasn't added already
+			if (!factory.dateInArray(end, enumDates)) {
+				enumDates.push(new Date(end));
+			}
 			
 			return enumDates;
 		},

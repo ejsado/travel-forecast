@@ -71,6 +71,26 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 			$location.search('s', newSort);
 		},
 		
+		getUrlView: function() {
+			var urlParams = $location.search();
+			var param = urlParams.v;
+			if (param == 't' || param == 'T') {
+				return 'timeline';
+			} else {
+				return 'stack';
+			}
+		},
+		
+		buildUrlParamView: function(units) {
+			var newView = 's';
+			if (units == 'timeline') {
+				newView = 't';
+			}
+			console.log("add url view");
+			factory.paramsUpdated = true;
+			$location.search('v', newView);
+		},
+		
 		clearUrlParamTrip: function() {
 			factory.paramsUpdated = true;
 			$location.search('t');

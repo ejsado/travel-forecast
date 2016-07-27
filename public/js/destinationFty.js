@@ -115,6 +115,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			// rebuild date list
 			dateFty.buildDateList(factory.destinationList);
 			// return if the destination was successfully added
+			console.log("destination list", factory.destinationList);
 			return destAdded;
 		},
 		

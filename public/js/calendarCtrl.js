@@ -33,6 +33,26 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		destinationFty.destinationList.sort(destinationFty.destinationCompare);
 	}
 	
+	self.calendarView = urlFty.getUrlView();
+	
+	urlFty.buildUrlParamView(self.calendarView);
+	
+	self.viewOptions = ["timeline", "stack"];
+	
+	self.viewChanged = function() {
+		urlFty.buildUrlParamView(self.calendarView);
+	}
+	
+	self.newMonth = function(dest, index) {
+		if (index == 0) {
+			return true;
+		}
+		if (dest.dates[index - 1].getMonth() != dest.dates[index].getMonth()) {
+			return true;
+		}
+		return false;
+	}
+	
 	// show the weather description of this date for each destination
 	self.selectedDate = new Date(dateFty.today);
 	
@@ -50,3 +70,26 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		alertFty.displayMessage("Destination removed. Hit your browser's back button to undo.", "warning");
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

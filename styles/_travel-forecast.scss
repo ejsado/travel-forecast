@@ -403,14 +403,19 @@ header, main {
 				height: 4rem;
 				position: relative;
 			}
+			&.weather-stack-cell {
+				height: 12rem;
+				vertical-align: top;
+				white-space: nowrap;
+			}
 		}
 	}
 	#view-options {
-		width: 17.5rem;
+		width: 22.5rem;
 		margin: 0 auto 1rem;
 		.input-container {
 			display: inline-block;
-			width: 10rem;
+			width: 7rem;
 			margin: 0 0 0 1rem;
 			select {
 				padding: 0.33rem 0.5rem;
@@ -520,14 +525,37 @@ header, main {
 		display: flex;
 		overflow-y: hidden;
 		.weather-table {
-			margin-left: 1rem;
-			.month-name {
+			&.timeline-month {
+				margin-left: 1rem;
+			}
+			.weather-float {
+				display: inline-block;
+				position: relative;
+			}
+			.month-indicator {
 				border: 0.2rem solid #CCC;
 				border-bottom: none;
 				height: 0.6rem;
 			}
+			.vertical-month-name {
+				width: 2.5rem;
+				height: 1rem;
+				margin-left: 0.75rem;
+				float: left;
+				.rotated-month-name {
+					position: absolute;
+					width: 8rem;
+					text-align: center;
+					transform-origin: top left;
+					transform: rotate(-90deg) translateX(-8rem);
+					font-szie: 0.9rem;
+					font-weight: bold;
+					color: #666;
+				}
+			}
 			.weather-container {
 				position: relative;
+				float: left;
 				font-size: 0.9rem;
 				line-height: 1.4rem;
 				cursor: pointer;
@@ -640,11 +668,18 @@ header, main {
 				&.ng-hide {
 					opacity: 0;
 				}
+				&.new-month-push {
+					left: 3.25rem;
+				}
+				&.stack-push {
+					top: 8.25rem;
+				}
 				.weather-text {
 					margin: 0;
 					padding: 0;
 					overflow: hidden;
 					line-height: 1.5;
+					white-space: normal;
 				}
 			}
 		}
