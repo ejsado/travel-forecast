@@ -538,10 +538,10 @@ header, main {
 				height: 0.6rem;
 			}
 			.vertical-month-name {
-				width: 2.5rem;
-				height: 1rem;
+				width: 2rem;
+				height: 7rem;
 				margin-left: 0.75rem;
-				float: left;
+				display: inline-block;
 				.rotated-month-name {
 					position: absolute;
 					width: 8rem;
@@ -555,7 +555,7 @@ header, main {
 			}
 			.weather-container {
 				position: relative;
-				float: left;
+				display: inline-block;
 				font-size: 0.9rem;
 				line-height: 1.4rem;
 				cursor: pointer;
