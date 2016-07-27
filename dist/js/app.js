@@ -519,6 +519,26 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		destinationFty.destinationList.sort(destinationFty.destinationCompare);
 	}
 	
+	self.calendarView = urlFty.getUrlView();
+	
+	urlFty.buildUrlParamView(self.calendarView);
+	
+	self.viewOptions = ["timeline", "stack"];
+	
+	self.viewChanged = function() {
+		urlFty.buildUrlParamView(self.calendarView);
+	}
+	
+	self.newMonth = function(dest, index) {
+		if (index == 0) {
+			return true;
+		}
+		if (dest.dates[index - 1].getMonth() != dest.dates[index].getMonth()) {
+			return true;
+		}
+		return false;
+	}
+	
 	// show the weather description of this date for each destination
 	self.selectedDate = new Date(dateFty.today);
 	
@@ -536,6 +556,30 @@ function calendarCtrl($scope, destinationFty, urlFty, locationFty, dateFty, fore
 		alertFty.displayMessage("Destination removed. Hit your browser's back button to undo.", "warning");
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
 * Travel Weathr - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
@@ -693,7 +737,10 @@ function dateFty($filter) {
 			for (var d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
 				enumDates.push(new Date(d));
 			}
-			enumDates.push(new Date(end));
+			// iterating through dates is not perfect, add the end date if it wasn't added already
+			if (!factory.dateInArray(end, enumDates)) {
+				enumDates.push(new Date(end));
+			}
 			
 			return enumDates;
 		},
@@ -897,6 +944,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 			// rebuild date list
 			dateFty.buildDateList(factory.destinationList);
 			// return if the destination was successfully added
+			console.log("destination list", factory.destinationList);
 			return destAdded;
 		},
 		
@@ -1377,8 +1425,6 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 	
 	self.showEndDatePicker = false;
 	
-	var firstDestination = true;
-	
 	function removeMarker() {
 		if (marker) {
 			marker.setMap(null);
@@ -1590,17 +1636,12 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				if (arrival > departure) {
 					destinationFty.addDestination(place, departure, arrival);
 					console.log("switched dates");
-					alertFty.displayMessage("Your dates were backwards, so I switched them for you.", "info");
+					//alertFty.displayMessage("Your dates were backwards, so I switched them for you.", "info");
 				} else {
 					destinationFty.addDestination(place, arrival, departure);
 				}
 				// get forecast for added destination
 				forecastFty.attemptGetForecast(place.coords.lat, place.coords.lng, place.name);
-				// if this is the first destination added by the user
-				if (firstDestination) {
-					scrollToBottom();
-					firstDestination = false;
-				}
 				// if more than one destination
 				if (destinationFty.destinationList.length > 1) {
 					// pan to all destinations
@@ -1614,10 +1655,13 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 							$scope.$apply();
 						}
 					);
+				} else {
+					// if this is the first destination added
+					scrollToBottom();
 				}
 				// add destination to url by rebuilding it
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
-				console.log("destination list", destinationFty.destinationList);
+				//console.log("destination list", destinationFty.destinationList);
 				console.log("date list", dateFty.dateList);
 				urlFty.monetizeLinks();
 			} else {
@@ -2027,6 +2071,26 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 			console.log("add url sort");
 			factory.paramsUpdated = true;
 			$location.search('s', newSort);
+		},
+		
+		getUrlView: function() {
+			var urlParams = $location.search();
+			var param = urlParams.v;
+			if (param == 't' || param == 'T') {
+				return 'timeline';
+			} else {
+				return 'stack';
+			}
+		},
+		
+		buildUrlParamView: function(units) {
+			var newView = 's';
+			if (units == 'timeline') {
+				newView = 't';
+			}
+			console.log("add url view");
+			factory.paramsUpdated = true;
+			$location.search('v', newView);
 		},
 		
 		clearUrlParamTrip: function() {

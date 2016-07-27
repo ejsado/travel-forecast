@@ -45,8 +45,6 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 	
 	self.showEndDatePicker = false;
 	
-	var firstDestination = true;
-	
 	function removeMarker() {
 		if (marker) {
 			marker.setMap(null);
@@ -264,11 +262,6 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				}
 				// get forecast for added destination
 				forecastFty.attemptGetForecast(place.coords.lat, place.coords.lng, place.name);
-				// if this is the first destination added by the user
-				if (firstDestination) {
-					scrollToBottom();
-					firstDestination = false;
-				}
 				// if more than one destination
 				if (destinationFty.destinationList.length > 1) {
 					// pan to all destinations
@@ -282,6 +275,9 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 							$scope.$apply();
 						}
 					);
+				} else {
+					// if this is the first destination added
+					scrollToBottom();
 				}
 				// add destination to url by rebuilding it
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
