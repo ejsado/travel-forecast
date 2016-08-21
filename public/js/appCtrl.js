@@ -175,6 +175,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 						}
 						// make affiliate links
 						$timeout(urlFty.monetizeLinks, 500);
+						locationFty.map.setZoom(6);
+						locationFty.map.panToBounds(locationFty.destinationBounds);
 					}
 				}, function(result) {
 					console.log("coords unknown, skipping location");
