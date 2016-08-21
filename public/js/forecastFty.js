@@ -225,7 +225,9 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 					console.log("alert dates", alertDates);
 					for (var n = 0; n < alertDates.length; n++) {
 						var dateStr = dateFty.createDateString(alertDates[n]);
-						forecast[dateStr].alerts.push(response.data.alerts[i]);
+						if (dateStr in forecast) {
+							forecast[dateStr].alerts.push(response.data.alerts[i]);
+						}
 					}
 				}
 			}
