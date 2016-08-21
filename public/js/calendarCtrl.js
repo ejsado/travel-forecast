@@ -31,6 +31,7 @@ function calendarCtrl($scope, $anchorScroll, $filter, destinationFty, urlFty, lo
 	self.sortChanged = function() {
 		urlFty.buildUrlParamSort(destinationFty.sortBy);
 		destinationFty.destinationList.sort(destinationFty.destinationCompare);
+		locationFty.drawOnMap(destinationFty.destinationList);
 	}
 	
 	self.calendarView = urlFty.getUrlView();
