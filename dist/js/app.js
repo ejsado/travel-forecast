@@ -395,6 +395,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 						}
 						// make affiliate links
 						$timeout(urlFty.monetizeLinks, 500);
+						locationFty.map.setZoom(6);
+						locationFty.map.panToBounds(locationFty.destinationBounds);
 					}
 				}, function(result) {
 					console.log("coords unknown, skipping location");
@@ -496,6 +498,7 @@ function calendarCtrl($scope, $anchorScroll, $filter, destinationFty, urlFty, lo
 	self.sortChanged = function() {
 		urlFty.buildUrlParamSort(destinationFty.sortBy);
 		destinationFty.destinationList.sort(destinationFty.destinationCompare);
+		locationFty.drawOnMap(destinationFty.destinationList);
 	}
 	
 	self.calendarView = urlFty.getUrlView();
@@ -1405,7 +1408,9 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 					console.log("alert dates", alertDates);
 					for (var n = 0; n < alertDates.length; n++) {
 						var dateStr = dateFty.createDateString(alertDates[n]);
-						forecast[dateStr].alerts.push(response.data.alerts[i]);
+						if (dateStr in forecast) {
+							forecast[dateStr].alerts.push(response.data.alerts[i]);
+						}
 					}
 				}
 			}
@@ -1719,7 +1724,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				// if more than one destination
 				if (destinationFty.destinationList.length > 1) {
 					// pan to all destinations
-					locationFty.map.setZoom(4);
+					locationFty.map.setZoom(6);
 					locationFty.map.panToBounds(locationFty.destinationBounds);
 					// get estimated travel time between destinations
 					distanceFty.getDistances(
