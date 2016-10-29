@@ -149,6 +149,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 			throttle = true;
 			replaceMapMarker(locationFty.map, e.latLng);
 			locationFty.geocodeLatLng(e.latLng, coordsFound, coordsUnknown);
+			locationFty.openAddForecast();
 			// limit map clicks to once a second
 			$timeout(function() {
 				throttle = false;

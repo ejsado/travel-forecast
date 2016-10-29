@@ -201,8 +201,10 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 					if (destinationsArray[i] != undefined &&
 						destinationsArray[i] != null
 					) {
-						url += "/" + destinationsArray[i].coords.lat + ",";
-						url += destinationsArray[i].coords.lng;
+						var placeName = destinationsArray[i].name;
+						placeName = placeName.split(' ').join('+');
+						placeName = placeName.split(',').join('');
+						url += "/" + placeName;
 					} else {
 						return "";
 					}

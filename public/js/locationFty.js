@@ -38,24 +38,24 @@ function locationFty() {
 		
 		showAddForecast: true,
 		
-		showAddForecastText: "Hide Tools",
+		showAddForecastText: "Hide Options",
 		
 		openAddForecast: function() {
 			factory.showAddForecast = true;
-			factory.showAddForecastText = "Hide Tools";
+			factory.showAddForecastText = "Hide Options";
 		},
 		
 		closeAddForecast: function() {
 			factory.showAddForecast = false;
-			factory.showAddForecastText = "Show Tools";
+			factory.showAddForecastText = "Show Options";
 		},
 		
 		toggleAddForecast: function() {
 			factory.showAddForecast = !factory.showAddForecast;
 			if (factory.showAddForecast) {
-				factory.showAddForecastText = "Hide Tools";
+				factory.showAddForecastText = "Hide Options";
 			} else {
-				factory.showAddForecastText = "Show Tools";
+				factory.showAddForecastText = "Show Options";
 			}
 		},
 		
