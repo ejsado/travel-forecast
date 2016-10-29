@@ -117,7 +117,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 							dateFty.validDate(dateRangeList[n].departure) &&
 							dateFty.datesWithinDays(dateRangeList[n].arrival, dateRangeList[n].departure, dateFty.maxDateRange)
 						) {
-							// do not add dates before today
+							// convert dates before today to today
 							if (dateRangeList[n].arrival < dateFty.today) {
 								dateRangeList[n].arrival = new Date(dateFty.today);
 							}
@@ -125,6 +125,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 								dateRangeList[n].departure = new Date(dateFty.today);
 							}
 							// switch dates if departure is before arrival
+							// add the destination with the date range
 							if (dateRangeList[n].arrival > dateRangeList[n].departure) {
 								destinationFty.addDestination(
 									result,
