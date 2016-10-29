@@ -128,7 +128,7 @@ function alertFty($sce, $timeout, dateFty) {
 					title: 'Date Ranges Invalid',
 					text: [
 						"Some of your date ranges were invalid, so I skipped them.",
-						"Forecasts are limited to " + dateFty.maxDateRange + " days per destination. Dates must be within the next 5 years."
+						"Forecasts are limited to " + dateFty.maxDateRange + " days per destination. Dates must be within 5 years in the past or future."
 					]
 				}
 			]
@@ -337,14 +337,8 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 							dateFty.validDate(dateRangeList[n].departure) &&
 							dateFty.datesWithinDays(dateRangeList[n].arrival, dateRangeList[n].departure, dateFty.maxDateRange)
 						) {
-							// do not add dates before today
-							if (dateRangeList[n].arrival < dateFty.today) {
-								dateRangeList[n].arrival = new Date(dateFty.today);
-							}
-							if (dateRangeList[n].departure < dateFty.today) {
-								dateRangeList[n].departure = new Date(dateFty.today);
-							}
 							// switch dates if departure is before arrival
+							// add the destination with the date range
 							if (dateRangeList[n].arrival > dateRangeList[n].departure) {
 								destinationFty.addDestination(
 									result,
@@ -644,6 +638,7 @@ function dateFty($filter) {
 		// common times are set below
 		today: new Date(),
 		maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
+		minDate: new Date(new Date().setFullYear(new Date().getFullYear() - 5)),
 		
 		// max consecutive days per destination
 		maxDateRange: 30,
@@ -661,7 +656,7 @@ function dateFty($filter) {
 			if (d == null) {
 				return false;
 			}
-			if (d < factory.maxDate) {
+			if (d < factory.maxDate && d > factory.minDate) {
 				return true;
 			}
 			return false;
@@ -1608,6 +1603,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 			throttle = true;
 			replaceMapMarker(locationFty.map, e.latLng);
 			locationFty.geocodeLatLng(e.latLng, coordsFound, coordsUnknown);
+			locationFty.openAddForecast();
 			// limit map clicks to once a second
 			$timeout(function() {
 				throttle = false;
@@ -1814,24 +1810,24 @@ function locationFty() {
 		
 		showAddForecast: true,
 		
-		showAddForecastText: "Hide Tools",
+		showAddForecastText: "Hide Options",
 		
 		openAddForecast: function() {
 			factory.showAddForecast = true;
-			factory.showAddForecastText = "Hide Tools";
+			factory.showAddForecastText = "Hide Options";
 		},
 		
 		closeAddForecast: function() {
 			factory.showAddForecast = false;
-			factory.showAddForecastText = "Show Tools";
+			factory.showAddForecastText = "Show Options";
 		},
 		
 		toggleAddForecast: function() {
 			factory.showAddForecast = !factory.showAddForecast;
 			if (factory.showAddForecast) {
-				factory.showAddForecastText = "Hide Tools";
+				factory.showAddForecastText = "Hide Options";
 			} else {
-				factory.showAddForecastText = "Show Tools";
+				factory.showAddForecastText = "Show Options";
 			}
 		},
 		
@@ -2305,8 +2301,10 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 					if (destinationsArray[i] != undefined &&
 						destinationsArray[i] != null
 					) {
-						url += "/" + destinationsArray[i].coords.lat + ",";
-						url += destinationsArray[i].coords.lng;
+						var placeName = destinationsArray[i].name;
+						placeName = placeName.split(' ').join('+');
+						placeName = placeName.split(',').join('');
+						url += "/" + placeName;
 					} else {
 						return "";
 					}

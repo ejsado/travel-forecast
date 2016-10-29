@@ -45,6 +45,7 @@ function dateFty($filter) {
 		// common times are set below
 		today: new Date(),
 		maxDate: new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
+		minDate: new Date(new Date().setFullYear(new Date().getFullYear() - 5)),
 		
 		// max consecutive days per destination
 		maxDateRange: 30,
@@ -62,7 +63,7 @@ function dateFty($filter) {
 			if (d == null) {
 				return false;
 			}
-			if (d < factory.maxDate) {
+			if (d < factory.maxDate && d > factory.minDate) {
 				return true;
 			}
 			return false;

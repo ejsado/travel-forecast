@@ -128,7 +128,7 @@ function alertFty($sce, $timeout, dateFty) {
 					title: 'Date Ranges Invalid',
 					text: [
 						"Some of your date ranges were invalid, so I skipped them.",
-						"Forecasts are limited to " + dateFty.maxDateRange + " days per destination. Dates must be within the next 5 years."
+						"Forecasts are limited to " + dateFty.maxDateRange + " days per destination. Dates must be within 5 years in the past or future."
 					]
 				}
 			]

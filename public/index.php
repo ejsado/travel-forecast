@@ -571,8 +571,8 @@
 					</div>
 				</section>
 				<section>
-					<a href="http://forecast.io/" class="credit-link">
-						Powered by Forecast
+					<a href="https://darksky.net/poweredby/" class="credit-link">
+						Powered by Dark Sky
 					</a>
 					<span id="copyright">
 						&copy; Eric Sadowski
