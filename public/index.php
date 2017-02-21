@@ -25,7 +25,7 @@
 		
 		<link href="/css/all.min.css" rel="stylesheet" type="text/css">
 		
-		<script src="/js/lib/cj.js" data-desc="monetize"></script>
+		<!-- <script src="/js/lib/cj.js" data-desc="monetize"></script> -->
 		
 		<!-- build:angular -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
@@ -121,10 +121,10 @@
 					ng-controller="mapCtrl as mapUtils">
 					<div id="map-drawer">
 						<div id="map"></div>
-						<div id="map-ad">
+						<!-- <div id="map-ad">
 							<div class="money-box">
 								<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-								<!-- map ad fixed -->
+								<!-- map ad fixed --> <!--
 								<ins class="adsbygoogle"
 									 style="display:inline-block;width:300px;height:600px"
 									 data-ad-client="ca-pub-7172783409470168"
@@ -134,6 +134,7 @@
 								</script>
 							</div>
 						</div>
+						-->
 					</div>
 				</section>
 				<section id="form-top"></section>
@@ -188,9 +189,10 @@
 								Add Forecast
 							</button>
 						</div>
+						<!--
 						<div class="money-box">
 							<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-							<!-- small footer ad -->
+							<!-- small footer ad --> <!--
 							<ins class="adsbygoogle"
 								 style="display:inline-block;width:320px;height:100px"
 								 data-ad-client="ca-pub-7172783409470168"
@@ -199,6 +201,7 @@
 								(adsbygoogle = window.adsbygoogle || []).push({});
 							</script>
 						</div>
+						-->
 					</div>
 					<aside id="pikaday-container">
 						<div id="pikaday-background"
@@ -559,6 +562,7 @@
 							Directions to All Destinations
 						</a>
 					</div>
+					<!--
 					<div class="money-box">
 						<a href="http://www.backcountry.com/sc/activities" target="_top">
 							<div class="money-text">
@@ -569,6 +573,7 @@
 							</div>
 						</a>
 					</div>
+					-->
 				</section>
 				<section>
 					<a href="https://darksky.net/poweredby/" class="credit-link">
