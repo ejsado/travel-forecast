@@ -2,7 +2,7 @@
 * 
 * @source:https://github.com/ejsado/travel-forecast/blob/master/dist/js/app.js
 *
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -140,7 +140,7 @@ function alertFty($sce, $timeout, dateFty) {
 				{
 					title: 'What is this?',
 					text: [
-						"Travel Weathr allows you to build a weather forecast calendar for multiple vacation destinations with varied arrivals and departures.",
+						"Travel Weather allows you to build a weather forecast calendar for multiple vacation destinations with varied arrivals and departures.",
 						"Create a trip by adding destinations with arrival and departure dates, then bookmark the link or share it with the people you'll be travelling with. Every time you visit the link, your freshly updated forecast will be shown.",
 						"Each day in your forecast calendar will show the expected high temperature (&uarr;), low temperature (&darr;), and chance of rain (&becaus;).",
 						"* Note that weather predictions beyond 7 days from today are a best guess based on historical data and will not show an accurate chance of rain."
@@ -162,13 +162,13 @@ function alertFty($sce, $timeout, dateFty) {
 						"Look, I'm only one man and there are so many browser configurations. I developed this whole thing in Chrome on Windows 10, so you can expect it to work fine there. I also did some basic testing with the other popular browsers (Firefox, IE 10+, Chrome for Android) and they seem to work..."
 					]
 				},
-				{
+				/* {
 					title: 'How can I support your projects?',
 					text: [
 						'Disable adblock. Just kidding, no one actually does that do they?',
 						'If you purchase anything from <a href="http://www.jdoqocy.com/click-8108989-10954362-1445347180000">Backcountry</a> or book anything through <a href="http://www.jdoqocy.com/click-8108989-10592070-1466085945000">Priceline</a> via my affiliate links, I get some of the profit.'
 					]
-				},
+				}, */
 				{
 					title: 'What else you got?',
 					text: [
@@ -219,7 +219,7 @@ function alertFty($sce, $timeout, dateFty) {
 	
 }
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -460,7 +460,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 
 
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -592,7 +592,7 @@ function calendarCtrl($scope, $anchorScroll, $filter, destinationFty, urlFty, lo
 
 
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -859,7 +859,7 @@ function dateFty($filter) {
 
 
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -1095,7 +1095,7 @@ function destinationFty(dateFty, urlFty, locationFty, alertFty) {
 
 
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -1177,7 +1177,7 @@ function distanceFty() {
 	
 }
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -1453,7 +1453,7 @@ function forecastFty($http, $timeout, dateFty, destinationFty) {
 
 
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -1771,7 +1771,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 
 
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -2000,7 +2000,7 @@ function locationFty() {
 
 
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -2099,7 +2099,7 @@ function mapCtrl(locationFty) {
 
 
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -2367,7 +2367,7 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 		
 		// build dynamic page title
 		getPageTitle: function(destList) {
-			var title = "Travel Weathr";
+			var title = "Travel Weather";
 			if (destList.length > 0) {
 				title += " - " + destList[0].name;
 			}

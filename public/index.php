@@ -15,8 +15,8 @@
 		
 		<meta property="og:title" content="Travel Weather - Forecast Calendar" />
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="http://www.travelweathr.com/" />
-		<meta property="og:image" content="http://www.travelweathr.com/img/logo-colored-bg-256.png" />
+		<meta property="og:url" content="http://weather.ericsadowski.com/" />
+		<meta property="og:image" content="http://weather.ericsadowski.com/img/logo-colored-bg-256.png" />
 		<meta property="og:description" content="Build a weather forecast calendar for multiple vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then easily find flights and hotels for each destination.">
 		
 		<meta name="description" content="Build a weather forecast calendar for multiple vacation destinations with varied arrivals and departures. Create a trip by adding destinations with arrival and departure dates, then easily find flights and hotels for each destination.">
