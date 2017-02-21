@@ -284,7 +284,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
 				//console.log("destination list", destinationFty.destinationList);
 				console.log("date list", dateFty.dateList);
-				urlFty.monetizeLinks();
+				/* urlFty.monetizeLinks(); */
 			} else {
 				alertFty.displayMessage("Your date range is invalid. Forecasts are limited to " + dateFty.maxDateRange + " days per destination.", "error");
 			}

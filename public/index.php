@@ -298,6 +298,7 @@
 															{{ destination.name }}
 														</span>
 													</button>
+													<!--
 													<div class="destination-hotels">
 														<a href="{{ appUtils.urlFty.createPricelineHotelsUrl(destination) }}">
 															<span>
@@ -305,6 +306,7 @@
 															</span>
 														</a>
 													</div>
+													-->
 												</div>
 											</td>
 										</tr>
@@ -330,10 +332,12 @@
 																appUtils.destinationFty.destinationList[$index + 1]
 															]) }}">
 															Get directions</a>
+														<!--
 														&mdash;
 														<a href="http://www.dpbolvw.net/click-8108989-10392969-1467996812000">
 															Search flights
 														</a>
+														-->
 													</div>
 												</div>
 											</td>

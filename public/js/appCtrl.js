@@ -168,7 +168,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 							);
 						}
 						// make affiliate links
-						$timeout(urlFty.monetizeLinks, 500);
+						/* $timeout(urlFty.monetizeLinks, 500); */
 						locationFty.map.setZoom(6);
 						locationFty.map.panToBounds(locationFty.destinationBounds);
 					}
