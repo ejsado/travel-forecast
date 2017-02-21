@@ -1,5 +1,5 @@
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
@@ -267,7 +267,7 @@ function urlFty($timeout, $location, $http, dateFty, locationFty) {
 		
 		// build dynamic page title
 		getPageTitle: function(destList) {
-			var title = "Travel Weathr";
+			var title = "Travel Weather";
 			if (destList.length > 0) {
 				title += " - " + destList[0].name;
 			}

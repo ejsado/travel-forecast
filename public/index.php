@@ -10,10 +10,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 		
 		<title ng-bind="appUtils.urlFty.getPageTitle(appUtils.destinationFty.destinationList)">
-			Travel Weathr - Forecast Calendar
+			Travel Weather - Forecast Calendar
 		</title>
 		
-		<meta property="og:title" content="Travel Weathr - Forecast Calendar" />
+		<meta property="og:title" content="Travel Weather - Forecast Calendar" />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="http://www.travelweathr.com/" />
 		<meta property="og:image" content="http://www.travelweathr.com/img/logo-colored-bg-256.png" />
@@ -92,7 +92,7 @@
 							ng-click="appUtils.resetPage()"
 							ng-disabled="appUtils.destinationFty.loadingDestinations">
 							<img src="/img/logo-colored-128.png" alt="">
-							<span>Travel Weathr</span>
+							<span>Travel Weather</span>
 						</button>
 					</div>
 					<div id="url-container">

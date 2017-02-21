@@ -388,7 +388,7 @@ function appCtrl($timeout, $scope, locationFty, destinationFty, forecastFty, dat
 							);
 						}
 						// make affiliate links
-						$timeout(urlFty.monetizeLinks, 500);
+						/* $timeout(urlFty.monetizeLinks, 500); */
 						locationFty.map.setZoom(6);
 						locationFty.map.panToBounds(locationFty.destinationBounds);
 					}
@@ -1738,7 +1738,7 @@ function formCtrl($scope, $timeout, destinationFty, forecastFty, dateFty, urlFty
 				urlFty.buildUrlParamTrip(destinationFty.destinationList);
 				//console.log("destination list", destinationFty.destinationList);
 				console.log("date list", dateFty.dateList);
-				urlFty.monetizeLinks();
+				/* urlFty.monetizeLinks(); */
 			} else {
 				alertFty.displayMessage("Your date range is invalid. Forecasts are limited to " + dateFty.maxDateRange + " days per destination.", "error");
 			}

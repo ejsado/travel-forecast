@@ -1,5 +1,5 @@
 /**
-* Travel Weathr - build a weather forecast calendar
+* Travel Weather - build a weather forecast calendar
 * Copyright (C) 2016  Eric Sadowski
 * 
 * This program is free software: you can redistribute it and/or modify
